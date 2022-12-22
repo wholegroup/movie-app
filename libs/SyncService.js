@@ -17,8 +17,7 @@ class SyncService {
 
   /**
    * Opens DB and returns new service instance.
-   * @param {string} filename Path to DB
-   * @returns {Promise<SyncService>}
+   * @returns {Promise<void>}
    */
   async open () {
     if (this.db) {
@@ -64,30 +63,89 @@ class SyncService {
   }
 
   /**
+   * Wraps db.all() with Promise.
+   * @param {string} sql
+   * @param params
+   * @returns {Promise<object[]>}
+   * @private
+   */
+  async getAllAsync (sql, ...params) {
+    if (!this.db) {
+      throw new Error('Nullable db')
+    }
+    return new Promise((resolve, reject) => {
+      this.db.all(sql, ...params, (err, rows) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(rows)
+      })
+    })
+  }
+
+  /**
+   * Returns all rows.
+   * @param {string} tableName
+   * @returns {Promise<Object[]>}
+   * @private
+   */
+  async allRows (tableName) {
+    return await this.getAllAsync(`
+        SELECT *
+        FROM ${tableName}
+    `, {}) || []
+  }
+
+  /**
+   * Returns json data of all objects.
+   * @param tableName
+   * @returns {Promise<Object[]>}
+   */
+  async allData (tableName) {
+    const rows = await this.allRows(tableName)
+    // noinspection UnnecessaryLocalVariableJS
+    const allObjects = rows.map(({ data = null }) => JSON.parse(data))
+    return allObjects
+  }
+
+  /**
    * Lists of movies.
    * @param {number} lastUpdatedAt Timestamp
    * @returns {Promise<*[]>}
    */
   async moviesSince (lastUpdatedAt) {
-    return []
+    const allMovies = await this.allData('movie')
+    if (!lastUpdatedAt) {
+      return allMovies
+    }
+    return allMovies.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 
   /**
    * Lists of votes.
    * @param {number} lastUpdatedAt Timestamp
-   * @returns {Promise<*[]>}
+   * @returns {Promise<Object[]>}
    */
   async votesSince (lastUpdatedAt) {
-    return []
+    const allVotes = await this.allData('votes')
+    if (!lastUpdatedAt) {
+      return allVotes
+    }
+    return allVotes.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 
   /**
    * lists of images.
    * @param {number} lastUpdatedAt Timestamp
-   * @returns {Promise<*[]>}
+   * @returns {Promise<Object[]>}
    */
   async imagesSince (lastUpdatedAt) {
-    return []
+    const allImages = await this.allData('images')
+    if (!lastUpdatedAt) {
+      return allImages
+    }
+    return allImages.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 }
 
