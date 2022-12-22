@@ -15,12 +15,21 @@ export default async function handler (req, res) {
       return
     }
 
-    const lastUpdatedAt = req.body?.lastUpdatedAt || 0
+    const lastUpdatedAt = req.body?.lastUpdatedAt || ''
+    const movies = await syncService.moviesSince(lastUpdatedAt)
+    const votes = await syncService.votesSince(lastUpdatedAt)
+    const images = await syncService.imagesSince(lastUpdatedAt)
+    const maxUpdatedAt = [
+      ...movies.map(({ updatedAt }) => updatedAt),
+      ...votes.map(({ updatedAt }) => updatedAt),
+      ...images.map(({ updatedAt }) => updatedAt)
+    ].reduce((max, c) => c > max ? c : max, '')
+
     res.status(200).json({
-      movies: await syncService.moviesSince(lastUpdatedAt),
-      votes: await syncService.votesSince(lastUpdatedAt),
-      images: await syncService.imagesSince(lastUpdatedAt),
-      lastUpdatedAt: lastUpdatedAt
+      movies,
+      votes,
+      images,
+      lastUpdatedAt: maxUpdatedAt || lastUpdatedAt
     })
   } finally {
     if (syncService.isOpen()) {
