@@ -116,10 +116,27 @@ class SyncService {
    */
   async moviesSince (lastUpdatedAt) {
     const allMovies = await this.allData('movie')
+    const cleanMovies = allMovies.map(movie => ({
+      movieId: movie.movieId,
+      title: movie.title,
+      year: movie.year,
+      genres: movie.genres,
+      runtime: movie.runtime,
+      description: movie.description,
+      directors: movie.directors.map(({ personId, fullName }) => ({
+        personId,
+        fullName
+      })),
+      stars: movie.stars.map(({ personId, fullName }) => ({
+        personId,
+        fullName
+      })),
+      updatedAt: movie.updatedAt
+    }))
     if (!lastUpdatedAt) {
-      return allMovies
+      return cleanMovies
     }
-    return allMovies.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
+    return cleanMovies.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 
   /**
@@ -129,10 +146,15 @@ class SyncService {
    */
   async votesSince (lastUpdatedAt) {
     const allVotes = await this.allData('votes')
+    const cleanVotes = allVotes.map(({ movieId, votes, updatedAt }) => ({
+      movieId,
+      votes,
+      updatedAt
+    }))
     if (!lastUpdatedAt) {
-      return allVotes
+      return cleanVotes
     }
-    return allVotes.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
+    return cleanVotes.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 
   /**
@@ -142,10 +164,17 @@ class SyncService {
    */
   async imagesSince (lastUpdatedAt) {
     const allImages = await this.allData('images')
+    const cleanImages = allImages.map(({ movieId, images, updatedAt }) => ({
+      movieId,
+      images: images.map(({ hash }) => ({
+        hash
+      })),
+      updatedAt
+    }))
     if (!lastUpdatedAt) {
-      return allImages
+      return cleanImages
     }
-    return allImages.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
+    return cleanImages.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 }
 
