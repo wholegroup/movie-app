@@ -115,20 +115,23 @@ class SyncService {
    * @returns {Promise<*[]>}
    */
   async moviesSince (lastUpdatedAt) {
-    const allMovies = await this.allData('movie')
+    const allMovies = await this.allData('movies')
     const cleanMovies = allMovies.map(movie => ({
       movieId: movie.movieId,
+      slug: movie.slug,
       title: movie.title,
       year: movie.year,
       genres: movie.genres,
       runtime: movie.runtime,
       description: movie.description,
-      directors: movie.directors.map(({ personId, fullName }) => ({
+      directors: movie.directors.map(({ personId, slug, fullName }) => ({
         personId,
+        slug,
         fullName
       })),
-      stars: movie.stars.map(({ personId, fullName }) => ({
+      stars: movie.stars.map(({ personId, slug, fullName }) => ({
         personId,
+        slug,
         fullName
       })),
       updatedAt: movie.updatedAt
