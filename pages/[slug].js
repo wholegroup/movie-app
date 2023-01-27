@@ -3,16 +3,17 @@ import Link from 'next/link'
 import styles from './[slug].module.css'
 import SyncService from '../libs/SyncService'
 
-export default function MovieBySlug ({ movie }) {
+export default function MovieBySlug ({ movie, ts }) {
   const { query: { slug } } = useRouter()
 
   return (
     <MovieContainer>
       <div><b>{slug}</b></div>
+      <div>{ts}</div>
       <div>
         <pre>
           {JSON.stringify(movie, null, '\t')}
-          </pre>
+        </pre>
       </div>
     </MovieContainer>
   )
@@ -44,10 +45,8 @@ export async function getServerSideProps (context) {
 
     return {
       props: {
-        movie: {
-          ...movie,
-          ts: new Date().toISOString()
-        }
+        movie,
+        ts: new Date().toISOString()
       }
     }
   } finally {
