@@ -116,26 +116,7 @@ class SyncService {
    */
   async moviesSince (lastUpdatedAt) {
     const allMovies = await this.allData('movies')
-    const cleanMovies = allMovies.map(movie => ({
-      movieId: movie.movieId,
-      slug: movie.slug,
-      title: movie.title,
-      year: movie.year,
-      genres: movie.genres,
-      runtime: movie.runtime,
-      description: movie.description,
-      directors: movie.directors.map(({ personId, slug, fullName }) => ({
-        personId,
-        slug,
-        fullName
-      })),
-      stars: movie.stars.map(({ personId, slug, fullName }) => ({
-        personId,
-        slug,
-        fullName
-      })),
-      updatedAt: movie.updatedAt
-    }))
+    const cleanMovies = allMovies.map(this.sanitizeMovie)
     if (!lastUpdatedAt) {
       return cleanMovies
     }
@@ -178,6 +159,29 @@ class SyncService {
       return cleanImages
     }
     return cleanImages.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
+  }
+
+  sanitizeMovie (movie) {
+    return {
+      movieId: movie.movieId,
+      slug: movie.slug,
+      title: movie.title,
+      year: movie.year,
+      genres: movie.genres,
+      runtime: movie.runtime,
+      description: movie.description,
+      directors: movie.directors.map(({ personId, slug, fullName }) => ({
+        personId,
+        slug,
+        fullName
+      })),
+      stars: movie.stars.map(({ personId, slug, fullName }) => ({
+        personId,
+        slug,
+        fullName
+      })),
+      updatedAt: movie.updatedAt
+    }
   }
 }
 
