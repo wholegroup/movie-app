@@ -1,0 +1,12 @@
+.movieContainer {
+    border: 10px solid darkseagreen;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.topMenu {
+    font-size: 1.2rem;
+    text-align: center;
+    color: blue;
+}
