@@ -189,6 +189,33 @@ class SyncService {
       updatedAt: movie.updatedAt
     }
   }
+
+  async zzz (slug) {
+
+  }
+
+  /**
+   * Finds movie by slug.
+   * @param {string} movieSlug
+   * @returns {Promise<Object|null>}
+   */
+  async findMovieBySlug (movieSlug) {
+    // find movie id
+    const allSlugs = await this.allRows('ids')
+    const { id: movieId } = allSlugs.find(({ slug }) => slug === movieSlug) || {}
+    if (!movieId) {
+      return null
+    }
+
+    // find movie
+    const allMovies = await this.allData('movies')
+    const movie = allMovies.find(nextMovie => nextMovie.movieId === movieId)
+    if (!movie) {
+      return null
+    }
+
+    return this.sanitizeMovie(movie)
+  }
 }
 
 export default SyncService
