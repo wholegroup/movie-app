@@ -1,7 +1,9 @@
 import Head from 'next/head'
+import Link from 'next/link'
+import SyncService from '../libs/SyncService'
 import styles from './index.module.css'
 
-export default function Home () {
+export default function Home ({ movies }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -17,13 +19,43 @@ export default function Home () {
 
         <div className={styles.grid}>
 
-          <a href='https://nextjs.org/docs' className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
+          {movies.map(movie => {
+            return (
+              <div key={movie.movieId} className={styles.card}>
+                <Link href={`/${movie.slug}`}>
+                  <div>IMAGE</div>
+                  <h4>{movie.title}</h4>
+                  <div>{movie.year}</div>
+                </Link>
+              </div>
+            )
+          })}
         </div>
       </main>
     </div>
   )
+}
+
+export async function getServerSideProps (context) {
+  const syncService = new SyncService(process.env.MOVIE_APP_DB)
+  try {
+    await syncService.open()
+
+    const movies = await syncService.moviesSince(0)
+    const votes = await syncService.votesSince(0)
+    const images = await syncService.imagesSince(0)
+
+    return {
+      props: {
+        movies,
+        votes,
+        images,
+        ts: new Date().toISOString()
+      }
+    }
+  } finally {
+    if (syncService.isOpen()) {
+      await syncService.close()
+    }
+  }
 }

@@ -14,7 +14,7 @@ export default async function handler (req, res) {
       return
     }
 
-    const lastUpdatedAt = req.body?.lastUpdatedAt || ''
+    const lastUpdatedAt = req.body?.lastUpdatedAt || 0
     const movies = await syncService.moviesSince(lastUpdatedAt)
     const votes = await syncService.votesSince(lastUpdatedAt)
     const images = await syncService.imagesSince(lastUpdatedAt)
