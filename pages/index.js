@@ -14,7 +14,7 @@ export default function Home ({ movies }) {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          --- Annual Movies ---
+          ··· Annual Movies ···
         </h1>
 
         <div className={styles.grid}>
@@ -24,7 +24,7 @@ export default function Home ({ movies }) {
               <div key={movie.movieId} className={styles.card}>
                 <Link href={`/${movie.slug}`}>
                   <div>IMAGE</div>
-                  <h4>{movie.title}</h4>
+                  <h4 className={styles.movieTitle}>{movie.title}</h4>
                   <div>{movie.year}</div>
                 </Link>
               </div>

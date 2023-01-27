@@ -20,7 +20,6 @@
 
 .grid {
   display: flex;
-  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   max-width: 1600px;
@@ -61,4 +60,8 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+.movieTitle {
+  min-height: 2rem;
 }
