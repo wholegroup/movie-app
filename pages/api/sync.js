@@ -5,7 +5,6 @@ import SyncService from '../../libs/SyncService'
  * @param {import('next').NextApiResponse} res
  */
 export default async function handler (req, res) {
-  // const syncService = await SyncService.open(process.env.MOVIE_APP_DB)
   const syncService = new SyncService(process.env.MOVIE_APP_DB)
   try {
     await syncService.open()
