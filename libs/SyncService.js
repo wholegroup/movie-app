@@ -190,10 +190,6 @@ class SyncService {
     }
   }
 
-  async zzz (slug) {
-
-  }
-
   /**
    * Finds movie by slug.
    * @param {string} movieSlug
