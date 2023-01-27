@@ -112,7 +112,7 @@ class SyncService {
   /**
    * Lists of movies.
    * @param {number} lastUpdatedAt Timestamp
-   * @returns {Promise<*[]>}
+   * @returns {Promise<Object[]>}
    */
   async moviesSince (lastUpdatedAt) {
     const allMovies = await this.allData('movies')
@@ -120,7 +120,8 @@ class SyncService {
     if (!lastUpdatedAt) {
       return cleanMovies
     }
-    return cleanMovies.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
+    return cleanMovies
+      .filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 
   /**
@@ -161,6 +162,11 @@ class SyncService {
     return cleanImages.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 
+  /**
+   * Sanitizes movie.
+   * @param {Object} movie
+   * @returns {Object}
+   */
   sanitizeMovie (movie) {
     return {
       movieId: movie.movieId,
