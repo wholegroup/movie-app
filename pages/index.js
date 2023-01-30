@@ -49,7 +49,11 @@ function MovieCard ({ card }) {
     <div className={styles.card}>
       <Link href={`/${card.slug}`}>
         <div>
-          <img src={`${imgHost}/270_400/${card.posterHash[0]}/${card.posterHash}_270_400.jpeg`} title={card.title} />
+          <img
+            src={`${imgHost}/270_400/${card.posterHash[0]}/${card.posterHash}_270_400.jpeg`}
+            title={card.title}
+            loading='lazy'
+          />
         </div>
         <h4 className={styles.movieTitle}>{card.title}</h4>
         <div>{card.year}</div>
