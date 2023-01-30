@@ -64,16 +64,17 @@ export async function getServerSideProps (context) {
     await syncService.open()
 
     const movies = await syncService.moviesSince(0)
+    const sortedMovies = movies.sort(({ year: a, title: x }, { year: b, title: y }) => (b - a) || x.localeCompare(y))
     const images = await syncService.imagesSince(0)
 
-    const cards = movies.map(movie => {
+    const cards = sortedMovies.map(movie => {
       const mainImage = (images.find(nextImages => nextImages.movieId === movie.movieId) || {}).images[0] ?? null
       return {
         movieId: movie.movieId,
         slug: movie.slug,
         title: movie.title,
         year: movie.year,
-        posterHash: mainImage?.hash || null,
+        posterHash: mainImage?.hash || null
       }
     })
 
