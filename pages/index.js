@@ -3,7 +3,7 @@ import Link from 'next/link'
 import SyncService from '../libs/SyncService'
 import styles from './index.module.css'
 
-export default function Home ({ movies }) {
+export default function Home ({ cards }) {
   return (
     <>
       <Head>
@@ -14,10 +14,10 @@ export default function Home ({ movies }) {
 
       <nav className={styles.nav}>
         <ul>
-          <li><a href="#a">Section A</a></li>
-          <li><a href="#b">Section B</a></li>
-          <li><a href="#c">Section C</a></li>
-          <li><a href="#d">Section D</a></li>
+          <li><a href='#a'>Section A</a></li>
+          <li><a href='#b'>Section B</a></li>
+          <li><a href='#c'>Section C</a></li>
+          <li><a href='#d'>Section D</a></li>
         </ul>
       </nav>
 
@@ -28,21 +28,33 @@ export default function Home ({ movies }) {
         </h1>
 
         <div className={styles.grid}>
-
-          {movies.map(movie => {
-            return (
-              <div key={movie.movieId} className={styles.card}>
-                <Link href={`/${movie.slug}`}>
-                  <div>IMAGE</div>
-                  <h4 className={styles.movieTitle}>{movie.title}</h4>
-                  <div>{movie.year}</div>
-                </Link>
-              </div>
-            )
-          })}
+          {cards.map(movieCard => <MovieCard key={movieCard.movieId} card={movieCard} />)}
         </div>
       </main>
     </>
+  )
+}
+
+// Movie Card
+
+// http://imga.am.wholegmq.beget.tech/posters/270_400/0/006afcfe6824da56fb63b3654fda0bc8523a5d0f_270_400.jpeg
+// http://imga.am.wholegmq.beget.tech/270_400/0/006afcfe6824da56fb63b3654fda0bc8523a5d0f_270_400.jpeg
+// process.env.MOVIE_APP_DB
+
+const imgHosts = (process.env.NEXT_PUBLIC_MOVIE_IMG_HOST || '/').split(';')
+
+function MovieCard ({ card }) {
+  const imgHost = imgHosts[0]
+  return (
+    <div className={styles.card}>
+      <Link href={`/${card.slug}`}>
+        <div>
+          <img src={`${imgHost}/270_400/${card.posterHash[0]}/${card.posterHash}_270_400.jpeg`} title={card.title} />
+        </div>
+        <h4 className={styles.movieTitle}>{card.title}</h4>
+        <div>{card.year}</div>
+      </Link>
+    </div>
   )
 }
 
@@ -52,14 +64,22 @@ export async function getServerSideProps (context) {
     await syncService.open()
 
     const movies = await syncService.moviesSince(0)
-    const votes = await syncService.votesSince(0)
     const images = await syncService.imagesSince(0)
+
+    const cards = movies.map(movie => {
+      const mainImage = (images.find(nextImages => nextImages.movieId === movie.movieId) || {}).images[0] ?? null
+      return {
+        movieId: movie.movieId,
+        slug: movie.slug,
+        title: movie.title,
+        year: movie.year,
+        posterHash: mainImage?.hash || null,
+      }
+    })
 
     return {
       props: {
-        movies,
-        votes,
-        images,
+        cards,
         ts: new Date().toISOString()
       }
     }
