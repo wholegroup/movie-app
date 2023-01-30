@@ -44,7 +44,7 @@ export default function Home ({ cards }) {
 const imgHosts = (process.env.NEXT_PUBLIC_MOVIE_IMG_HOST || '/').split(';')
 
 function MovieCard ({ card }) {
-  const imgHost = imgHosts[0]
+  const imgHost = imgHosts[card.movieId % imgHosts.length]
   return (
     <div className={styles.card}>
       <Link href={`/${card.slug}`}>
