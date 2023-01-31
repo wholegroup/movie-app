@@ -1,5 +1,5 @@
-import './_app.css'
 import Head from 'next/head'
+import './_app.css'
 
 function MyApp ({ Component, pageProps }) {
   return (
@@ -20,7 +20,8 @@ function MyApp ({ Component, pageProps }) {
         <link href='/icons/icon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
         <link rel='apple-touch-icon' href='/icons/icon-512x512.png'></link>
         <meta name='theme-color' content='#317EFB' />
-      </Head> <Component {...pageProps} />
+      </Head>
+      <Component {...pageProps} />
     </>
   )
 }

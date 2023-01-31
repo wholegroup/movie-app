@@ -2,8 +2,14 @@ import Head from 'next/head'
 import Link from 'next/link'
 import SyncService from '../libs/SyncService'
 import styles from './index.module.css'
+import { useEffect } from 'react'
 
 export default function Home ({ cards }) {
+  useEffect(() => {
+    console.log('init')
+    return () => console.log('unmount')
+  }, [])
+
   return (
     <>
       <Head>
@@ -52,6 +58,7 @@ function MovieCard ({ card }) {
           <img
             src={`${imgHost}/270_400/${card.posterHash[0]}/${card.posterHash}_270_400.jpeg`}
             title={card.title}
+            alt={card.title}
             loading='lazy'
           />
         </div>
