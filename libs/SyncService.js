@@ -1,5 +1,10 @@
 import * as sqlite3 from 'sqlite3'
 
+// I added browser property into package.json to ignore importing sqlite3 by webpack in client side
+// (because of getInitialProps)
+// https://arunoda.me/blog/ssr-and-server-only-modules
+// https://nextjs.org/docs/api-reference/data-fetching/get-initial-props#caveats
+
 class SyncService {
   /** @type {string} */
   filename

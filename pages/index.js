@@ -1,13 +1,14 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import SyncService from '../libs/SyncService'
 import styles from './index.module.css'
-import { useEffect } from 'react'
 
+// noinspection JSUnusedGlobalSymbols
 export default function Home ({ cards }) {
   useEffect(() => {
-    console.log('init')
-    return () => console.log('unmount')
+    console.log('mount::Home')
+    return () => console.log('unmount::Home')
   }, [])
 
   return (
@@ -20,10 +21,10 @@ export default function Home ({ cards }) {
 
       <nav className={styles.nav}>
         <ul>
-          <li><a href='#a'>Section A</a></li>
-          <li><a href='#b'>Section B</a></li>
-          <li><a href='#c'>Section C</a></li>
-          <li><a href='#d'>Section D</a></li>
+          <li><a href='#'>Section A</a></li>
+          <li><a href='#'>Section B</a></li>
+          <li><a href='#'>Section C</a></li>
+          <li><a href='#'>Section D</a></li>
         </ul>
       </nav>
 
@@ -69,7 +70,16 @@ function MovieCard ({ card }) {
   )
 }
 
-export async function getServerSideProps (context) {
+Home.getInitialProps = async function ({ req }) {
+  const isClient = !req
+
+  if (isClient) {
+    return {
+      cards: [],
+      ts: new Date().toISOString()
+    }
+  }
+
   const syncService = new SyncService(process.env.MOVIE_APP_DB)
   try {
     await syncService.open()
@@ -90,10 +100,8 @@ export async function getServerSideProps (context) {
     })
 
     return {
-      props: {
-        cards,
-        ts: new Date().toISOString()
-      }
+      cards,
+      ts: new Date().toISOString()
     }
   } finally {
     if (syncService.isOpen()) {

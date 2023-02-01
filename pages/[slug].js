@@ -1,10 +1,17 @@
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import styles from './[slug].module.css'
 import SyncService from '../libs/SyncService'
+import styles from './[slug].module.css'
 
+// noinspection JSUnusedGlobalSymbols
 export default function MovieBySlug ({ movie, ts }) {
   const { query: { slug } } = useRouter()
+
+  useEffect(() => {
+    console.log('mount::Slug')
+    return () => console.log('unmount::Slug')
+  }, [])
 
   return (
     <MovieContainer>
@@ -30,8 +37,16 @@ function MovieContainer ({ children }) {
   )
 }
 
-export async function getServerSideProps (context) {
-  const { query: { slug } } = context
+MovieBySlug.getInitialProps = async function ({ req, query }) {
+  const isClient = !req
+  const { slug } = query
+
+  if (isClient) {
+    return {
+      movie: {},
+      ts: new Date().toISOString()
+    }
+  }
 
   const syncService = new SyncService(process.env.MOVIE_APP_DB)
   try {
@@ -44,10 +59,8 @@ export async function getServerSideProps (context) {
     }
 
     return {
-      props: {
-        movie,
-        ts: new Date().toISOString()
-      }
+      movie,
+      ts: new Date().toISOString()
     }
   } finally {
     if (syncService.isOpen()) {
