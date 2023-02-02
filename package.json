@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3300",
-    "build": "next build",
+    "dev": "NEXT_PUBLIC_MOVIE_VERSION=$(sh ./version.sh) next dev -p 3300",
+    "build": "NEXT_PUBLIC_MOVIE_VERSION=$(sh ./version.sh) next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start -p 3400",
     "lint": "next lint"

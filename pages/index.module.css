@@ -6,13 +6,15 @@
   position: sticky;
   top: 0;
   background: deepskyblue;
+  display: flex;
+  line-height: 3rem;
+  justify-content: center;
 }
 
 .nav ul {
   padding: 0;
   margin: 0;
   display: flex;
-  line-height: 3rem;
   justify-content: center;
 }
 
