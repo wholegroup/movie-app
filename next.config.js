@@ -12,8 +12,11 @@ const nextConfig = {
   }
 }
 
+const runtimeCaching = require('./cache')
 const withPWA = require('next-pwa')({
   dest: 'public',
+  runtimeCaching,
+  dynamicStartUrl: false, // if enabled the app fetches index page every time
   reloadOnOnline: false, //
   mode: 'development' // don't minified sw
   // https://github.com/shadowwalker/next-pwa/tree/master/examples/custom-worker

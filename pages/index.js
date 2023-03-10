@@ -1,15 +1,27 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import SyncService from '../libs/SyncService'
 import styles from './index.module.css'
 
 // noinspection JSUnusedGlobalSymbols
-export default function Home ({ cards }) {
+export default function Home ({ cards, isClientRender = true }) {
+  const router = useRouter()
+
   useEffect(() => {
     console.log('mount::Home')
+
+    // we have to trigger router with current url because
+    // index page is always returned by Service Worker for any url.
+    if (!isClientRender && router.asPath !== '/') {
+      console.log('re-triggering router...')
+      router.replace(router.asPath)
+        .catch(console.error)
+    }
+
     return () => console.log('unmount::Home')
-  }, [])
+  }, [isClientRender, router])
 
   return (
     <>
@@ -77,7 +89,8 @@ Home.getInitialProps = async function ({ req }) {
   if (isClient) {
     return {
       cards: [],
-      ts: new Date().toISOString()
+      ts: new Date().toISOString(),
+      isClientRender: true
     }
   }
 
@@ -102,7 +115,8 @@ Home.getInitialProps = async function ({ req }) {
 
     return {
       cards,
-      ts: new Date().toISOString()
+      ts: new Date().toISOString(),
+      isClientRender: false
     }
   } finally {
     if (syncService.isOpen()) {
