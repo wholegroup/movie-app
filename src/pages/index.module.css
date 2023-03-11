@@ -2,27 +2,6 @@
   padding: 0 2rem;
 }
 
-.nav {
-  position: sticky;
-  top: 0;
-  background: deepskyblue;
-  display: flex;
-  line-height: 3rem;
-  justify-content: center;
-}
-
-.nav ul {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.nav li {
-  list-style: none;
-  padding: 0 1rem;
-}
-
 .main {
   min-height: 100vh;
   padding: 1rem 0;
