@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import SyncService from '../libs/SyncService'
+import SyncService from '../../libs/SyncService.js'
 import styles from './[slug].module.css'
 
 // noinspection JSUnusedGlobalSymbols

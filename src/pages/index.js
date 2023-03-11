@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import SyncService from '../libs/SyncService'
+import SyncService from '../../libs/SyncService.js'
 import styles from './index.module.css'
 
 // noinspection JSUnusedGlobalSymbols

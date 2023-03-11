@@ -1,4 +1,4 @@
-import SyncService from '../../libs/SyncService'
+import SyncService from '../../../libs/SyncService.js'
 
 /**
  * @param {import('next').NextApiRequest} req
