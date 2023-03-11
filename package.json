@@ -1,6 +1,7 @@
 {
   "name": "movie-app",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "NEXT_PUBLIC_MOVIE_VERSION=$(sh ./version.sh) next dev -p 3300",

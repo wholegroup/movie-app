@@ -1,3 +1,7 @@
+import nextPWA from 'next-pwa'
+import nextBundleAnalyzer from '@next/bundle-analyzer'
+import runtimeCaching from './cache.js'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -12,8 +16,7 @@ const nextConfig = {
   }
 }
 
-const runtimeCaching = require('./cache')
-const withPWA = require('next-pwa')({
+const withPWA = nextPWA({
   dest: 'public',
   runtimeCaching,
   dynamicStartUrl: false, // if enabled the app fetches index page every time
@@ -24,8 +27,8 @@ const withPWA = require('next-pwa')({
   // swSrc: 'service-worker.js',
 })
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+const withBundleAnalyzer = nextBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
 })
 
-module.exports = withBundleAnalyzer(withPWA(nextConfig))
+export default withBundleAnalyzer(withPWA(nextConfig))

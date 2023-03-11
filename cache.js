@@ -1,9 +1,7 @@
 // noinspection RedundantIfStatementJS
 
-'use strict'
-
 // original is from @next-pwa/cache.js
-module.exports = [
+const runtimeCaching = [
   // to support Single Page Application (loading index page for all urls)
   {
     urlPattern: ({ url }) => {
@@ -24,3 +22,5 @@ module.exports = [
     }
   }
 ]
+
+export default runtimeCaching
