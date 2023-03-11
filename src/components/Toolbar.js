@@ -1,6 +1,12 @@
+import { useEffect } from 'react'
 import styles from './Toolbar.module.css'
 
 function Toolbar () {
+  useEffect(() => {
+    console.log('>> mount::Toolbar')
+    return () => console.log('<< unmount::Toolbar')
+  }, [])
+
   return (
     <nav className={styles.nav}>
       <div>v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}</div>

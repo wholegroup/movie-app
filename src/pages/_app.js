@@ -1,8 +1,20 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
 import Toolbar from '../components/Toolbar.js'
+import CommonStore from '../CommonStore.js'
+import globalContext from '../globalContext.js'
 import './_app.css'
 
+const commonContextValue = {
+  commonStore: new CommonStore()
+}
+
 function MyApp ({ Component, pageProps }) {
+  useEffect(() => {
+    console.log('>> mount::App')
+    return () => console.log('<< unmount::App')
+  }, [])
+
   return (
     <>
       <Head>
@@ -21,8 +33,10 @@ function MyApp ({ Component, pageProps }) {
         <link rel='apple-touch-icon' href='/icons/icon-512x512.png'></link>
         <meta name='theme-color' content='#317EFB' />
       </Head>
-      <Toolbar />
-      <Component {...pageProps} />
+      <globalContext.Provider value={commonContextValue}>
+        <Toolbar />
+        <Component {...pageProps} />
+      </globalContext.Provider>
     </>
   )
 }
