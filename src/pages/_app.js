@@ -1,12 +1,16 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
 import Toolbar from '../components/Toolbar.js'
+import StorageService from '../StorageService.js'
 import CommonStore from '../CommonStore.js'
 import globalContext from '../globalContext.js'
 import './_app.css'
 
+// App Context
+const storageService = new StorageService()
 const commonContextValue = {
-  commonStore: new CommonStore()
+  storageService,
+  commonStore: new CommonStore(storageService).makeReady()
 }
 
 function MyApp ({ Component, pageProps }) {

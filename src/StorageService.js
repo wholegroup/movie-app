@@ -1,13 +1,23 @@
+import Dexie from 'dexie'
+
 class StorageService {
   /** @type {import('dexie').Dexie} */
-  storage
+  storage = null
 
   /**
-   * Default constructor.
-   * @param {import('dexie').Dexie} storage
+   * Makes the storage is ready.
+   * @returns {Promise<void>}
    */
-  constructor (storage) {
-    this.storage = storage
+  async makeReady () {
+    const dbName = 'storage'
+    const db = new Dexie(dbName)
+    db.version(1)
+      .stores({
+        table_one: ''
+      })
+    await db.open()
+
+    this.storage = db
   }
 }
 
