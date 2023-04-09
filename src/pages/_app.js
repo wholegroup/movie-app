@@ -1,17 +1,8 @@
 import { useEffect } from 'react'
+import GlobalContextProvider from '../GlobalContextProvider.js'
 import Head from 'next/head'
 import Toolbar from '../components/Toolbar.js'
-import StorageService from '../StorageService.js'
-import CommonStore from '../CommonStore.js'
-import globalContext from '../globalContext.js'
 import './_app.css'
-
-// App Context
-const storageService = new StorageService()
-const commonContextValue = {
-  storageService,
-  commonStore: new CommonStore(storageService).makeReady()
-}
 
 function MyApp ({ Component, pageProps }) {
   useEffect(() => {
@@ -37,10 +28,10 @@ function MyApp ({ Component, pageProps }) {
         <link rel='apple-touch-icon' href='/icons/icon-512x512.png'></link>
         <meta name='theme-color' content='#317EFB' />
       </Head>
-      <globalContext.Provider value={commonContextValue}>
+      <GlobalContextProvider>
         <Toolbar />
         <Component {...pageProps} />
-      </globalContext.Provider>
+      </GlobalContextProvider>
     </>
   )
 }

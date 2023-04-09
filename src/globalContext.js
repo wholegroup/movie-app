@@ -2,6 +2,7 @@ import React from 'react'
 
 /**
  * @typedef TGlobalContext
+ * @property {StorageService=} storageService
  * @property {CommonStore=} commonStore
  */
 
