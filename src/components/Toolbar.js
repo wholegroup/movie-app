@@ -1,14 +1,8 @@
-import { useEffect } from 'react'
 import { Icon } from '@mdi/react'
 import { mdiAccount } from '@mdi/js'
 import styles from './Toolbar.module.css'
 
 function Toolbar () {
-  useEffect(() => {
-    console.log('>> mount::Toolbar')
-    return () => console.log('<< unmount::Toolbar')
-  }, [])
-
   return (
     <nav className={styles.nav}>
       <div className={styles.first}>v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}</div>
@@ -21,7 +15,7 @@ function Toolbar () {
         </ul>
       </div>
       <div className={styles.last}>
-        <Icon path={mdiAccount} size={1.5} title={'Anonymous'} />
+        <Icon id={'account'} path={mdiAccount} size={1.5} title={'Anonymous'} />
       </div>
     </nav>
   )
