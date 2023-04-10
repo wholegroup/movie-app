@@ -10,17 +10,14 @@ export default function Home ({ cards, isClientRender = true }) {
   const router = useRouter()
 
   useEffect(() => {
-    console.log('mount::Home')
-
     // we have to trigger router with current url because
-    // index page is always returned by Service Worker for any url.
+    // index page is returned by Service Worker for any url
+    // to support SPA we need to process routing on client side.
     if (!isClientRender && router.asPath !== '/') {
       console.log('re-triggering router...')
       router.replace(router.asPath)
         .catch(console.error)
     }
-
-    return () => console.log('unmount::Home')
   }, [isClientRender, router])
 
   return (

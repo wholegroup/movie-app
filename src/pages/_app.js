@@ -6,8 +6,8 @@ import './_app.css'
 
 function MyApp ({ Component, pageProps }) {
   useEffect(() => {
-    console.log('>> mount::App')
-    return () => console.log('<< unmount::App')
+    console.log('>> mounted::App')
+    return () => console.log('<< UNmounted::App')
   }, [])
 
   return (
