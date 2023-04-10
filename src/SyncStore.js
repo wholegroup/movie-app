@@ -59,7 +59,6 @@ class SyncStore {
       this.setIsBusy(true)
 
       // do worker step
-      console.log('worker step')
     } finally {
       this.setIsBusy(false)
     }
