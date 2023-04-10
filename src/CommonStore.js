@@ -32,10 +32,11 @@ class CommonStore {
 
   /**
    * Makes ready.
+   * @param additional
    * @returns {CommonStore}
    */
-  makeReady () {
-    this.makeReadyAsync()
+  makeReady (additional) {
+    this.makeReadyAsync(additional)
       .then(() => {
         this.setIsInitialized()
       })
@@ -44,10 +45,11 @@ class CommonStore {
 
   /**
    * Async makeReady
+   * @param additional
    * @returns {Promise<void>}
    */
-  async makeReadyAsync () {
-    await this.storageService.makeReady()
+  async makeReadyAsync (additional) {
+    await additional()
   }
 }
 

@@ -9,10 +9,15 @@ let commonContextValue
 // different for server/client
 if (typeof window !== 'undefined') {
   const storageService = new StorageService()
+  const commonStore = new CommonStore(storageService)
+  const syncStore = new SyncStore(storageService)
   commonContextValue = {
     storageService,
-    commonStore: new CommonStore(storageService).makeReady(),
-    syncStore: new SyncStore(storageService).makeReady()
+    syncStore,
+    commonStore: commonStore.makeReady(async () => {
+      await storageService.makeReadyAsync()
+      await syncStore.makeReadyAsync()
+    })
   }
 } else {
   commonContextValue = {}

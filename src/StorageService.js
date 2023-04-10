@@ -13,7 +13,7 @@ class StorageService {
    * Makes the storage is ready.
    * @returns {Promise<void>}
    */
-  async makeReady () {
+  async makeReadyAsync () {
     const dbName = 'storage'
     const db = new Dexie(dbName)
     db.version(1)
