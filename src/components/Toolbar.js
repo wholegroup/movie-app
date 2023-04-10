@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { Icon } from '@mdi/react'
+import { mdiAccount } from '@mdi/js'
 import styles from './Toolbar.module.css'
 
 function Toolbar () {
@@ -9,7 +11,7 @@ function Toolbar () {
 
   return (
     <nav className={styles.nav}>
-      <div>v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}</div>
+      <div className={styles.first}>v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}</div>
       <div>
         <ul>
           <li><a href='#'>Section A</a></li>
@@ -17,6 +19,9 @@ function Toolbar () {
           <li><a href='#'>Section C</a></li>
           <li><a href='#'>Section D</a></li>
         </ul>
+      </div>
+      <div className={styles.last}>
+        <Icon path={mdiAccount} size={1.5} title={'Anonymous'} />
       </div>
     </nav>
   )

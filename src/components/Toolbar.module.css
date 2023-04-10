@@ -3,15 +3,27 @@
     top: 0;
     background: deepskyblue;
     display: flex;
-    line-height: 3rem;
     justify-content: center;
+    padding: 0 1rem;
+}
+
+.nav > div {
+    align-self: center;
+}
+
+.first, .last {
+    flex-grow: 1;
+}
+
+.last {
+    text-align: right;
 }
 
 .nav ul {
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center;
+    line-height: 3rem;
 }
 
 .nav li {

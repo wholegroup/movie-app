@@ -11,6 +11,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mdi/js": "^7.2.96",
+    "@mdi/react": "^1.6.1",
     "@next/bundle-analyzer": "^13.1.6",
     "dexie": "^3.2.3",
     "eslint": "^8.33.0",
