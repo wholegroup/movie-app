@@ -3,10 +3,17 @@ import StorageService from './StorageService.js'
 import CommonStore from './CommonStore.js'
 
 // App Context
-const storageService = new StorageService()
-const commonContextValue = {
-  storageService,
-  commonStore: new CommonStore(storageService).makeReady()
+let commonContextValue
+
+// different for server/client
+if (typeof window !== 'undefined') {
+  const storageService = new StorageService()
+  commonContextValue = {
+    storageService,
+    commonStore: new CommonStore(storageService).makeReady()
+  }
+} else {
+  commonContextValue = {}
 }
 
 function GlobalContextProvider ({ children }) {
