@@ -24,6 +24,12 @@ class SyncStore {
   /** @type {WorkerStepEnum[]} */
   workerStepsExecuting = []
 
+  /** @type {boolean} Worker is in delayed mode. */
+  isDelayed = false
+
+  /** @type {number} Timestamp when idDelayed set */
+  delayedDate = 0
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
@@ -44,7 +50,10 @@ class SyncStore {
       workerStepsExecuting: observable,
       startWorkerStepExecution: action,
       stopWorkerStepExecution: action,
-      isSynchronizing: computed
+      isSynchronizing: computed,
+      isDelayed: observable,
+      delayedDate: observable,
+      setIsDelayed: action
     })
   }
 
@@ -125,7 +134,16 @@ class SyncStore {
    * @returns {boolean}
    */
   get isSynchronizing () {
-    return this.workerStepsExecuting.length > 0
+    return this.workerStepsExecuting.length > 0 || !this.syncDate
+  }
+
+  /**
+   * Sets isDelayed status.
+   * @param {boolean} isDelayed
+   */
+  setIsDelayed (isDelayed) {
+    this.isDelayed = isDelayed
+    this.delayedDate = isDelayed ? Date.now() : 0
   }
 
   /**
@@ -159,12 +177,23 @@ class SyncStore {
       return
     }
 
+    // check if worker has delayed flag and reset the flag after sometime (60 sec)
+    if (this.isDelayed) {
+      if (Date.now() < (this.delayedDate + 60 * 1000)) {
+        return
+      }
+      this.setIsDelayed(false)
+    }
+
     try {
       this.setIsBusy(true)
       const dataChanged = await this.doWorkerStep()
       if (dataChanged) {
         this.setChangesHash(Date.now())
       }
+    } catch {
+      console.log('Worker has been delayed for 60 seconds because of an error.')
+      this.setIsDelayed(true)
     } finally {
       this.setIsBusy(false)
     }
