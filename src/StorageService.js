@@ -28,16 +28,25 @@ class StorageService {
   /**
    * Returns settings by name.
    * @param {string} name
-   * @returns {PromiseExtended<any>}
+   * @returns {Promise<string>}
    */
   async getSettings (name) {
-    console.log(this.storage)
-    return this.storage.settings.get(SETTINGS_NAMES.SYNC_DATA)
+    return this.storage.settings.get(name)
+  }
+
+  /**
+   * Saves settings by name
+   * @param {string} name
+   * @param {string} value
+   * @returns {Promise<void>}
+   */
+  async setSettings (name, value) {
+    await this.storage.settings.put(value, name)
   }
 }
 
 export const SETTINGS_NAMES = Object.freeze({
-  SYNC_DATA: 'SYNC_DATA'
+  SYNC_DATE: 'SYNC_DATE'
 })
 
 export default StorageService
