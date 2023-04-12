@@ -226,8 +226,12 @@ class SyncStore {
     try {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
 
-      const data = await this.apiService.loadMovies()
-      console.log('data', data)
+      const { movies, votes, images, lastUpdatedAt } = await this.apiService.loadMovies()
+
+      // save in storage
+      await this.storageService.upsertMovies(movies)
+      await this.storageService.upsertVotes(votes)
+      await this.storageService.upsertImages(images)
 
       this.setSyncDate(Date.now())
     } finally {

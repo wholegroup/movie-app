@@ -60,9 +60,9 @@ class ApiService {
 
 /**
  * @typedef TMovieResponse
- * @property {Object} movies
- * @property {Object} votes
- * @property {Object} images
+ * @property {TMovieItem[]} movies
+ * @property {TVotesItem[]} votes
+ * @property {TImagesItem[]} images
  * @property {number} lastUpdatedAt
  */
 
