@@ -1,10 +1,13 @@
 import { action, computed, makeObservable, observable } from 'mobx'
-import { SETTINGS_NAMES } from './StorageService.js'
 import * as cronParser from 'cron-parser'
+import { SETTINGS_NAMES } from './StorageService.js'
 
 class SyncStore {
   /** @type {StorageService} */
   storageService
+
+  /** @type {ApiService} */
+  apiService
 
   /** @type {boolean} isInitialized flag. */
   isInitialized = false
@@ -33,9 +36,11 @@ class SyncStore {
   /**
    * Default constructor.
    * @param {StorageService} storageService
+   * @param {ApiService} apiService
    */
-  constructor (storageService) {
+  constructor (storageService, apiService) {
     this.storageService = storageService
+    this.apiService = apiService
     makeObservable(this, {
       isInitialized: observable,
       setIsInitialized: action,
@@ -191,7 +196,8 @@ class SyncStore {
       if (dataChanged) {
         this.setChangesHash(Date.now())
       }
-    } catch {
+    } catch ($ex) {
+      console.log($ex)
       console.log('Worker has been delayed for 60 seconds because of an error.')
       this.setIsDelayed(true)
     } finally {
@@ -219,6 +225,10 @@ class SyncStore {
   async synchronizeMovies () {
     try {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
+
+      const data = await this.apiService.loadMovies()
+      console.log('data', data)
+
       this.setSyncDate(Date.now())
     } finally {
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)

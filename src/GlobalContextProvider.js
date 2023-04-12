@@ -1,5 +1,6 @@
 import globalContext from './globalContext.js'
 import StorageService from './StorageService.js'
+import ApiService from './ApiService.js'
 import CommonStore from './CommonStore.js'
 import SyncStore from './SyncStore.js'
 
@@ -9,10 +10,12 @@ let commonContextValue
 // different for server/client
 if (typeof window !== 'undefined') {
   const storageService = new StorageService()
+  const apiService = new ApiService()
   const commonStore = new CommonStore(storageService)
-  const syncStore = new SyncStore(storageService)
+  const syncStore = new SyncStore(storageService, apiService)
   commonContextValue = {
     storageService,
+    apiService,
     syncStore,
     commonStore: commonStore.makeReady(async () => {
       await storageService.makeReadyAsync()
