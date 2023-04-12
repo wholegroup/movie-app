@@ -21,6 +21,9 @@ class SyncStore {
   /** @type {number} Last sync timestamp. */
   syncDate = 0
 
+  /** @type {WorkerStepEnum[]} */
+  workerStepsExecuting = []
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
@@ -37,7 +40,11 @@ class SyncStore {
       setChangesHash: action,
       syncDate: observable,
       setSyncDate: action,
-      nextSyncDate: computed
+      nextSyncDate: computed,
+      workerStepsExecuting: observable,
+      startWorkerStepExecution: action,
+      stopWorkerStepExecution: action,
+      isSynchronizing: computed
     })
   }
 
@@ -98,6 +105,30 @@ class SyncStore {
   }
 
   /**
+   * Starts worker step execution flag.
+   * @param {WorkerStepEnum} step
+   */
+  startWorkerStepExecution (step) {
+    this.workerStepsExecuting = [...new Set([...this.workerStepsExecuting, step])]
+  }
+
+  /**
+   * Stops worker step execution flag.
+   * @param {WorkerStepEnum} step
+   */
+  stopWorkerStepExecution (step) {
+    this.workerStepsExecuting = this.workerStepsExecuting.filter(i => i !== step)
+  }
+
+  /**
+   * Checks if synchronization is going on.
+   * @returns {boolean}
+   */
+  get isSynchronizing () {
+    return this.workerStepsExecuting.length > 0
+  }
+
+  /**
    * Initializes store data from storage.
    * @returns {Promise<void>}
    */
@@ -144,16 +175,30 @@ class SyncStore {
    * @returns {Promise<boolean>}
    */
   async doWorkerStep () {
-    // POST http://localhost:3300/api/sync
-    // change synchash if data changed
     if (Date.now() >= this.nextSyncDate) {
       console.log('Synchronizing movies...')
-      this.setSyncDate(Date.now())
-      return false
+      return await this.synchronizeMovies()
     }
 
     return false
   }
+
+  /**
+   * Synchronizes movies.
+   * @returns {Promise<boolean>}
+   */
+  async synchronizeMovies () {
+    try {
+      this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
+      this.setSyncDate(Date.now())
+    } finally {
+      this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
+    }
+  }
 }
+
+const WorkerStepEnum = Object.freeze({
+  SYNCHRONIZE_MOVIES: 'SYNCHRONIZE_MOVIES'
+})
 
 export default SyncStore
