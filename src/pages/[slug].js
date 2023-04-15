@@ -37,7 +37,12 @@ function MovieContainer ({ children }) {
   )
 }
 
-MovieBySlug.getInitialProps = async function ({ req, query }) {
+/**
+ *
+ * @param {import('next').NextPageContext} params
+ * @returns {Promise<object>}
+ */
+MovieBySlug.getInitialProps = async function ({ req, query, res }) {
   const isClient = !req
   const { slug } = query
 
@@ -48,14 +53,15 @@ MovieBySlug.getInitialProps = async function ({ req, query }) {
     }
   }
 
+  // load movie data on backend
   const syncService = new SyncService(process.env.MOVIE_APP_DB)
   try {
     await syncService.open()
     const movie = await syncService.findMovieBySlug(slug)
     if (!movie) {
-      return {
-        notFound: true
-      }
+      res.statusCode = 404
+      res.end('404 Not found')
+      return
     }
 
     return {
