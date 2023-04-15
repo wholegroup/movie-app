@@ -33,6 +33,9 @@ class SyncStore {
   /** @type {number} Timestamp when idDelayed set */
   delayedDate = 0
 
+  /** @type {string} lastUpdatedAt timestamp from storage */
+  lastUpdatedAt = ''
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
@@ -58,7 +61,9 @@ class SyncStore {
       isSynchronizing: computed,
       isDelayed: observable,
       delayedDate: observable,
-      setIsDelayed: action
+      setIsDelayed: action,
+      lastUpdatedAt: observable,
+      setLastUpdatedAt: action
     })
   }
 
@@ -152,11 +157,19 @@ class SyncStore {
   }
 
   /**
+   * Sets lastUpdatedAt.
+   * @param {string} lastUpdatedAt
+   */
+  setLastUpdatedAt (lastUpdatedAt) {
+    this.lastUpdatedAt = lastUpdatedAt
+  }
+
+  /**
    * Initializes store data from storage.
    * @returns {Promise<void>}
    */
   async initializeStoreData () {
-    this.syncDate = parseInt(await this.storageService.getSettings(SETTINGS_NAMES.SYNC_DATE)) || 0
+    this.lastUpdatedAt = await this.storageService.getSettings(SETTINGS_NAMES.LAST_UPDATED_AT) || 0
     this.setIsInitialized(true)
   }
 
@@ -211,7 +224,6 @@ class SyncStore {
    */
   async doWorkerStep () {
     if (Date.now() >= this.nextSyncDate) {
-      console.log('Synchronizing movies...')
       return await this.synchronizeMovies()
     }
 
@@ -223,15 +235,25 @@ class SyncStore {
    * @returns {Promise<boolean>}
    */
   async synchronizeMovies () {
+    console.log('Synchronizing movies...')
     try {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
 
-      const { movies, votes, images, lastUpdatedAt } = await this.apiService.loadMovies()
+      // load movies
+      const { movies, votes, images, lastUpdatedAt } = await this.apiService.loadMovies(this.lastUpdatedAt)
+      console.log('Loaded', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images')
+      console.log('Last updated at', lastUpdatedAt)
 
       // save in storage
       await this.storageService.upsertMovies(movies)
       await this.storageService.upsertVotes(votes)
       await this.storageService.upsertImages(images)
+
+      // update lastUpdatedAt if it's necessary
+      if (this.lastUpdatedAt !== lastUpdatedAt) {
+        this.setLastUpdatedAt(lastUpdatedAt)
+        await this.storageService.setSettings(SETTINGS_NAMES.LAST_UPDATED_AT, lastUpdatedAt)
+      }
 
       this.setSyncDate(Date.now())
     } finally {

@@ -94,7 +94,7 @@ class StorageService {
  */
 
 export const SETTINGS_NAMES = Object.freeze({
-  SYNC_DATE: 'SYNC_DATE'
+  LAST_UPDATED_AT: 'LAST_UPDATED_AT'
 })
 
 export default StorageService

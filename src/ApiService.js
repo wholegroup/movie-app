@@ -46,12 +46,18 @@ class ApiService {
 
   /**
    * Loads movies.
-   * @param {number} lastUpdatedAt
+   * @param {string} lastUpdatedAt
    * @returns {Promise<TMovieResponse>}
    */
-  async loadMovies (lastUpdatedAt = 0) {
+  async loadMovies (lastUpdatedAt = '') {
     const response = await this.apiFetch('/api/sync', {
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        lastUpdatedAt
+      })
     })
 
     return await response.json()
@@ -63,7 +69,7 @@ class ApiService {
  * @property {TMovieItem[]} movies
  * @property {TVotesItem[]} votes
  * @property {TImagesItem[]} images
- * @property {number} lastUpdatedAt
+ * @property {string} lastUpdatedAt
  */
 
 export default ApiService
