@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import SyncService from '../../libs/SyncService.js'
+import SyncBackendService from '../../libs/SyncBackendService.js'
 import MovieCard from '../components/MovieCard.js'
 import styles from './index.module.css'
 
@@ -51,7 +51,7 @@ Home.getInitialProps = async function ({ req }) {
     }
   }
 
-  const syncService = new SyncService(process.env.MOVIE_APP_DB)
+  const syncService = new SyncBackendService(process.env.MOVIE_APP_DB)
   try {
     await syncService.open()
 

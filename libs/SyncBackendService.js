@@ -5,7 +5,7 @@ import * as sqlite3 from 'sqlite3'
 // https://arunoda.me/blog/ssr-and-server-only-modules
 // https://nextjs.org/docs/api-reference/data-fetching/get-initial-props#caveats
 
-class SyncService {
+class SyncBackendService {
   /** @type {string} */
   filename
 
@@ -136,11 +136,7 @@ class SyncService {
    */
   async votesSince (lastUpdatedAt) {
     const allVotes = await this.allData('votes')
-    const cleanVotes = allVotes.map(({ movieId, votes, updatedAt }) => ({
-      movieId,
-      votes,
-      updatedAt
-    }))
+    const cleanVotes = allVotes.map(this.sanitizeVotes)
     if (!lastUpdatedAt) {
       return cleanVotes
     }
@@ -154,13 +150,7 @@ class SyncService {
    */
   async imagesSince (lastUpdatedAt) {
     const allImages = await this.allData('images')
-    const cleanImages = allImages.map(({ movieId, images, updatedAt }) => ({
-      movieId,
-      images: images.map(({ hash }) => ({
-        hash
-      })),
-      updatedAt
-    }))
+    const cleanImages = allImages.map(this.sanitizeImages)
     if (!lastUpdatedAt) {
       return cleanImages
     }
@@ -196,6 +186,33 @@ class SyncService {
   }
 
   /**
+   * Sanitizes votes.
+   * @param {object} votesItem
+   * @returns {object}
+   */
+  sanitizeVotes (votesItem) {
+    return {
+      movieId: votesItem.movieId,
+      votes: votesItem.votes,
+      updatedAt: votesItem.updatedAt
+    }
+  }
+
+  /**
+   * Sanitizes images
+   * @param {object} imagesItem
+   */
+  sanitizeImages (imagesItem) {
+    return {
+      movieId: imagesItem.movieId,
+      images: imagesItem.images.map(({ hash }) => ({
+        hash
+      })),
+      updatedAt: imagesItem.updatedAt
+    }
+  }
+
+  /**
    * Finds movie by slug.
    * @param {string} movieSlug
    * @returns {Promise<Object|null>}
@@ -219,4 +236,4 @@ class SyncService {
   }
 }
 
-export default SyncService
+export default SyncBackendService
