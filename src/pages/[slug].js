@@ -1,39 +1,29 @@
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
-import SyncService from '../../libs/SyncService.js'
-import styles from './[slug].module.css'
+import SyncBackendService from '../../libs/SyncBackendService.js'
+import MovieContainer from '../components/MovieContainer.js'
+import MovieLoader from '../components/MovieLoader'
+import { useEffect } from 'react'
 
 // noinspection JSUnusedGlobalSymbols
-export default function MovieBySlug ({ movie, ts }) {
+/**
+ * Movie page
+ * @param {TMovieItem} movie
+ * @param {TVotesItem} votes
+ * @param {TImagesItem} images
+ */
+export default function MovieBySlug ({ movie, votes, images }) {
   const { query: { slug } } = useRouter()
 
   useEffect(() => {
-    console.log('mount::Slug')
-    return () => console.log('unmount::Slug')
+    console.log('>> mounted::MovieBySlug')
+    return () => console.log('<< off::MovieBySlug')
   }, [])
 
   return (
-    <MovieContainer>
-      <div><b>{slug}</b></div>
-      <div>{ts}</div>
-      <div>
-        <pre>
-          {JSON.stringify(movie, null, '\t')}
-        </pre>
-      </div>
-    </MovieContainer>
-  )
-}
-
-function MovieContainer ({ children }) {
-  return (
-    <div className={styles.movieContainer}>
-      <div className={styles.topMenu}>
-        <Link href='/'>Home</Link>
-      </div>
-      <div>{children}</div>
-    </div>
+    <>
+      <MovieLoader slug={slug} movie={movie} votes={votes} images={images} />
+      <MovieContainer />
+    </>
   )
 }
 
@@ -48,15 +38,17 @@ MovieBySlug.getInitialProps = async function ({ req, query, res }) {
 
   if (isClient) {
     return {
-      movie: {},
-      ts: new Date().toISOString()
+      movie: null,
+      votes: null,
+      images: null
     }
   }
 
   // load movie data on backend
-  const syncService = new SyncService(process.env.MOVIE_APP_DB)
+  const syncService = new SyncBackendService(process.env.MOVIE_APP_DB)
   try {
     await syncService.open()
+
     const movie = await syncService.findMovieBySlug(slug)
     if (!movie) {
       res.statusCode = 404
@@ -66,7 +58,8 @@ MovieBySlug.getInitialProps = async function ({ req, query, res }) {
 
     return {
       movie,
-      ts: new Date().toISOString()
+      votes: await syncService.findVotesByMovieId(movie.movieId),
+      images: await syncService.findImagesByMovieId(movie.movieId)
     }
   } finally {
     if (syncService.isOpen()) {

@@ -169,7 +169,7 @@ class SyncStore {
    * @returns {Promise<void>}
    */
   async initializeStoreData () {
-    this.lastUpdatedAt = await this.storageService.getSettings(SETTINGS_NAMES.LAST_UPDATED_AT) || 0
+    this.setLastUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.LAST_UPDATED_AT) || '')
     this.setIsInitialized(true)
   }
 

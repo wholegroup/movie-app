@@ -7,7 +7,7 @@ import './_app.css'
 function MyApp ({ Component, pageProps }) {
   useEffect(() => {
     console.log('>> mounted::App')
-    return () => console.log('<< UNmounted::App')
+    return () => console.log('<< off::App')
   }, [])
 
   return (
