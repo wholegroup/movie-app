@@ -234,6 +234,36 @@ class SyncBackendService {
 
     return this.sanitizeMovie(movie)
   }
+
+  /**
+   * Finds movie votes.
+   * @param {number} movieId
+   * @returns {Promise<Object|null>}
+   */
+  async findVotesByMovieId (movieId) {
+    const allVotes = await this.allData('votes')
+    const votes = allVotes.find(nextVotes => nextVotes.movieId === movieId)
+    if (!votes) {
+      return null
+    }
+
+    return this.sanitizeVotes(votes)
+  }
+
+  /**
+   * Finds movie images.
+   * @param {number} movieId
+   * @returns {Promise<Object|null>}
+   */
+  async findImagesByMovieId (movieId) {
+    const allImages = await this.allData('images')
+    const images = allImages.find(nextImages => nextImages.movieId === movieId)
+    if (!images) {
+      return null
+    }
+
+    return this.sanitizeImages(images)
+  }
 }
 
 export default SyncBackendService
