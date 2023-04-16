@@ -76,21 +76,53 @@ class StorageService {
   async upsertImages (images) {
     return this.storage.images.bulkPut(images, images.map(({ movieId }) => movieId))
   }
+
+  /**
+   * Finds movie by slug.
+   * @param {string} slug
+   * @returns {Promise<TMovieItem>}
+   */
+  async findMovieBySlug (slug) {
+    return this.storage.movies.filter(m => m.slug === slug.toLowerCase()).first()
+  }
+
+  /**
+   * Finds movie votes.
+   * @param {number} movieId
+   * @returns {Promise<TVotesItem>}
+   */
+  async findVotesByMovieId (movieId) {
+    return this.storage.votes.get(movieId)
+  }
+
+  /**
+   * Find movie images.
+   * @param {number} movieId
+   * @returns {Promise<TImagesItem>}
+   */
+  async findImagesByMovieId (movieId) {
+    return this.storage.images.get(movieId)
+  }
 }
 
 /**
  * @typedef TMovieItem
  * @property {number} movieId
+ * @property {string} slug
  */
 
 /**
  * @typedef TVotesItem
  * @property {number} movieId
+ * @property {number} votes
+ * @property {string} updatedAt
  */
 
 /**
  * @typedef TImagesItem
  * @property {number} movieId
+ * @property {{hash: string}[]} images
+ * @property {string} updatedAt
  */
 
 export const SETTINGS_NAMES = Object.freeze({
