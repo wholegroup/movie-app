@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import GlobalContextProvider from '../GlobalContextProvider.js'
 import Head from 'next/head'
 import Toolbar from '../components/Toolbar.js'

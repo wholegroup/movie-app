@@ -1,16 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import Link from 'next/link.js'
 import styles from '../pages/[slug].module.css'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import globalContext from '../globalContext.js'
 
 function MovieContainer () {
   const { commonStore } = useContext(globalContext)
-
-  useEffect(() => {
-    console.log('>> mounted::MovieContainer')
-    return () => console.log('<< off::MovieContainer')
-  }, [])
 
   if (!commonStore?.movie) {
     return null
