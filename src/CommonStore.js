@@ -4,6 +4,9 @@ class CommonStore {
   /** @type {StorageService} */
   storageService
 
+  /** @type {Promise<void>} */
+  makeReadyIsCompleted = null
+
   /** @type {boolean} isInitialized flag */
   isInitialized = false
 
@@ -51,19 +54,47 @@ class CommonStore {
    * @returns {CommonStore}
    */
   makeReady (additional) {
-    this.makeReadyAsync(additional)
-      .then(() => {
-        this.setIsInitialized()
-      })
+    if (this.isInitialized) {
+      console.log('Already initialized')
+      return this
+    }
+
+    this.makeReadyIsCompleted = new Promise(resolve => {
+      this.makeReadyAsync(additional)
+        .then(() => {
+          this.setIsInitialized()
+        })
+        .finally(() => {
+          resolve()
+        })
+    })
+
     return this
   }
 
   /**
    * Async makeReady
-   * @param additional
+   * @param {() => Promise<void>} additional
    * @returns {Promise<void>}
    */
   async makeReadyAsync (additional) {
+    await additional()
+  }
+
+  /**
+   * Disposes store
+   * @param {() => Promise<void>} additional
+   * @returns {Promise<void>}
+   */
+  async disposeAsync (additional) {
+    if (!this.makeReadyIsCompleted) {
+      throw new Error('makeReady was not run')
+    }
+
+    // wait till makeReady is completed
+    const timeoutPromise = new Promise((resolve, reject) => setTimeout(reject, 5000))
+    await Promise.race([this.makeReadyIsCompleted, timeoutPromise])
+
     await additional()
   }
 

@@ -9,6 +9,9 @@ class SyncStore {
   /** @type {ApiService} */
   apiService
 
+  /** @type {number} worker intervalId */
+  workerIntervalId
+
   /** @type {boolean} isInitialized flag. */
   isInitialized = false
 
@@ -178,12 +181,24 @@ class SyncStore {
    * @returns {Promise<void>}
    */
   async makeReadyAsync () {
+    if (this.isInitialized) {
+      throw new Error('Already initialized')
+    }
+
     await this.initializeStoreData()
 
-    setInterval(() => {
+    this.workerIntervalId = setInterval(() => {
       this.runWorker()
         .catch(console.error)
     }, 1000)
+  }
+
+  /**
+   * Disposes store.
+   * @returns {Promise<void>}
+   */
+  async disposeAsync () {
+    clearInterval(this.workerIntervalId)
   }
 
   /**

@@ -32,6 +32,18 @@ class StorageService {
   }
 
   /**
+   * Disposes service.
+   * @returns {Promise<void>}
+   */
+  async disposeAsync () {
+    // we don't need to close db manually !!!
+    // because we can get DatabaseClosedError internally in Dexie
+    // if (this.storage.isOpen()) {
+    //   await this.storage.close()
+    // }
+  }
+
+  /**
    * Returns settings by name.
    * @param {string} name
    * @returns {Promise<string>}
