@@ -2,26 +2,17 @@ import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
 import MovieContainer from '../components/MovieContainer.js'
 import MovieLoader from '../components/MovieLoader'
-import { useEffect } from 'react'
+import CommonStore from '../CommonStore.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**
  * Movie page
- * @param {TMovieItem} movie
- * @param {TVotesItem} votes
- * @param {TImagesItem} images
  */
-export default function MovieBySlug ({ movie, votes, images }) {
+export default function MovieBySlug () {
   const { query: { slug } } = useRouter()
-
-  useEffect(() => {
-    console.log('>> mounted::MovieBySlug')
-    return () => console.log('<< off::MovieBySlug')
-  }, [])
-
   return (
     <>
-      <MovieLoader slug={slug} movie={movie} votes={votes} images={images} />
+      <MovieLoader slug={slug} />
       <MovieContainer />
     </>
   )
@@ -38,9 +29,7 @@ MovieBySlug.getInitialProps = async function ({ req, query, res }) {
 
   if (isClient) {
     return {
-      movie: null,
-      votes: null,
-      images: null
+      ts: Date.now()
     }
   }
 
@@ -57,9 +46,12 @@ MovieBySlug.getInitialProps = async function ({ req, query, res }) {
     }
 
     return {
-      movie,
-      votes: await syncService.findVotesByMovieId(movie.movieId),
-      images: await syncService.findImagesByMovieId(movie.movieId)
+      ts: Date.now(),
+      commonStore: Object.assign(new CommonStore(null), {
+        movie,
+        votes: await syncService.findVotesByMovieId(movie.movieId),
+        images: await syncService.findImagesByMovieId(movie.movieId)
+      })
     }
   } finally {
     if (syncService.isOpen()) {
