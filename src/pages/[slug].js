@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
 import MovieContainer from '../components/MovieContainer.js'
 import MovieLoader from '../components/MovieLoader'
-import CommonStore from '../CommonStore.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**
@@ -47,11 +46,11 @@ MovieBySlug.getInitialProps = async function ({ req, query, res }) {
 
     return {
       ts: Date.now(),
-      commonStore: Object.assign(new CommonStore(null), {
+      commonStore: {
         movie,
         votes: await syncService.findVotesByMovieId(movie.movieId),
         images: await syncService.findImagesByMovieId(movie.movieId)
-      })
+      }
     }
   } finally {
     if (syncService.isOpen()) {

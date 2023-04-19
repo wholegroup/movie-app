@@ -31,23 +31,13 @@ function GlobalContextProvider ({ children, ...pageProps }) {
      * Initialize predefined data.
      */
     if (pageProps.commonStore) {
-      const { commonStore: initCommonStore } = pageProps
-      const { commonStore } = commonContextRef.current
-
-      if (initCommonStore.movie) {
-        commonStore.setMovie(initCommonStore.movie)
-      }
-      if (initCommonStore.votes) {
-        commonStore.setVotes(initCommonStore.votes)
-      }
-      if (initCommonStore.images) {
-        commonStore.setImages(initCommonStore.images)
-      }
+      commonContextRef.current.commonStore = Object.assign(
+        commonContextRef.current.commonStore, pageProps.commonStore)
     }
   }
 
   useEffect(() => {
-    // initialize after mounting
+    // initialize store/service only after mounting
     const { storageService } = commonContextRef.current
     const { commonStore, syncStore } = commonContextRef.current
 
