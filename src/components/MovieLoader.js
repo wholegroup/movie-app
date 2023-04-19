@@ -5,11 +5,8 @@ import globalContext from '../globalContext.js'
 /**
  * Movie loader.
  * @param {string} slug
- * @param {TMovieItem} movie
- * @param {TVotesItem} votes
- * @param {TImagesItem} images
  */
-function MovieLoader ({ slug, movie, votes, images }) {
+function MovieLoader ({ slug }) {
   const { commonStore, syncStore } = useContext(globalContext)
 
   useEffect(() => {
@@ -17,21 +14,15 @@ function MovieLoader ({ slug, movie, votes, images }) {
       return
     }
 
-    if (!movie) {
-      commonStore.loadMovieBySlug(slug)
-        .catch(console.log)
-    } else {
-      commonStore.setMovie(movie)
-      commonStore.setVotes(votes)
-      commonStore.setImages(images)
-    }
+    commonStore.loadMovieBySlug(slug)
+      .catch(console.log)
 
     return () => {
       commonStore.setMovie(null)
       commonStore.setVotes(null)
       commonStore.setImages(null)
     }
-  }, [commonStore, commonStore?.isInitialized, syncStore?.lastUpdatedAt, slug, movie, votes, images])
+  }, [slug, commonStore, commonStore?.isInitialized, syncStore?.lastUpdatedAt])
 
   return null
 }
