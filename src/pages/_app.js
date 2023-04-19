@@ -5,11 +5,6 @@ import Toolbar from '../components/Toolbar.js'
 import './_app.css'
 
 function MyApp ({ Component, pageProps }) {
-  useEffect(() => {
-    console.log('>> mounted::App')
-    return () => console.log('<< off::App')
-  }, [])
-
   return (
     <>
       <Head>
@@ -28,7 +23,7 @@ function MyApp ({ Component, pageProps }) {
         <link rel='apple-touch-icon' href='/icons/icon-512x512.png'></link>
         <meta name='theme-color' content='#317EFB' />
       </Head>
-      <GlobalContextProvider>
+      <GlobalContextProvider {...pageProps}>
         <Toolbar />
         <Component {...pageProps} />
       </GlobalContextProvider>
