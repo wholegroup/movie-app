@@ -121,6 +121,8 @@ class StorageService {
  * @typedef TMovieItem
  * @property {number} movieId
  * @property {string} slug
+ * @property {string} title
+ * @property {number} year
  */
 
 /**
