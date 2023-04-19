@@ -1,5 +1,14 @@
 import { makeObservable, observable, action } from 'mobx'
 
+/**
+ * @typedef TMovieCard
+ * @property {number} movieId
+ * @property {string} slug
+ * @property {string} title
+ * @property {number} year
+ * @property {string} posterHash
+ */
+
 class CommonStore {
   /** @type {StorageService} */
   storageService
@@ -10,9 +19,6 @@ class CommonStore {
   /** @type {boolean} isInitialized flag */
   isInitialized = false
 
-  /** @type {Object|null} User Info */
-  userInfo = null
-
   /** @type {?TMovieItem} */
   movie = null
 
@@ -21,6 +27,9 @@ class CommonStore {
 
   /** @type {?TImagesItem} */
   images = null
+
+  /** @type {TMovieCard[]} */
+  cards = []
 
   /**
    * Default constructor.
@@ -31,13 +40,14 @@ class CommonStore {
     makeObservable(this, {
       isInitialized: observable,
       setIsInitialized: action,
-      userInfo: observable,
       movie: observable,
       setMovie: action,
       votes: observable,
       setVotes: action,
       images: observable,
-      setImages: action
+      setImages: action,
+      cards: observable,
+      setCards: action
     })
   }
 
@@ -137,6 +147,14 @@ class CommonStore {
     this.setMovie(movie)
     this.setVotes(votes)
     this.setImages(images)
+  }
+
+  /**
+   * Sets cards.
+   * @param {TMovieCard[]} cards
+   */
+  setCards (cards) {
+    this.cards = cards
   }
 }
 
