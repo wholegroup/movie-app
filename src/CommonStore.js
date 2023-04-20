@@ -1,13 +1,4 @@
-import { makeObservable, observable, action } from 'mobx'
-
-/**
- * @typedef TMovieCard
- * @property {number} movieId
- * @property {string} slug
- * @property {string} title
- * @property {number} year
- * @property {string} posterHash
- */
+import { makeObservable, observable, action, computed } from 'mobx'
 
 class CommonStore {
   /** @type {StorageService} */
@@ -47,7 +38,9 @@ class CommonStore {
       images: observable,
       setImages: action,
       cards: observable,
-      setCards: action
+      setCards: action,
+      filteredCards: computed,
+      sortedCards: computed
     })
   }
 
@@ -133,6 +126,14 @@ class CommonStore {
   }
 
   /**
+   * Sets cards.
+   * @param {TMovieCard[]} cards
+   */
+  setCards (cards) {
+    this.cards = cards
+  }
+
+  /**
    * Loads movie by slug.
    * @param {string} slug
    */
@@ -150,11 +151,36 @@ class CommonStore {
   }
 
   /**
-   * Sets cards.
-   * @param {TMovieCard[]} cards
+   * Loads movie cards.
+   * @returns {Promise<void>}
    */
-  setCards (cards) {
-    this.cards = cards
+  async loadCards () {
+    const tm = 'loading cards #' + Math.round(window.performance.now())
+    try {
+      console.time(tm)
+      const allCards = await this.storageService.loadAllCards()
+      this.setCards(allCards)
+    } finally {
+      console.timeEnd(tm)
+    }
+  }
+
+  /**
+   * Returns filtered cards.
+   * @returns {TMovieCard[]}
+   */
+  get filteredCards () {
+    return [...this.cards]
+  }
+
+  /**
+   * Returns filtered and then sorted cards.
+   * @returns {TMovieCard[]}
+   */
+  get sortedCards () {
+    return [...this.filteredCards].sort(
+      ({ year: a, title: x }, { year: b, title: y }) => (b - a) || x.localeCompare(y)
+    )
   }
 }
 

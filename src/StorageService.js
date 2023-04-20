@@ -115,6 +115,28 @@ class StorageService {
   async findImagesByMovieId (movieId) {
     return this.storage.images.get(movieId)
   }
+
+  /**
+   * Load all movie cards.
+   * @returns {Promise<TMovieCard[]>}
+   */
+  async loadAllCards () {
+    const movies = await this.storage.movies.toArray()
+    const images = await this.storage.images.toArray()
+
+    // noinspection UnnecessaryLocalVariableJS
+    const cards = movies.map(movie => {
+      const mainImage = (images.find(nextImages => nextImages.movieId === movie.movieId) || {}).images[0] ?? null
+      return {
+        movieId: movie.movieId,
+        slug: movie.slug,
+        title: movie.title,
+        year: movie.year,
+        posterHash: mainImage?.hash || null
+      }
+    })
+    return cards
+  }
 }
 
 /**
@@ -137,6 +159,15 @@ class StorageService {
  * @property {number} movieId
  * @property {{hash: string}[]} images
  * @property {string} updatedAt
+ */
+
+/**
+ * @typedef TMovieCard
+ * @property {number} movieId
+ * @property {string} slug
+ * @property {string} title
+ * @property {number} year
+ * @property {string} posterHash
  */
 
 export const SETTINGS_NAMES = Object.freeze({

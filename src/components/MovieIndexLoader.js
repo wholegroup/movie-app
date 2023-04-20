@@ -10,11 +10,10 @@ function MovieIndexLoader () {
       return
     }
 
-    // commonStore.loadMovieBySlug(slug)
-    //   .catch(console.log)
+    commonStore.loadCards()
+      .catch(console.log)
 
     return () => {
-      commonStore.setCards([])
     }
   }, [commonStore, commonStore?.isInitialized, syncStore?.lastUpdatedAt])
 

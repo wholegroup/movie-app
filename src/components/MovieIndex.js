@@ -12,7 +12,7 @@ function MovieIndex () {
         ··· Annual Movies ···
       </h1>
       <div className={styles.grid}>
-        {commonStore.cards.map(movieCard => <MovieCard key={movieCard.movieId} card={movieCard} />)}
+        {commonStore.sortedCards.map(movieCard => <MovieCard key={movieCard.movieId} card={movieCard} />)}
       </div>
     </main>
   )
