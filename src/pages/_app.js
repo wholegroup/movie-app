@@ -1,9 +1,13 @@
-import GlobalContextProvider from '../GlobalContextProvider.js'
+import GlobalContextProvider from '../context/GlobalContextProvider.js'
 import Head from 'next/head'
 import Toolbar from '../components/Toolbar.js'
 import './_app.css'
 
-function MyApp ({ Component, pageProps }) {
+// noinspection JSUnusedGlobalSymbols
+/**
+ * Application entry point.
+ */
+export default function Application ({ Component, pageProps }) {
   return (
     <>
       <Head>
@@ -29,5 +33,3 @@ function MyApp ({ Component, pageProps }) {
     </>
   )
 }
-
-export default MyApp

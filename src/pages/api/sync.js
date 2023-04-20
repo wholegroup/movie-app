@@ -1,5 +1,6 @@
 import SyncBackendService from '../../../libs/SyncBackendService.js'
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * @param {import('next').NextApiRequest} req
  * @param {import('next').NextApiResponse} res

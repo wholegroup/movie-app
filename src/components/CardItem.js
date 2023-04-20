@@ -1,5 +1,5 @@
 import Link from 'next/link.js'
-import styles from './MovieCard.module.css'
+import styles from './CardItem.module.css'
 
 // Movie Card
 
@@ -9,7 +9,7 @@ import styles from './MovieCard.module.css'
 
 const imgHosts = (process.env.NEXT_PUBLIC_MOVIE_APP_IMG_HOST || '/').split(';')
 
-function MovieCard ({ card }) {
+function CardItem ({ card }) {
   const imgHost = imgHosts[card.movieId % imgHosts.length]
   return (
     <div className={styles.card}>
@@ -29,4 +29,4 @@ function MovieCard ({ card }) {
   )
 }
 
-export default MovieCard
+export default CardItem

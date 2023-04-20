@@ -1,9 +1,9 @@
-import { observer } from 'mobx-react-lite'
-import Link from 'next/link.js'
-import styles from '../pages/[slug].module.css'
 import { useContext } from 'react'
-import globalContext from '../globalContext.js'
+import { observer } from 'mobx-react-lite'
 import Head from 'next/head.js'
+import Link from 'next/link.js'
+import globalContext from '../context/globalContext.js'
+import styles from './MovieContainer.module.css'
 
 function MovieContainer () {
   const { commonStore } = useContext(globalContext)

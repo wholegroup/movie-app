@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
-import globalContext from '../globalContext.js'
+import globalContext from '../context/globalContext.js'
 
-function MovieIndexLoader () {
+function CardsLoader () {
   const { commonStore, syncStore } = useContext(globalContext)
 
   useEffect(() => {
@@ -20,4 +20,4 @@ function MovieIndexLoader () {
   return null
 }
 
-export default observer(MovieIndexLoader)
+export default observer(CardsLoader)

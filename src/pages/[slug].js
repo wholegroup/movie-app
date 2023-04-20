@@ -7,7 +7,7 @@ import MovieLoader from '../components/MovieLoader'
 /**
  * Movie page
  */
-export default function MovieBySlug () {
+export default function MoviePage () {
   const { query: { slug } } = useRouter()
   return (
     <>
@@ -22,10 +22,8 @@ export default function MovieBySlug () {
  * @param {import('next').NextPageContext} params
  * @returns {Promise<object>}
  */
-MovieBySlug.getInitialProps = async function ({ req, query, res }) {
+MoviePage.getInitialProps = async function ({ req, query, res }) {
   const isClient = !req
-  const { slug } = query
-
   if (isClient) {
     return {
       ts: Date.now()
@@ -33,6 +31,7 @@ MovieBySlug.getInitialProps = async function ({ req, query, res }) {
   }
 
   // load movie data on backend
+  const { slug } = query
   const syncService = new SyncBackendService(process.env.MOVIE_APP_DB)
   try {
     await syncService.open()

@@ -1,6 +1,10 @@
 import Head from 'next/head'
 
-export default function About () {
+// noinspection JSUnusedGlobalSymbols
+/**
+ * About page.
+ */
+export default function AboutPage () {
   return (
     <>
       <Head>
