@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import globalContext from '../context/globalContext.js'
 
 function CardsLoader () {
-  const { commonStore, syncStore } = useContext(globalContext)
+  const { commonStore, syncStore, notificationStore } = useContext(globalContext)
   const lastUpdatedAtRef = useRef(syncStore?.lastUpdatedAt || '')
 
   useEffect(() => {
@@ -23,11 +23,11 @@ function CardsLoader () {
     }
 
     load()
-      .catch(console.log)
+      .catch((e) => notificationStore.error({ message: e.message }))
 
     return () => {
     }
-  }, [commonStore, commonStore?.isInitialized, syncStore?.lastUpdatedAt])
+  }, [commonStore, commonStore?.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
 
   return null
 }
