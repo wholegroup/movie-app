@@ -1,9 +1,10 @@
-import globalContext from './globalContext.js'
+import { useEffect, useRef } from 'react'
 import StorageService from './StorageService.js'
 import ApiService from './ApiService.js'
 import CommonStore from './CommonStore.js'
 import SyncStore from './SyncStore.js'
-import { useEffect, useRef } from 'react'
+import NotificationStore from './NotificationStore.js'
+import globalContext from './globalContext.js'
 
 function GlobalContextProvider ({ children, ...pageProps }) {
   // creating context
@@ -14,11 +15,13 @@ function GlobalContextProvider ({ children, ...pageProps }) {
       const apiService = new ApiService()
       const commonStore = new CommonStore(storageService)
       const syncStore = new SyncStore(storageService, apiService)
+      const notificationStore = new NotificationStore()
       commonContextRef.current = {
         storageService,
         apiService,
         syncStore,
-        commonStore
+        commonStore,
+        notificationStore
       }
     } else {
       // server rendering

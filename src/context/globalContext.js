@@ -6,6 +6,7 @@ import React from 'react'
  * @property {ApiService=} apiService
  * @property {CommonStore=} commonStore
  * @property {SyncStore=} syncStore
+ * @property {NotificationStore=} notificationStore
  */
 
 /** @type {React.Context<?TGlobalContext>} */
