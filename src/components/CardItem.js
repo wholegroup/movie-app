@@ -9,10 +9,14 @@ import styles from './CardItem.module.css'
 
 const imgHosts = (process.env.NEXT_PUBLIC_MOVIE_APP_IMG_HOST || '/').split(';')
 
+/**
+ * Shows a movie card.
+ * @param {TMovieCard} card
+ */
 function CardItem ({ card }) {
   const imgHost = imgHosts[card.movieId % imgHosts.length]
   return (
-    <div className={styles.card}>
+    <div className={styles.card} data-movie-id={card.movieId}>
       <Link href={`/${card.slug}`}>
         <div>
           <img

@@ -10,12 +10,16 @@ function MovieLoader ({ slug }) {
   const { commonStore, syncStore } = useContext(globalContext)
 
   useEffect(() => {
-    if (!commonStore.isInitialized) {
-      return
+    async function load () {
+      if (!commonStore.isInitialized) {
+        return
+      }
+
+      await commonStore.loadMovieBySlug(slug)
     }
 
-    commonStore.loadMovieBySlug(slug)
-      .catch(console.log)
+    load()
+      .catch(console.error)
 
     return () => {
       commonStore.setMovie(null)
