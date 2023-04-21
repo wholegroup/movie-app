@@ -31,3 +31,8 @@
 .movieTitle {
     min-height: 2rem;
 }
+
+.card a {
+    text-decoration: none;
+    color: inherit;
+}
