@@ -1,6 +1,8 @@
 import GlobalContextProvider from '../context/GlobalContextProvider.js'
 import Head from 'next/head'
 import Toolbar from '../components/Toolbar.js'
+import ToastsContainer from '../components/ToastsContainer.js'
+import './bs-reboot.css'
 import './_app.css'
 
 // noinspection JSUnusedGlobalSymbols
@@ -29,6 +31,7 @@ export default function Application ({ Component, pageProps }) {
       <GlobalContextProvider {...pageProps}>
         <Toolbar />
         <Component {...pageProps} />
+        <ToastsContainer />
       </GlobalContextProvider>
     </>
   )
