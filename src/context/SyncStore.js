@@ -51,6 +51,7 @@ class SyncStore {
       isInitialized: observable,
       setIsInitialized: action,
       isOnline: observable,
+      setIsOnline: action,
       isBusy: observable,
       setIsBusy: action,
       changesHash: observable,
@@ -76,6 +77,14 @@ class SyncStore {
    */
   setIsInitialized (isInitialized) {
     this.isInitialized = isInitialized
+  }
+
+  /**
+   * Sets isOnline.
+   * @param {boolean} isOnline
+   */
+  setIsOnline (isOnline) {
+    this.isOnline = isOnline
   }
 
   /**
@@ -243,6 +252,13 @@ class SyncStore {
     }
 
     return false
+  }
+
+  /**
+   * Schedules synchronizing movies.
+   */
+  scheduleSynchronizingMovies () {
+    this.setSyncDate(0)
   }
 
   /**
