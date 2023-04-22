@@ -5,8 +5,10 @@
   "private": true,
   "scripts": {
     "dev": "NEXT_PUBLIC_MOVIE_VERSION=$(sh ./version.sh) next dev -p 3300",
-    "build": "NEXT_PUBLIC_MOVIE_VERSION=$(sh ./version.sh) next build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "analyze": "ANALYZE=true next build",
+    "build": "NEXT_PUBLIC_MOVIE_VERSION=$(sh ./version.sh) next build",
     "start": "next start -p 3400",
     "lint": "next lint"
   },
@@ -32,5 +34,16 @@
   },
   "browser": {
     "sqlite3": false
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.6",
+    "@storybook/addon-interactions": "^7.0.6",
+    "@storybook/addon-links": "^7.0.6",
+    "@storybook/blocks": "^7.0.6",
+    "@storybook/nextjs": "^7.0.6",
+    "@storybook/react": "^7.0.6",
+    "@storybook/testing-library": "^0.0.14-next.2",
+    "eslint-plugin-storybook": "^0.6.11",
+    "storybook": "^7.0.6"
   }
 }
