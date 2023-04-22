@@ -1,5 +1,7 @@
 import Link from 'next/link.js'
 import styles from './CardItem.module.css'
+import { Icon } from '@mdi/react'
+import { mdiThumbDown, mdiThumbUp } from '@mdi/js'
 
 // Movie Card
 
@@ -29,6 +31,14 @@ function CardItem ({ card }) {
         <h4 className={styles.movieTitle}>{card.title}</h4>
         <div>{card.year}</div>
       </Link>
+      <div className={styles.thumbs}>
+        <button type='button' onClick={() => console.log('UP')}>
+          <Icon path={mdiThumbUp} size={1.5} />
+        </button>
+        <button type='button' onClick={() => console.log('DOWN')}>
+          <Icon path={mdiThumbDown} size={1.5} />
+        </button>
+      </div>
     </div>
   )
 }
