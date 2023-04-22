@@ -1,14 +1,22 @@
 import Link from 'next/link.js'
 import { Icon } from '@mdi/react'
-import { mdiAccount } from '@mdi/js'
+import { mdiAccount, mdiArrowLeftBoldCircleOutline } from '@mdi/js'
 import styles from './Toolbar.module.css'
+import { useRouter } from 'next/router.js'
 
+/**
+ * Toolbar.
+ */
 function Toolbar () {
+  const router = useRouter()
+
   return (
     <nav className={styles.nav}>
       <div className={styles.first}>
         <Link href='/'>
-          v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
+          {router.asPath === '/'
+            ? `v${process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}`
+            : <Icon id={'go-home'} path={mdiArrowLeftBoldCircleOutline} size={1.5} title={'Anonymous'} />}
         </Link>
       </div>
       <div>
