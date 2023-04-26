@@ -13,7 +13,7 @@ function GlobalContextProvider ({ children, ...pageProps }) {
     if (typeof window !== 'undefined') {
       const storageService = new StorageService()
       const apiService = new ApiService()
-      const commonStore = new CommonStore(storageService)
+      const commonStore = new CommonStore(storageService, apiService)
       const syncStore = new SyncStore(storageService, apiService)
       const notificationStore = new NotificationStore()
       commonContextRef.current = {

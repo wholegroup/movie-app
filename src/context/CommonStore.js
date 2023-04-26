@@ -4,6 +4,9 @@ class CommonStore {
   /** @type {StorageService} */
   storageService
 
+  /** @type {ApiService} */
+  apiService
+
   /** @type {Promise<void>} */
   makeReadyIsCompleted = null
 
@@ -22,12 +25,17 @@ class CommonStore {
   /** @type {TMovieCard[]} */
   cards = []
 
+  /** @type {?TUserProfile} */
+  profile = null
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
+   * @param {ApiService} apiService
    */
-  constructor (storageService) {
+  constructor (storageService, apiService) {
     this.storageService = storageService
+    this.apiService = apiService
     makeObservable(this, {
       isInitialized: observable,
       setIsInitialized: action,
@@ -40,7 +48,9 @@ class CommonStore {
       cards: observable,
       setCards: action,
       filteredCards: computed,
-      sortedCards: computed
+      sortedCards: computed,
+      profile: observable,
+      setProfile: action
     })
   }
 
@@ -181,6 +191,32 @@ class CommonStore {
     return [...this.filteredCards].sort(
       ({ year: a, title: x }, { year: b, title: y }) => (b - a) || x.localeCompare(y)
     )
+  }
+
+  /**
+   * Sets user profile.
+   * @param {?TUserProfile} profile
+   */
+  setProfile (profile) {
+    this.profile = profile
+  }
+
+  /**
+   * Updates profile.
+   */
+  async updateProfile () {
+    const profileResponse = await this.apiService.loadProfile()
+    if (!profileResponse) {
+      this.setProfile(null)
+      return
+    }
+
+    this.setProfile({
+      id: profileResponse.id,
+      email: profileResponse.user.email,
+      name: profileResponse.user.name,
+      picture: profileResponse.user.picture
+    })
   }
 }
 

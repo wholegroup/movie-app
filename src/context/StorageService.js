@@ -170,6 +170,14 @@ class StorageService {
  * @property {string} posterHash
  */
 
+/**
+ * @typedef TUserProfile
+ * @property {string} id
+ * @property {string=} email
+ * @property {string=} name
+ * @property {string=} picture
+ */
+
 export const SETTINGS_NAMES = Object.freeze({
   LAST_UPDATED_AT: 'LAST_UPDATED_AT'
 })

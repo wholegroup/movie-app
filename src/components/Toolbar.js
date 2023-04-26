@@ -28,7 +28,7 @@ function Toolbar () {
         </ul>
       </div>
       <div className={styles.last}>
-        <Link href='/account'>
+        <Link href='/profile'>
           <Icon id={'account'} path={mdiAccount} size={1.5} title={'Anonymous'} />
         </Link>
       </div>

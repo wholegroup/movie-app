@@ -34,11 +34,13 @@ class ApiService {
       let errorMessage
       try {
         const errorObject = await response.json()
-        errorMessage = errorObject.exceptionMessage || errorObject.message
+        errorMessage = errorObject.exceptionMessage || errorObject.description || errorObject.message
       } catch {
         errorMessage = response.statusText
       }
-      throw new Error(`[${response.status}] ${errorMessage}`)
+      const e = new Error(`[${response.status}] ${errorMessage}`)
+      e.code = response.status
+      throw e
     }
 
     return response
@@ -62,6 +64,22 @@ class ApiService {
 
     return await response.json()
   }
+
+  /**
+   * Loads user profile.
+   * @returns {Promise<?TProfileResponse>}
+   */
+  async loadProfile () {
+    try {
+      const response = await this.apiFetch('/api/profile')
+      return await response.json()
+    } catch (e) {
+      if (e.code === 401) {
+        return null
+      }
+      throw e
+    }
+  }
 }
 
 /**
@@ -70,6 +88,14 @@ class ApiService {
  * @property {TVotesItem[]} votes
  * @property {TImagesItem[]} images
  * @property {string} lastUpdatedAt
+ */
+
+/**
+ * @typedef TProfileResponse
+ * @property {string} id
+ * @property {string} user.email
+ * @property {string} user.name
+ * @property {string} user.picture
  */
 
 export default ApiService
