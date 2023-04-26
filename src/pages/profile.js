@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import UserCard from '../components/UserCard'
+import ProfileCard from '../components/ProfileCard.js'
 
 /**
  * User Profile.
@@ -7,7 +7,7 @@ import UserCard from '../components/UserCard'
 function ProfilePage () {
   return (
     <>
-      <UserCard />
+      <ProfileCard />
     </>
   )
 }

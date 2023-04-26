@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import globalContext from '../context/globalContext.js'
 import Link from 'next/link.js'
 
-function UserCard () {
+function ProfileCard () {
   const { commonStore } = useContext(globalContext)
 
   // noinspection HtmlUnknownTarget
@@ -29,4 +29,4 @@ function UserCard () {
   )
 }
 
-export default observer(UserCard)
+export default observer(ProfileCard)
