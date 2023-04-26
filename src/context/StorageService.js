@@ -55,7 +55,7 @@ class StorageService {
   /**
    * Saves settings by name
    * @param {string} name
-   * @param {string} value
+   * @param {string|object} value
    * @returns {Promise<void>}
    */
   async setSettings (name, value) {
@@ -179,7 +179,8 @@ class StorageService {
  */
 
 export const SETTINGS_NAMES = Object.freeze({
-  LAST_UPDATED_AT: 'LAST_UPDATED_AT'
+  LAST_UPDATED_AT: 'LAST_UPDATED_AT',
+  USER_PROFILE: 'USER_PROFILE'
 })
 
 export default StorageService

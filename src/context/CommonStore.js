@@ -1,4 +1,5 @@
 import { makeObservable, observable, action, computed } from 'mobx'
+import { SETTINGS_NAMES } from './StorageService.js'
 
 class CommonStore {
   /** @type {StorageService} */
@@ -92,6 +93,9 @@ class CommonStore {
    */
   async makeReadyAsync (additional) {
     await additional()
+
+    // run after additional initialization means storage service is ready
+    this.setProfile(await this.storageService.getSettings(SETTINGS_NAMES.USER_PROFILE) || null)
   }
 
   /**
@@ -208,6 +212,7 @@ class CommonStore {
     const profileResponse = await this.apiService.loadProfile()
     if (!profileResponse) {
       this.setProfile(null)
+      await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
       return
     }
 
@@ -217,6 +222,7 @@ class CommonStore {
       name: profileResponse.user.name,
       picture: profileResponse.user.picture
     })
+    await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, {...this.profile})
   }
 }
 
