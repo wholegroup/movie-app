@@ -222,7 +222,7 @@ class CommonStore {
       name: profileResponse.user.name,
       picture: profileResponse.user.picture
     })
-    await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, {...this.profile})
+    await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, { ...this.profile })
   }
 }
 
