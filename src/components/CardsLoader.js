@@ -27,7 +27,7 @@ function CardsLoader () {
 
     return () => {
     }
-  }, [commonStore, commonStore?.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
+  }, [commonStore, commonStore.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
 
   return null
 }

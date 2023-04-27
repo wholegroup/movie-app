@@ -26,7 +26,7 @@ function MovieLoader ({ slug }) {
       commonStore.setVotes(null)
       commonStore.setImages(null)
     }
-  }, [slug, commonStore, commonStore?.isInitialized, syncStore?.lastUpdatedAt])
+  }, [slug, commonStore, commonStore.isInitialized, syncStore?.lastUpdatedAt])
 
   return null
 }

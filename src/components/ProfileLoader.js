@@ -9,7 +9,7 @@ function ProfileLoader () {
   const { commonStore, syncStore, notificationStore } = useContext(globalContext)
 
   useEffect(() => {
-    if (!commonStore?.isInitialized) {
+    if (!commonStore.isInitialized) {
       return
     }
 
@@ -21,7 +21,7 @@ function ProfileLoader () {
       notificationStore.error(e)
       console.error(e)
     })
-  }, [syncStore?.profileUpdatedTs, commonStore?.isInitialized, commonStore, notificationStore])
+  }, [syncStore?.profileUpdatedTs, commonStore.isInitialized, commonStore, notificationStore])
 
   return null
 }

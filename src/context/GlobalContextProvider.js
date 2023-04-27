@@ -26,7 +26,9 @@ function GlobalContextProvider ({ children, ...pageProps }) {
     } else {
       // server rendering
       commonContextRef.current = {
-        commonStore: new CommonStore(null)
+        commonStore: Object.assign(new CommonStore(null, null), {
+          isInitialized: true
+        })
       }
     }
 
