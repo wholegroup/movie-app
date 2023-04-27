@@ -1,10 +1,9 @@
 import ProfileCardUser from './ProfileCardUser'
 import ProfileCardAnonymous from './ProfileCardAnonymous'
-import styles from './ProfileCard.module.css'
 
 function ProfileCard () {
   return (
-    <div className={styles.container}>
+    <div style={{ textAlign: 'center' }}>
       <ProfileCardAnonymous />
       <ProfileCardUser />
     </div>
