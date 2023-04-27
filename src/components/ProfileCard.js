@@ -1,27 +1,14 @@
-import { observer } from 'mobx-react-lite'
-import { useContext } from 'react'
-import globalContext from '../context/globalContext.js'
-import Link from 'next/link.js'
+import ProfileCardUser from './ProfileCardUser'
+import ProfileCardAnonymous from './ProfileCardAnonymous'
+import styles from './ProfileCard.module.css'
 
 function ProfileCard () {
-  const { commonStore } = useContext(globalContext)
-
-  // noinspection HtmlUnknownTarget
   return (
-    <>
-      <div>account page</div>
-      {!commonStore.profile && (
-        <div>
-          <Link href='/api/auth/login'>Login</Link>
-        </div>
-      )}
-      {commonStore.profile != null && (
-        <div>
-          <Link href='/api/auth/logout'>Logout</Link>
-        </div>
-      )}
-    </>
+    <div className={styles.container}>
+      <ProfileCardAnonymous />
+      <ProfileCardUser />
+    </div>
   )
 }
 
-export default observer(ProfileCard)
+export default ProfileCard
