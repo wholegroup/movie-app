@@ -39,6 +39,9 @@ class SyncStore {
   /** @type {string} lastUpdatedAt timestamp from storage */
   lastUpdatedAt = ''
 
+  /** @type {number} profileUpdatedAt timestamp */
+  profileUpdatedTs = 0
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
@@ -67,7 +70,10 @@ class SyncStore {
       delayedDate: observable,
       setIsDelayed: action,
       lastUpdatedAt: observable,
-      setLastUpdatedAt: action
+      setLastUpdatedAt: action,
+      profileUpdatedTs: observable,
+      setProfileUpdatedTs: action,
+      nextProfileUpdatingTs: computed
     })
   }
 
@@ -247,6 +253,10 @@ class SyncStore {
    * @returns {Promise<boolean>}
    */
   async doWorkerStep () {
+    if (Date.now() >= this.nextProfileUpdatingTs) {
+      return await this.synchronizeProfile()
+    }
+
     if (Date.now() >= this.nextSyncDate) {
       return await this.synchronizeMovies()
     }
@@ -266,7 +276,9 @@ class SyncStore {
    * @returns {Promise<boolean>}
    */
   async synchronizeMovies () {
-    console.log('Synchronizing movies...')
+    const tm = 'Synchronizing movies...'
+    console.time(tm)
+
     try {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
 
@@ -288,13 +300,69 @@ class SyncStore {
 
       this.setSyncDate(Date.now())
     } finally {
+      console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
+    }
+  }
+
+  /**
+   * Calculates next syncDate.
+   * @returns {number}
+   */
+  get nextProfileUpdatingTs () {
+    return this.nextCronDate(this.profileUpdatedTs, '0 15 * * * *')
+  }
+
+  /**
+   * Sets profileUpdatedTs.
+   * @param {number} profileUpdatedTs
+   */
+  setProfileUpdatedTs (profileUpdatedTs) {
+    this.profileUpdatedTs = profileUpdatedTs
+  }
+
+  /**
+   * Schedules updating profile.
+   */
+  scheduleUpdatingProfile () {
+    this.setProfileUpdatedTs(0)
+  }
+
+  /**
+   * Synchronizes user profile.
+   * @returns {Promise<boolean>}
+   */
+  async synchronizeProfile () {
+    const tm = 'Synchronizing profile...'
+    console.time(tm)
+
+    try {
+      this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)
+
+      const profileResponse = await this.apiService.loadProfile()
+      if (profileResponse) {
+        const profile = {
+          id: profileResponse.id,
+          email: profileResponse.user.email,
+          name: profileResponse.user.name,
+          picture: profileResponse.user.picture
+        }
+        await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, profile)
+      } else {
+        await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
+      }
+
+      this.setProfileUpdatedTs(Date.now())
+    } finally {
+      console.timeEnd(tm)
+      this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)
     }
   }
 }
 
 const WorkerStepEnum = Object.freeze({
-  SYNCHRONIZE_MOVIES: 'SYNCHRONIZE_MOVIES'
+  SYNCHRONIZE_MOVIES: 'SYNCHRONIZE_MOVIES',
+  SYNCHRONIZE_PROFILE: 'SYNCHRONIZE_PROFILE'
 })
 
 export default SyncStore

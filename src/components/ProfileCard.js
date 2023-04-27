@@ -20,11 +20,6 @@ function ProfileCard () {
           <Link href='/api/auth/logout'>Logout</Link>
         </div>
       )}
-      <div>
-        <button onClick={() => commonStore.updateProfile().catch(console.error)}>
-          Update profile
-        </button>
-      </div>
     </>
   )
 }

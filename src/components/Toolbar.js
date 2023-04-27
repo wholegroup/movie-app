@@ -1,8 +1,9 @@
 import Link from 'next/link.js'
+import { useRouter } from 'next/router.js'
 import { Icon } from '@mdi/react'
 import { mdiAccount, mdiArrowLeftBoldCircleOutline } from '@mdi/js'
+import ProfileLoader from './ProfileLoader.js'
 import styles from './Toolbar.module.css'
-import { useRouter } from 'next/router.js'
 
 /**
  * Toolbar.
@@ -31,6 +32,7 @@ function Toolbar () {
         <Link href='/profile'>
           <Icon id={'account'} path={mdiAccount} size={1.5} title={'Anonymous'} />
         </Link>
+        <ProfileLoader />
       </div>
     </nav>
   )

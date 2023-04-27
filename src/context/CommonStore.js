@@ -93,9 +93,6 @@ class CommonStore {
    */
   async makeReadyAsync (additional) {
     await additional()
-
-    // run after additional initialization means storage service is ready
-    this.setProfile(await this.storageService.getSettings(SETTINGS_NAMES.USER_PROFILE) || null)
   }
 
   /**
@@ -206,23 +203,10 @@ class CommonStore {
   }
 
   /**
-   * Updates profile.
+   * Updates user profile.
    */
   async updateProfile () {
-    const profileResponse = await this.apiService.loadProfile()
-    if (!profileResponse) {
-      this.setProfile(null)
-      await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
-      return
-    }
-
-    this.setProfile({
-      id: profileResponse.id,
-      email: profileResponse.user.email,
-      name: profileResponse.user.name,
-      picture: profileResponse.user.picture
-    })
-    await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, { ...this.profile })
+    this.setProfile(await this.storageService.getSettings(SETTINGS_NAMES.USER_PROFILE) || null)
   }
 }
 
