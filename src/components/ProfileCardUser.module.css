@@ -1,0 +1,8 @@
+.picture {
+    padding: 2rem 0;
+}
+
+.picture img {
+    max-width: 256px;
+    border-radius: 50%;
+}

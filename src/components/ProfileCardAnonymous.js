@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import Link from 'next/link.js'
 import { Icon } from '@mdi/react'
-import { mdiAccount } from '@mdi/js'
+import { mdiAccountOutline } from '@mdi/js'
 import globalContext from '../context/globalContext.js'
 
 function ProfileCardAnonymous () {
@@ -15,7 +15,7 @@ function ProfileCardAnonymous () {
   return (
     <>
       <div>
-        <Icon id={'account'} path={mdiAccount} size={1.5} title={'Anonymous'} />
+        <Icon id={'account'} path={mdiAccountOutline} size={10} title={'Anonymous'} />
       </div>
       <div>
         <Link href='/api/auth/login'>Login</Link>
