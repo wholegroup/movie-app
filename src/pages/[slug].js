@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
-import MovieContainer from '../components/MovieContainer.js'
+import MovieItem from '../components/MovieItem.js'
 import MovieLoader from '../components/MovieLoader'
 
 // noinspection JSUnusedGlobalSymbols
@@ -12,7 +12,7 @@ export default function MoviePage () {
   return (
     <>
       <MovieLoader slug={slug} />
-      <MovieContainer />
+      <MovieItem />
     </>
   )
 }
