@@ -15,11 +15,14 @@ function Toolbar () {
   return (
     <nav className={styles.nav}>
       <div className={styles.first}>
-        <Link href='/'>
-          {router.asPath === '/'
-            ? `v${process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}`
-            : <Icon id={'go-home'} path={mdiArrowLeftBoldCircleOutline} size={1.5} title={'Anonymous'} />}
-        </Link>
+        {router.asPath === '/' && (
+          <Link href='/about'>v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}</Link>
+        )}
+        {router.asPath !== '/' && (
+          <Link href='/'>
+            <Icon id={'go-home'} path={mdiArrowLeftBoldCircleOutline} size={1.5} title={'Anonymous'} />
+          </Link>
+        )}
       </div>
       <div>
         <ul>
