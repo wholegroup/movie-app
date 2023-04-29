@@ -1,21 +1,20 @@
 .card {
     position: relative;
-    margin: 1rem;
-    padding: 1.5rem;
+    padding: 15px 15px;
     text-align: left;
     color: inherit;
     text-decoration: none;
-    border: 1px solid #eaeaea;
-    border-radius: 10px;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.25s ease;
     width: 300px;
 }
 
 .card:hover,
 .card:focus,
 .card:active {
-    color: #0070f3;
-    border-color: #0070f3;
+    color: #5c83a1;
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .card h2 {

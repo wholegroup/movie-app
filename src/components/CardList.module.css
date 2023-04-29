@@ -19,6 +19,7 @@
     justify-content: center;
     flex-wrap: wrap;
     max-width: 1600px;
+    gap: 1rem;
 }
 
 @media (max-width: 600px) {

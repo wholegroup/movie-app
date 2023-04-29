@@ -1,7 +1,7 @@
 import Link from 'next/link.js'
-import styles from './CardItem.module.css'
 import { Icon } from '@mdi/react'
 import { mdiThumbDown, mdiThumbUp } from '@mdi/js'
+import styles from './CardItem.module.css'
 
 // Movie Card
 
@@ -19,7 +19,7 @@ function CardItem ({ card }) {
   const imgHost = imgHosts[card.movieId % imgHosts.length]
   return (
     <div className={styles.card} data-movie-id={card.movieId}>
-      <Link href={`/${card.slug}`}>
+      <Link href={`/${card.slug}`} prefetch={false}>
         <div>
           <img
             src={`${imgHost}/270_400/${card.posterHash[0]}/${card.posterHash}_270_400.jpeg`}
