@@ -28,8 +28,8 @@ function CardItem ({ card }) {
             loading='lazy'
           />
         </div>
-        <h4 className={styles.movieTitle}>{card.title}</h4>
-        <div>{card.year}</div>
+        <h1 className={styles.title}>{card.title}</h1>
+        <div className={styles.down}>{card.year}</div>
       </Link>
       <div className={styles.thumbs}>
         <button type='button' onClick={() => console.log('UP')}>
