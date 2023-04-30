@@ -1,4 +1,5 @@
 import Dexie from 'dexie'
+import ApiService from './ApiService.js'
 
 /**
  * @typedef TStorage
@@ -132,7 +133,8 @@ class StorageService {
         slug: movie.slug,
         title: movie.title,
         year: movie.year,
-        posterHash: mainImage?.hash || null
+        posterHash: mainImage?.hash || null,
+        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || '')
       }
     })
     return cards
@@ -181,6 +183,7 @@ class StorageService {
  * @property {string} title
  * @property {number} year
  * @property {string} posterHash
+ * @property {string} posterUrl
  */
 
 /**

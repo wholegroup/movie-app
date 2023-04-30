@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
 import MovieIndex from '../components/CardList.js'
 import MovieIndexLoader from '../components/CardsLoader.js'
+import ApiService from '../context/ApiService.js'
 
 // noinspection JSUnusedGlobalSymbols
 export default function IndexPage () {
@@ -50,7 +51,8 @@ IndexPage.getInitialProps = async function ({ req }) {
         slug: movie.slug,
         title: movie.title,
         year: movie.year,
-        posterHash: mainImage?.hash || null
+        posterHash: mainImage?.hash || null,
+        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || '')
       }
     })
 
