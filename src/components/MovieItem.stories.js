@@ -46,6 +46,15 @@ export const Simple = () => {
           }
         ],
         updatedAt: '2023-04-15T06:50:02.752Z'
+      },
+      images: {
+        movieId: 141590,
+        images: [
+          {
+            hash: 'ce10cc9814a567c6b2c10347311e25945f7e4324'
+          }
+        ],
+        updatedAt: '2023-04-15T06:50:06.034Z'
       }
     })
   }

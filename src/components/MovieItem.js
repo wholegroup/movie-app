@@ -3,10 +3,12 @@ import { observer } from 'mobx-react-lite'
 import Head from 'next/head.js'
 import globalContext from '../context/globalContext.js'
 import styles from './MovieItem.module.css'
+import ApiService from '../context/ApiService.js'
 
 function MovieItem () {
   const { commonStore } = useContext(globalContext)
   const movie = commonStore?.movie
+  const images = commonStore?.images
 
   if (!movie) {
     return null
@@ -19,6 +21,14 @@ function MovieItem () {
         <meta name='description' content={`${movie.title}, ${movie.year}`} />
       </Head>
       <div className={styles.container}>
+        <div>
+          <img
+            src={ApiService.generatePreviewUrl(images.images[0].hash)}
+            title={movie.title}
+            alt={movie.title}
+            loading='lazy'
+          />
+        </div>
         <div>
           <h1>{movie.title}</h1>
         </div>
