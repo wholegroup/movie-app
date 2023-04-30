@@ -144,7 +144,20 @@ class StorageService {
  * @property {number} movieId
  * @property {string} slug
  * @property {string} title
- * @property {number} year
+ * @property {?number} year
+ * @property {?string} runtime
+ * @property {?string} description
+ * @property {?string[]} genres
+ * @property {?TMoviePerson} directors
+ * @property {?TMoviePerson} stars
+ * @property {?string} updatedAt
+ */
+
+/**
+ * @typedef TMoviePerson
+ * @property {number} personId
+ * @property {string} slug
+ * @property {string} fullName
  */
 
 /**
