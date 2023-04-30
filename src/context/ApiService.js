@@ -80,6 +80,28 @@ class ApiService {
       throw e
     }
   }
+
+  /**
+   * Generates preview url by hash.
+   * @param {string} hash
+   * @returns {string} url
+   */
+  static generatePreviewUrl (hash) {
+    const imgHosts = (process.env.NEXT_PUBLIC_MOVIE_APP_IMG_HOST || '/').split(';')
+    const imgHost = imgHosts[hash.charCodeAt(0) % imgHosts.length]
+    return `${imgHost}/270_400/${hash.charAt(0)}/${hash}_270_400.jpeg`
+  }
+
+  /**
+   * Generates poster url by hash.
+   * @param {string} hash
+   * @returns {string} url
+   */
+  static generatePosterUrl (hash) {
+    const imgHosts = (process.env.NEXT_PUBLIC_MOVIE_APP_IMG_HOST || '/').split(';')
+    const imgHost = imgHosts[hash.charCodeAt(0) % imgHosts.length]
+    return `${imgHost}/800_1185/${hash.charAt(0)}/${hash}_800_1185.jpeg`
+  }
 }
 
 /**
