@@ -45,35 +45,37 @@ function MovieItem () {
             loading='lazy'
           />
         </div>
-        <div>
-          <h1>{movie.title}</h1>
-        </div>
-        <div>
-          {movie.year}{', '}
-          {movie.runtime}
-          {movie.genres?.length > 0 && (
-            <>
-              {', '}
-              {movie.genres.map(genre => <span key={genre}><i>{genre}</i></span>)
+        <div className={styles.info}>
+          <div>
+            <h1>{movie.title}</h1>
+          </div>
+          <div>
+            {movie.year}{', '}
+            {movie.runtime}
+            {movie.genres?.length > 0 && (
+              <>
+                {', '}
+                {movie.genres.map(genre => <span key={genre}><i>{genre}</i></span>)
+                  .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], null)}
+              </>
+            )}
+          </div>
+          {movie.directors?.length > 0 && (
+            <div>
+              <span>Directors:</span>{' '}
+              {movie.directors.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
                 .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], null)}
-            </>
+            </div>
           )}
+          {movie.stars?.length > 0 && (
+            <div>
+              <span>Stars:</span>{' '}
+              {movie.stars.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
+                .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], null)}
+            </div>
+          )}
+          <div>{movie.description}</div>
         </div>
-        {movie.directors?.length > 0 && (
-          <div>
-            <span>Directors:</span>{' '}
-            {movie.directors.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
-              .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], null)}
-          </div>
-        )}
-        {movie.stars?.length > 0 && (
-          <div>
-            <span>Stars:</span>{' '}
-            {movie.stars.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
-              .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], null)}
-          </div>
-        )}
-        <div>{movie.description}</div>
       </div>
     </>
   )
