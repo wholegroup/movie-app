@@ -1,6 +1,8 @@
 import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import Head from 'next/head.js'
+import PhotoSwipe from 'photoswipe'
+import 'photoswipe/dist/photoswipe.css'
 import globalContext from '../context/globalContext.js'
 import styles from './MovieItem.module.css'
 import ApiService from '../context/ApiService.js'
@@ -14,6 +16,20 @@ function MovieItem () {
     return null
   }
 
+  const openPhoto = () => {
+    const pswp = new PhotoSwipe({
+      dataSource: [{
+        src: ApiService.generatePosterUrl(images.images[0].hash),
+        width: 800,
+        height: 1185,
+        alt: movie.title
+      }],
+      index: 0,
+      showHideAnimationType: 'none'
+    })
+    pswp.init()
+  }
+
   return (
     <>
       <Head>
@@ -21,7 +37,7 @@ function MovieItem () {
         <meta name='description' content={`${movie.title}, ${movie.year}`} />
       </Head>
       <div className={styles.container}>
-        <div>
+        <div onClick={() => openPhoto()}>
           <img
             src={ApiService.generatePreviewUrl(images.images[0].hash)}
             title={movie.title}
