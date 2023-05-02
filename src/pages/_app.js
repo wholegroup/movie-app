@@ -1,5 +1,6 @@
 import GlobalContextProvider from '../context/GlobalContextProvider.js'
 import Head from 'next/head'
+import WorkboxReloadHook from '../components/WorkboxReloadHook.js'
 import Toolbar from '../components/Toolbar.js'
 import ToastsContainer from '../components/ToastsContainer.js'
 import './bs-reboot.css'
@@ -28,6 +29,7 @@ export default function Application ({ Component, pageProps }) {
         <link rel='apple-touch-icon' href='/icons/icon-512x512.png'></link>
         <meta name='theme-color' content='#317EFB' />
       </Head>
+      <WorkboxReloadHook />
       <GlobalContextProvider {...pageProps}>
         <Toolbar />
         <Component {...pageProps} />
