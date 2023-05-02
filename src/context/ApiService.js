@@ -115,6 +115,7 @@ class ApiService {
 /**
  * @typedef TProfileResponse
  * @property {string} id
+ * @property {boolean} isAdmin
  * @property {string} user.email
  * @property {string} user.name
  * @property {string} user.picture

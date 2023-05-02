@@ -343,6 +343,7 @@ class SyncStore {
       if (profileResponse) {
         const profile = {
           id: profileResponse.id,
+          isAdmin: profileResponse.isAdmin,
           email: profileResponse.user.email,
           name: profileResponse.user.name,
           picture: profileResponse.user.picture
