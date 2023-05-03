@@ -223,6 +223,7 @@ class StorageService {
 
 export const SETTINGS_NAMES = Object.freeze({
   LAST_UPDATED_AT: 'LAST_UPDATED_AT',
+  PURGED_TS: 'PURGED_TS',
   USER_PROFILE: 'USER_PROFILE'
 })
 

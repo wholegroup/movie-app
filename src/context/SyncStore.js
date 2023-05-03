@@ -42,6 +42,9 @@ class SyncStore {
   /** @type {number} profileUpdatedAt timestamp */
   profileUpdatedTs = 0
 
+  /** @type {number} purged timestamp */
+  purgedTs = 0
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
@@ -73,7 +76,10 @@ class SyncStore {
       setLastUpdatedAt: action,
       profileUpdatedTs: observable,
       setProfileUpdatedTs: action,
-      nextProfileUpdatingTs: computed
+      nextProfileUpdatingTs: computed,
+      purgedTs: observable,
+      setPurgedTs: action,
+      nextPurgingTs: computed
     })
   }
 
@@ -114,6 +120,7 @@ class SyncStore {
    * @returns {number}
    */
   get nextSyncDate () {
+    // every 30 minutes
     return this.nextCronDate(this.syncDate, '0 */30 * * * *')
   }
 
@@ -188,6 +195,14 @@ class SyncStore {
    */
   async initializeStoreData () {
     this.setLastUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.LAST_UPDATED_AT) || '')
+    this.setPurgedTs(await this.storageService.getSettings(SETTINGS_NAMES.PURGED_TS) || 0)
+
+    // normalize purgedTs, it has to be less than Date.now()
+    if (this.purgedTs && !(this.purgedTs < Date.now())) {
+      console.log('Normalizing purged timestamp!')
+      this.setPurgedTs(0)
+    }
+
     this.setIsInitialized(true)
   }
 
@@ -261,6 +276,10 @@ class SyncStore {
       return await this.synchronizeMovies()
     }
 
+    if (Date.now() >= this.nextPurgingTs) {
+      return await this.purgeMovies()
+    }
+
     return false
   }
 
@@ -318,6 +337,7 @@ class SyncStore {
    * @returns {number}
    */
   get nextProfileUpdatingTs () {
+    // every hour at 15m:00s
     return this.nextCronDate(this.profileUpdatedTs, '0 15 * * * *')
   }
 
@@ -367,9 +387,60 @@ class SyncStore {
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)
     }
   }
+
+  /**
+   * Calculates next purgingTs.
+   * @returns {number}
+   */
+  get nextPurgingTs () {
+    // once a week
+    return this.nextCronDate(this.purgedTs, '0 0 0 */7 * *')
+  }
+
+  /**
+   * Sets purgedTs.
+   * @param {number} purgedTs
+   */
+  setPurgedTs (purgedTs) {
+    this.purgedTs = purgedTs
+  }
+
+  /**
+   * Purging movies.
+   * @returns {Promise<boolean>}
+   */
+  async purgeMovies () {
+    const tm = 'Purging movies...'
+    console.time(tm)
+
+    try {
+      this.startWorkerStepExecution(WorkerStepEnum.PURGE_MOVIES)
+
+      // const profileResponse = await this.apiService.loadProfile()
+      // if (profileResponse) {
+      //   const profile = {
+      //     id: profileResponse.id,
+      //     isAdmin: profileResponse.isAdmin,
+      //     email: profileResponse.user.email,
+      //     name: profileResponse.user.name,
+      //     picture: profileResponse.user.picture
+      //   }
+      //   await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, profile)
+      // } else {
+      //   await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
+      // }
+
+      this.setPurgedTs(Date.now())
+      await this.storageService.setSettings(SETTINGS_NAMES.PURGED_TS, this.purgedTs)
+    } finally {
+      console.timeEnd(tm)
+      this.stopWorkerStepExecution(WorkerStepEnum.PURGE_MOVIES)
+    }
+  }
 }
 
 const WorkerStepEnum = Object.freeze({
+  PURGE_MOVIES: 'PURGE_MOVIES',
   SYNCHRONIZE_MOVIES: 'SYNCHRONIZE_MOVIES',
   SYNCHRONIZE_PROFILE: 'SYNCHRONIZE_PROFILE'
 })
