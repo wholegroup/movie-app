@@ -129,6 +129,15 @@ class StorageService {
   }
 
   /**
+   * Find movie metadata.
+   * @param {number} movieId
+   * @returns {Promise<TMetadataItem>}
+   */
+  async findMetadataByMovieId (movieId) {
+    return this.storage.metadata.get(movieId)
+  }
+
+  /**
    * Load all movie cards.
    * @returns {Promise<TMovieCard[]>}
    */

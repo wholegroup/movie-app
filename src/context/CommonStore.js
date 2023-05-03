@@ -23,6 +23,9 @@ class CommonStore {
   /** @type {?TImagesItem} */
   images = null
 
+  /** @type {?TMetadataItem} */
+  metadata = null
+
   /** @type {TMovieCard[]} */
   cards = []
 
@@ -46,6 +49,8 @@ class CommonStore {
       setVotes: action,
       images: observable.ref,
       setImages: action,
+      metadata: observable.ref,
+      setMetadata: action,
       cards: observable.ref,
       setCards: action,
       filteredCards: computed,
@@ -137,6 +142,14 @@ class CommonStore {
   }
 
   /**
+   * Sets movie metadata.
+   * @param {?TMetadataItem} metadata
+   */
+  setMetadata (metadata) {
+    this.metadata = metadata
+  }
+
+  /**
    * Sets cards.
    * @param {TMovieCard[]} cards
    */
@@ -155,10 +168,12 @@ class CommonStore {
     }
     const votes = await this.storageService.findVotesByMovieId(movie.movieId)
     const images = await this.storageService.findImagesByMovieId(movie.movieId)
+    const metadata = await this.storageService.findMetadataByMovieId(movie.movieId)
 
     this.setMovie(movie)
     this.setVotes(votes)
     this.setImages(images)
+    this.setMetadata(metadata)
   }
 
   /**

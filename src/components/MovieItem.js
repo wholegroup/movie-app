@@ -11,6 +11,7 @@ function MovieItem () {
   const { commonStore } = useContext(globalContext)
   const movie = commonStore?.movie
   const images = commonStore?.images
+  const metadata = commonStore?.metadata
 
   if (!movie) {
     return null
@@ -77,6 +78,11 @@ function MovieItem () {
           <div>{movie.description}</div>
         </div>
       </div>
+      {metadata && (
+        <div style={{ margin: '2rem auto', width: 'fit-content' }}>
+          <pre>{JSON.stringify(metadata, null, 4)}</pre>
+        </div>
+      )}
     </>
   )
 }

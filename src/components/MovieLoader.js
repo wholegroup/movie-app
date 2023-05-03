@@ -25,6 +25,7 @@ function MovieLoader ({ slug }) {
       commonStore.setMovie(null)
       commonStore.setVotes(null)
       commonStore.setImages(null)
+      commonStore.setMetadata(null)
     }
   }, [slug, commonStore, commonStore.isInitialized, syncStore?.lastUpdatedAt])
 
