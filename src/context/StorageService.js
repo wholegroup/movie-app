@@ -159,6 +159,36 @@ class StorageService {
     })
     return cards
   }
+
+  /**
+   * Purges movies that wasn't updated 30 days.
+   * @returns {Promise<void>}
+   */
+  async purgeMovies () {
+    // find ids to purge
+    /** @type {TVotesItem[]} */
+    const votes = await this.storage.votes.toArray()
+    const lastUpdatedAt = votes.reduce((res, { updatedAt }) => updatedAt > res ? updatedAt : res, '')
+    const lastUpdatedTs = new Date(lastUpdatedAt).getTime() || Date.now()
+    const idsToPurge = votes
+      .filter(({ updatedAt }) => (new Date(updatedAt).getTime() || 0) < (lastUpdatedTs - 1000 * 60 * 60 * 24 * 30))
+      .map(({ movieId }) => movieId)
+
+    // deleting by chunks
+    const chunkSize = 30
+    const chunks = [...Array(Math.ceil(idsToPurge.length / chunkSize))]
+      .map((_, i) => idsToPurge.slice(i * chunkSize, i * chunkSize + chunkSize))
+
+    for (const nextChunk of chunks) {
+      // clean table items
+      // votes in the end! in case of previous issues
+      for (const tableName of ['movies', 'images', 'metadata', 'votes']) {
+        await this.storage.transaction('rw', this.storage.table(tableName), async () => {
+          await this.storage.table(tableName).bulkDelete(nextChunk)
+        })
+      }
+    }
+  }
 }
 
 /**

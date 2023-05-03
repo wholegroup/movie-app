@@ -415,21 +415,7 @@ class SyncStore {
 
     try {
       this.startWorkerStepExecution(WorkerStepEnum.PURGE_MOVIES)
-
-      // const profileResponse = await this.apiService.loadProfile()
-      // if (profileResponse) {
-      //   const profile = {
-      //     id: profileResponse.id,
-      //     isAdmin: profileResponse.isAdmin,
-      //     email: profileResponse.user.email,
-      //     name: profileResponse.user.name,
-      //     picture: profileResponse.user.picture
-      //   }
-      //   await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, profile)
-      // } else {
-      //   await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
-      // }
-
+      await this.storageService.purgeMovies()
       this.setPurgedTs(Date.now())
       await this.storageService.setSettings(SETTINGS_NAMES.PURGED_TS, this.purgedTs)
     } finally {
