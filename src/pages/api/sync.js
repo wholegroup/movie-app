@@ -20,10 +20,18 @@ export default async function handler (req, res) {
     }
 
     const lastUpdatedAt = req.body?.lastUpdatedAt || 0
-    const movies = await syncService.moviesSince(lastUpdatedAt)
-    const votes = await syncService.votesSince(lastUpdatedAt)
-    const images = await syncService.imagesSince(lastUpdatedAt)
+
+    const moviesPromise = syncService.moviesSince(lastUpdatedAt)
+    const votesPromise = syncService.votesSince(lastUpdatedAt)
+    const imagesPromise = syncService.imagesSince(lastUpdatedAt)
+
+    await Promise.all([moviesPromise, votesPromise, imagesPromise])
+
+    const movies = await moviesPromise
+    const votes = await votesPromise
+    const images = await imagesPromise
     const metadata = isAdmin ? await syncService.metadataSince(lastUpdatedAt) : []
+
     const maxUpdatedAt = [
       ...movies.map(({ updatedAt }) => updatedAt),
       ...votes.map(({ updatedAt }) => updatedAt),
