@@ -5,6 +5,7 @@ import { mdiArrowLeftBoldCircleOutline } from '@mdi/js'
 import ProfileLoader from './ProfileLoader.js'
 import styles from './Toolbar.module.css'
 import ToolbarUser from './ToolbarUser'
+import MovieCounter from './MovieCounter.js'
 
 /**
  * Toolbar.
@@ -28,8 +29,7 @@ function Toolbar () {
         <ul>
           <li><a href='#'>Section A</a></li>
           <li><a href='#'>Section B</a></li>
-          <li><a href='#'>Section C</a></li>
-          <li><a href='#'>Section D</a></li>
+          <li><MovieCounter /></li>
         </ul>
       </div>
       <div className={styles.last}>
