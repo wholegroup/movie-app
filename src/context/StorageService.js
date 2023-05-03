@@ -7,6 +7,7 @@ import ApiService from './ApiService.js'
  * @property {import('dexie').Table} movies
  * @property {import('dexie').Table} votes
  * @property {import('dexie').Table} images
+ * @property {import('dexie').Table} metadata
  */
 
 class StorageService {
@@ -20,12 +21,13 @@ class StorageService {
   async makeReadyAsync () {
     const dbName = 'storage'
     const db = new Dexie(dbName)
-    db.version(1)
+    db.version(2)
       .stores({
         settings: '',
         movies: ',movieId',
         votes: ',movieId',
-        images: ',movieId'
+        images: ',movieId',
+        metadata: ',movieId'
       })
     await db.open()
 
@@ -88,6 +90,15 @@ class StorageService {
    */
   async upsertImages (images) {
     return this.storage.images.bulkPut(images, images.map(({ movieId }) => movieId))
+  }
+
+  /**
+   * Upsert metadata.
+   * @param {TMetadataItem[]} metadata
+   * @returns {Promise<void>}
+   */
+  async upsertMetadata (metadata) {
+    return this.storage.metadata.bulkPut(metadata, metadata.map(({ movieId }) => movieId))
   }
 
   /**
@@ -173,6 +184,13 @@ class StorageService {
  * @typedef TImagesItem
  * @property {number} movieId
  * @property {{hash: string}[]} images
+ * @property {string} updatedAt
+ */
+
+/**
+ * @typedef TMetadataItem
+ * @property {number} movieId
+ * @property {object} flags
  * @property {string} updatedAt
  */
 

@@ -109,6 +109,7 @@ class ApiService {
  * @property {TMovieItem[]} movies
  * @property {TVotesItem[]} votes
  * @property {TImagesItem[]} images
+ * @property {TMetadataItem[]} metadata
  * @property {string} lastUpdatedAt
  */
 

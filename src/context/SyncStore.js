@@ -283,14 +283,22 @@ class SyncStore {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
 
       // load movies
-      const { movies, votes, images, lastUpdatedAt } = await this.apiService.loadMovies(this.lastUpdatedAt)
-      console.log('Loaded', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images')
+      const {
+        movies,
+        votes,
+        images,
+        metadata,
+        lastUpdatedAt
+      } = await this.apiService.loadMovies(this.lastUpdatedAt)
+      console.log('Loaded', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images',
+        metadata.length, 'metadata items')
       console.log('Last updated at', lastUpdatedAt)
 
       // save in storage
       await this.storageService.upsertMovies(movies)
       await this.storageService.upsertVotes(votes)
       await this.storageService.upsertImages(images)
+      await this.storageService.upsertMetadata(metadata)
 
       // update lastUpdatedAt if it's necessary
       if (this.lastUpdatedAt !== lastUpdatedAt) {

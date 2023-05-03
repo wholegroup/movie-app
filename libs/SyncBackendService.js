@@ -144,6 +144,19 @@ class SyncBackendService {
   }
 
   /**
+   * Metadata.
+   * @param {number} lastUpdatedAt Timestamp
+   * @returns {Promise<Object[]>}
+   */
+  async metadataSince (lastUpdatedAt) {
+    const allMetadata = await this.allData('metadata')
+    if (!lastUpdatedAt) {
+      return allMetadata
+    }
+    return allMetadata.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
+  }
+
+  /**
    * lists of images.
    * @param {number} lastUpdatedAt Timestamp
    * @returns {Promise<Object[]>}
