@@ -19,19 +19,32 @@ export default async function handler (req, res) {
       return
     }
 
-    const lastUpdatedAt = req.body?.lastUpdatedAt || 0
+    // normalize lastUpdateAt
+    const prevFive = `${new Date().getFullYear() - 4}-01-01T00:00:00.000Z`
+    let lastUpdatedAt = new Date(req.body?.lastUpdatedAt || '').toJSON()
+    if (!lastUpdatedAt || lastUpdatedAt < prevFive) {
+      lastUpdatedAt = ''
+    }
 
-    const moviesPromise = syncService.moviesSince(lastUpdatedAt)
-    const votesPromise = syncService.votesSince(lastUpdatedAt)
-    const imagesPromise = syncService.imagesSince(lastUpdatedAt)
+    // fetch data
+    const visibleIdsPromise = syncService.publicVisibleMovieIds()
+    const moviesPromise = syncService.moviesUpdated(lastUpdatedAt)
+    const votesPromise = syncService.votesUpdated(lastUpdatedAt)
+    const imagesPromise = syncService.imagesUpdated(lastUpdatedAt)
 
-    await Promise.all([moviesPromise, votesPromise, imagesPromise])
+    await Promise.all([visibleIdsPromise, moviesPromise, votesPromise, imagesPromise])
 
-    const movies = await moviesPromise
-    const votes = await votesPromise
-    const images = await imagesPromise
-    const metadata = isAdmin ? await syncService.metadataSince(lastUpdatedAt) : []
+    const visibleIds = await visibleIdsPromise
+    const movies = (await moviesPromise)
+      .filter(({ movieId }) => visibleIds.includes(movieId))
+    const votes = (await votesPromise)
+      .filter(({ movieId }) => visibleIds.includes(movieId))
+    const images = (await imagesPromise)
+      .filter(({ movieId }) => visibleIds.includes(movieId))
+    const metadata = (isAdmin ? await syncService.metadataSince(lastUpdatedAt) : [])
+      .filter(({ movieId }) => visibleIds.includes(movieId))
 
+    //
     const maxUpdatedAt = [
       ...movies.map(({ updatedAt }) => updatedAt),
       ...votes.map(({ updatedAt }) => updatedAt),
@@ -39,11 +52,14 @@ export default async function handler (req, res) {
       ...metadata.map(({ updatedAt }) => updatedAt)
     ].reduce((max, c) => c > max ? c : max, '')
 
+    const now = new Date().toISOString()
+    const responseUpdatedAt = maxUpdatedAt || (lastUpdatedAt && lastUpdatedAt < now ? lastUpdatedAt : now)
+
     res.status(200).json({
       movies,
       votes,
       images,
-      lastUpdatedAt: maxUpdatedAt || lastUpdatedAt,
+      lastUpdatedAt: responseUpdatedAt,
       metadata
     })
   } finally {
