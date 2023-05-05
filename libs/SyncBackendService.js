@@ -119,7 +119,7 @@ class SyncBackendService {
    * @param {string} lastUpdatedAt Timestamp
    * @returns {Promise<Object[]>}
    */
-  async moviesSince (lastUpdatedAt) {
+  async moviesUpdated (lastUpdatedAt) {
     const allMovies = await this.allData('movies')
     const cleanMovies = allMovies.map(this.sanitizeMovie)
     if (!lastUpdatedAt) {
@@ -134,7 +134,7 @@ class SyncBackendService {
    * @param {string} lastUpdatedAt Timestamp
    * @returns {Promise<Object[]>}
    */
-  async votesSince (lastUpdatedAt) {
+  async votesUpdated (lastUpdatedAt) {
     const allVotes = await this.allData('votes')
     const cleanVotes = allVotes.map(this.sanitizeVotes)
     if (!lastUpdatedAt) {
@@ -161,7 +161,7 @@ class SyncBackendService {
    * @param {string} lastUpdatedAt Timestamp
    * @returns {Promise<Object[]>}
    */
-  async imagesSince (lastUpdatedAt) {
+  async imagesUpdated (lastUpdatedAt) {
     const allImages = await this.allData('images')
     const cleanImages = allImages.map(this.sanitizeImages)
     if (!lastUpdatedAt) {
