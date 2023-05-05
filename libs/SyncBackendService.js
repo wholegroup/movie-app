@@ -116,7 +116,7 @@ class SyncBackendService {
 
   /**
    * Lists of movies.
-   * @param {number} lastUpdatedAt Timestamp
+   * @param {string} lastUpdatedAt Timestamp
    * @returns {Promise<Object[]>}
    */
   async moviesSince (lastUpdatedAt) {
@@ -131,7 +131,7 @@ class SyncBackendService {
 
   /**
    * Lists of votes.
-   * @param {number} lastUpdatedAt Timestamp
+   * @param {string} lastUpdatedAt Timestamp
    * @returns {Promise<Object[]>}
    */
   async votesSince (lastUpdatedAt) {
@@ -158,7 +158,7 @@ class SyncBackendService {
 
   /**
    * lists of images.
-   * @param {number} lastUpdatedAt Timestamp
+   * @param {string} lastUpdatedAt Timestamp
    * @returns {Promise<Object[]>}
    */
   async imagesSince (lastUpdatedAt) {
