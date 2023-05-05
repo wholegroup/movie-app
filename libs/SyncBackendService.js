@@ -145,7 +145,7 @@ class SyncBackendService {
 
   /**
    * Metadata.
-   * @param {number} lastUpdatedAt Timestamp
+   * @param {string} lastUpdatedAt Timestamp
    * @returns {Promise<Object[]>}
    */
   async metadataSince (lastUpdatedAt) {
