@@ -40,9 +40,19 @@ IndexPage.getInitialProps = async function ({ req }) {
   try {
     await syncService.open()
 
-    const movies = await syncService.moviesUpdated('')
+    const visibleIdsPromise = syncService.publicVisibleMovieIds()
+    const moviesPromise = syncService.moviesUpdated('')
+    const imagesPromise = syncService.imagesUpdated('')
+
+    await Promise.all([visibleIdsPromise, moviesPromise, imagesPromise])
+
+    const visibleIds = await visibleIdsPromise
+    const movies = (await moviesPromise)
+      .filter(({ movieId }) => visibleIds.includes(movieId))
+    const images = (await imagesPromise)
+      .filter(({ movieId }) => visibleIds.includes(movieId))
+
     const sortedMovies = movies.sort(({ year: a, title: x }, { year: b, title: y }) => (b - a) || x.localeCompare(y))
-    const images = await syncService.imagesUpdated('')
 
     const cards = sortedMovies.map(movie => {
       const mainImage = (images.find(nextImages => nextImages.movieId === movie.movieId) || {}).images[0] ?? null
