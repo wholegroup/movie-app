@@ -3,9 +3,11 @@ import { observer } from 'mobx-react-lite'
 import Head from 'next/head.js'
 import PhotoSwipe from 'photoswipe'
 import 'photoswipe/dist/photoswipe.css'
+import { mdiThumbDown, mdiThumbUp } from '@mdi/js'
 import globalContext from '../context/globalContext.js'
-import styles from './MovieItem.module.css'
 import ApiService from '../context/ApiService.js'
+import styles from './MovieItem.module.css'
+import { Icon } from '@mdi/react'
 
 function MovieItem () {
   const { commonStore } = useContext(globalContext)
@@ -38,13 +40,23 @@ function MovieItem () {
         <meta name='description' content={`${movie.title}, ${movie.year}`} />
       </Head>
       <div className={styles.container}>
-        <div onClick={() => openPhoto()}>
-          <img
-            src={ApiService.generatePreviewUrl(images.images[0].hash)}
-            title={movie.title}
-            alt={movie.title}
-            loading='lazy'
-          />
+        <div>
+          <div onClick={() => openPhoto()}>
+            <img
+              src={ApiService.generatePreviewUrl(images.images[0].hash)}
+              title={movie.title}
+              alt={movie.title}
+              loading='lazy'
+            />
+          </div>
+          <div className={styles.thumbs}>
+            <button type='button' onClick={() => console.log('UP')}>
+              <Icon path={mdiThumbUp} size={1.5} />
+            </button>
+            <button type='button' onClick={() => console.log('DOWN')}>
+              <Icon path={mdiThumbDown} size={1.5} />
+            </button>
+          </div>
         </div>
         <div className={styles.info}>
           <div>
