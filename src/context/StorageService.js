@@ -8,6 +8,7 @@ import ApiService from './ApiService.js'
  * @property {import('dexie').Table} votes
  * @property {import('dexie').Table} images
  * @property {import('dexie').Table} metadata
+ * @property {import('dexie').Table} details
  */
 
 class StorageService {
@@ -21,13 +22,14 @@ class StorageService {
   async makeReadyAsync () {
     const dbName = 'storage'
     const db = new Dexie(dbName)
-    db.version(2)
+    db.version(3)
       .stores({
         settings: '',
         movies: ',movieId',
         votes: ',movieId',
         images: ',movieId',
-        metadata: ',movieId'
+        metadata: ',movieId',
+        details: ',movieId'
       })
     await db.open()
 
@@ -142,8 +144,12 @@ class StorageService {
    * @returns {Promise<TMovieCard[]>}
    */
   async loadAllCards () {
+    /** @type {TMovieItem[]} */
     const movies = await this.storage.movies.toArray()
+    /** @type {TImagesItem[]} */
     const images = await this.storage.images.toArray()
+    /** @type {TDetailsItem[]} */
+    const details = await this.storage.details.toArray()
 
     // noinspection UnnecessaryLocalVariableJS
     const cards = movies.map(movie => {
@@ -154,7 +160,8 @@ class StorageService {
         title: movie.title,
         year: movie.year,
         posterHash: mainImage?.hash || null,
-        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || '')
+        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || ''),
+        mark: details.find(({ movieId }) => movieId === movie.movieId)?.mark
       }
     })
     return cards
@@ -249,6 +256,12 @@ class StorageService {
  * @property {string=} email
  * @property {string=} name
  * @property {string=} picture
+ */
+
+/**
+ * @typedef TDetailsItem
+ * @property {number} movieId
+ * @property {?number=} mark
  */
 
 export const SETTINGS_NAMES = Object.freeze({
