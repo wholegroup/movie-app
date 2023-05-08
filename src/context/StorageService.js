@@ -140,6 +140,15 @@ class StorageService {
   }
 
   /**
+   * Find movie details.
+   * @param {number} movieId
+   * @returns {Promise<?TDetailsItem>}
+   */
+  async findDetailsByMovieId (movieId) {
+    return this.storage.details.get(movieId)
+  }
+
+  /**
    * Load all movie cards.
    * @returns {Promise<TMovieCard[]>}
    */
@@ -161,7 +170,7 @@ class StorageService {
         year: movie.year,
         posterHash: mainImage?.hash || null,
         posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || ''),
-        mark: details.find(({ movieId }) => movieId === movie.movieId)?.mark
+        mark: details.find(({ movieId }) => movieId === movie.movieId)?.mark || null
       }
     })
     return cards
@@ -195,6 +204,21 @@ class StorageService {
         })
       }
     }
+  }
+
+  /**
+   * Sets movie mark.
+   * @param {number} movieId
+   * @param {?number} mark
+   */
+  async setMovieMark (movieId, mark) {
+    await this.storage.transaction('rw', this.storage.details, async () => {
+      const details = (await this.findDetailsByMovieId(movieId)) || { movieId }
+      await this.storage.details.put({
+        ...details,
+        mark: mark || null
+      }, movieId)
+    })
   }
 }
 
