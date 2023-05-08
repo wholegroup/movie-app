@@ -31,3 +31,11 @@
 .thumbs button:hover {
     color: rgba(0, 0, 0, 0.5);
 }
+
+.positive {
+    color: green;
+}
+
+.negative {
+    color: red;
+}

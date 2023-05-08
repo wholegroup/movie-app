@@ -38,7 +38,7 @@ function MovieItem () {
    */
   const clickThumb = async (mark) => {
     try {
-      if (details.mark !== mark) {
+      if (details?.mark !== mark) {
         await commonStore.markAsSeen(movie.movieId, mark)
       } else {
         await commonStore.markAsUnseen(movie.movieId)
@@ -66,12 +66,11 @@ function MovieItem () {
           </div>
           <div className={styles.thumbs}>
             <button type='button' onClick={() => clickThumb(5)}>
-              <Icon path={mdiThumbUp} size={1.5} />
+              <Icon path={mdiThumbUp} size={1.5} className={details?.mark === 5 ? styles.positive : ''} />
             </button>
             <button type='button' onClick={() => clickThumb(1)}>
-              <Icon path={mdiThumbDown} size={1.5} />
+              <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
             </button>
-            = {JSON.stringify(details)}
           </div>
         </div>
         <div className={styles.info}>
