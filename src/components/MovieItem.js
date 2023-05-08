@@ -10,14 +10,12 @@ import styles from './MovieItem.module.css'
 import { Icon } from '@mdi/react'
 
 function MovieItem () {
-  const { commonStore } = useContext(globalContext)
-  const movie = commonStore?.movie
-  const images = commonStore?.images
-  const metadata = commonStore?.metadata
-
-  if (!movie) {
+  const { commonStore, notificationStore } = useContext(globalContext)
+  if (!commonStore?.movie) {
     return null
   }
+
+  const { movie, images, metadata, details } = commonStore
 
   const openPhoto = () => {
     const pswp = new PhotoSwipe({
@@ -31,6 +29,23 @@ function MovieItem () {
       showHideAnimationType: 'none'
     })
     pswp.init()
+  }
+
+  /**
+   * Thumb handler.
+   * @param {number} mark
+   * @returns {Promise<void>}
+   */
+  const clickThumb = async (mark) => {
+    try {
+      if (details.mark !== mark) {
+        await commonStore.markAsSeen(movie.movieId, mark)
+      } else {
+        await commonStore.markAsUnseen(movie.movieId)
+      }
+    } catch (e) {
+      notificationStore.error({ message: e.message })
+    }
   }
 
   return (
@@ -50,12 +65,13 @@ function MovieItem () {
             />
           </div>
           <div className={styles.thumbs}>
-            <button type='button' onClick={() => console.log('UP')}>
+            <button type='button' onClick={() => clickThumb(5)}>
               <Icon path={mdiThumbUp} size={1.5} />
             </button>
-            <button type='button' onClick={() => console.log('DOWN')}>
+            <button type='button' onClick={() => clickThumb(1)}>
               <Icon path={mdiThumbDown} size={1.5} />
             </button>
+            = {JSON.stringify(details)}
           </div>
         </div>
         <div className={styles.info}>

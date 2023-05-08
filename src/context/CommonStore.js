@@ -255,11 +255,11 @@ class CommonStore {
   /**
    * Marks movie as seen,
    * @param {number} movieId
-   * @param {boolean} isPositive
+   * @param {number} mark
    * @returns {Promise<void>}
    */
-  async markAsSeen (movieId, isPositive) {
-    await this.storageService.setMovieMark(movieId, isPositive ? 5 : 1)
+  async markAsSeen (movieId, mark) {
+    await this.storageService.setMovieMark(movieId, mark)
     this.setRefreshTs(Date.now())
   }
 
