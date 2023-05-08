@@ -6,7 +6,27 @@ import CardItem from './CardItem.js'
 import styles from './CardList.module.css'
 
 function CardList () {
-  const { commonStore } = useContext(globalContext)
+  const { commonStore, notificationStore } = useContext(globalContext)
+
+  /**
+   * Thumb handler.
+   * @param {number} movieId
+   * @param {number} oldMark
+   * @param {number} newMark
+   * @returns {Promise<void>}
+   */
+  const clickThumb = async (movieId, oldMark, newMark) => {
+    try {
+      if (oldMark !== newMark) {
+        await commonStore.markAsSeen(movieId, newMark)
+      } else {
+        await commonStore.markAsUnseen(movieId)
+      }
+    } catch (e) {
+      notificationStore.error({ message: e.message })
+    }
+  }
+
   return (
     <>
       <Head>
@@ -17,7 +37,13 @@ function CardList () {
           ··· Annual Movies ···
         </h1>
         <div className={styles.grid}>
-          {commonStore.sortedCards.map(movieCard => <CardItem key={movieCard.movieId} card={movieCard} />)}
+          {commonStore.sortedCards.map(movieCard => (
+            <CardItem
+              key={movieCard.movieId}
+              card={movieCard}
+              onClickThumb={(mark) => clickThumb(movieCard.movieId, movieCard.mark, mark)}
+            />
+          ))}
         </div>
       </main>
     </>

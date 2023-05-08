@@ -7,7 +7,7 @@ import styles from './CardItem.module.css'
  * Shows a movie card.
  * @param {TMovieCard} card
  */
-function CardItem ({ card }) {
+function CardItem ({ card, onClickThumb }) {
   return (
     <div className={styles.card} data-movie-id={card.movieId}>
       <Link href={`/${card.slug}`} prefetch={false}>
@@ -23,10 +23,10 @@ function CardItem ({ card }) {
         <div className={styles.down}>{card.year}</div>
       </Link>
       <div className={styles.thumbs}>
-        <button type='button' onClick={() => console.log('UP')}>
+        <button type='button' onClick={() => onClickThumb(5)}>
           <Icon path={mdiThumbUp} size={1.5} className={card.mark === 5 ? styles.positive : ''} />
         </button>
-        <button type='button' onClick={() => console.log('DOWN')}>
+        <button type='button' onClick={() => onClickThumb(1)}>
           <Icon path={mdiThumbDown} size={1.5} className={card.mark === 1 ? styles.negative : ''} />
         </button>
       </div>
