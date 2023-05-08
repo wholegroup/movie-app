@@ -272,6 +272,7 @@ class StorageService {
  * @property {number} year
  * @property {string} posterHash
  * @property {string} posterUrl
+ * @property {?number} mark
  */
 
 /**
