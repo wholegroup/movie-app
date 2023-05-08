@@ -26,11 +26,17 @@ class CommonStore {
   /** @type {?TMetadataItem} */
   metadata = null
 
+  /** @type {?TDetailsItem} */
+  details = null
+
   /** @type {TMovieCard[]} */
   cards = []
 
   /** @type {?TUserProfile} */
   profile = null
+
+  /** @type {number} TS/trigger to refresh data after some changes. */
+  refreshTs = 0
 
   /**
    * Default constructor.
@@ -56,7 +62,11 @@ class CommonStore {
       filteredCards: computed,
       sortedCards: computed,
       profile: observable,
-      setProfile: action
+      setProfile: action,
+      details: observable.ref,
+      setDetails: action,
+      refreshTs: observable,
+      setRefreshTs: action
     })
   }
 
@@ -162,18 +172,27 @@ class CommonStore {
    * @param {string} slug
    */
   async loadMovieBySlug (slug) {
-    const movie = await this.storageService.findMovieBySlug(slug)
-    if (!movie) {
-      throw new Error(`Movie by slug ${slug} not found.`)
-    }
-    const votes = await this.storageService.findVotesByMovieId(movie.movieId)
-    const images = await this.storageService.findImagesByMovieId(movie.movieId)
-    const metadata = await this.storageService.findMetadataByMovieId(movie.movieId)
+    const tm = 'loading movie #' + Math.round(window.performance.now() * 10) + ' ' + slug
+    try {
+      console.time(tm)
 
-    this.setMovie(movie)
-    this.setVotes(votes)
-    this.setImages(images)
-    this.setMetadata(metadata)
+      const movie = await this.storageService.findMovieBySlug(slug)
+      if (!movie) {
+        throw new Error(`Movie by slug ${slug} not found.`)
+      }
+      const votes = await this.storageService.findVotesByMovieId(movie.movieId)
+      const images = await this.storageService.findImagesByMovieId(movie.movieId)
+      const metadata = await this.storageService.findMetadataByMovieId(movie.movieId)
+      const details = await this.storageService.findDetailsByMovieId(movie.movieId)
+
+      this.setMovie(movie)
+      this.setVotes(votes)
+      this.setImages(images)
+      this.setMetadata(metadata)
+      this.setDetails(details)
+    } finally {
+      console.timeEnd(tm)
+    }
   }
 
   /**
@@ -181,7 +200,7 @@ class CommonStore {
    * @returns {Promise<void>}
    */
   async loadCards () {
-    const tm = 'loading cards #' + Math.round(window.performance.now())
+    const tm = 'loading cards #' + Math.round(window.performance.now() * 10)
     try {
       console.time(tm)
       const allCards = await this.storageService.loadAllCards()
@@ -222,6 +241,44 @@ class CommonStore {
    */
   async updateProfile () {
     this.setProfile(await this.storageService.getSettings(SETTINGS_NAMES.USER_PROFILE) || null)
+  }
+
+  /**
+   * Sets details.
+   * @param {?TDetailsItem} details
+   * @returns {void}
+   */
+  setDetails (details) {
+    this.details = details
+  }
+
+  /**
+   * Marks movie as seen,
+   * @param {number} movieId
+   * @param {boolean} isPositive
+   * @returns {Promise<void>}
+   */
+  async markAsSeen (movieId, isPositive) {
+    await this.storageService.setMovieMark(movieId, isPositive ? 5 : 1)
+    this.setRefreshTs(Date.now())
+  }
+
+  /**
+   * Marks movie as unseen,
+   * @param {number} movieId
+   * @returns {Promise<void>}
+   */
+  async markAsUnseen (movieId) {
+    await this.storageService.setMovieMark(movieId, null)
+    this.setRefreshTs(Date.now())
+  }
+
+  /**
+   * Sets RefreshTs
+   * @param {number} refreshTs
+   */
+  setRefreshTs (refreshTs) {
+    this.refreshTs = refreshTs
   }
 }
 
