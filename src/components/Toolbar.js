@@ -27,9 +27,12 @@ function Toolbar () {
       </div>
       <div>
         <ul>
-          <li><a href='#'>Section A</a></li>
-          <li><a href='#'>Section B</a></li>
-          {router.asPath === '/' && (<li><MovieCounter /></li>)}
+          {router.asPath === '/' && (
+            <>
+              <li><a href='#'>Section B</a></li>
+              <li><MovieCounter /></li>
+            </>
+          )}
         </ul>
       </div>
       <div className={styles.last}>

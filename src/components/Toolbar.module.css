@@ -30,7 +30,8 @@
     padding: 0;
     margin: 0;
     display: flex;
-    line-height: 3rem;
+    height: 3rem;
+    align-items: center;
 }
 
 .nav li {
