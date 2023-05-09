@@ -15,18 +15,18 @@
     color: inherit;
 }
 
+.nav > div {
+    display: flex;
+    align-items: center;
+}
+
 .first, .last {
     flex-grow: 1;
     flex-basis: 0;
 }
 
-.first {
-    display: flex;
-    align-items: center;
-}
-
 .last {
-    text-align: right;
+    flex-direction: row-reverse;
 }
 
 .nav ul {
@@ -41,7 +41,7 @@
 }
 
 @media (max-width: 640px) {
-    .version {
+    .hide640 {
         display: none;
     }
 }
