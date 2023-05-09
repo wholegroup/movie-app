@@ -7,7 +7,7 @@ import globalContext from '../context/globalContext.js'
  * @param {string} slug
  */
 function MovieLoader ({ slug }) {
-  const { commonStore, syncStore } = useContext(globalContext)
+  const { commonStore, syncStore, notificationStore } = useContext(globalContext)
 
   // Load movie by slug
   useEffect(() => {
@@ -21,7 +21,7 @@ function MovieLoader ({ slug }) {
     }
 
     load()
-      .catch(console.error)
+      .catch((e) => notificationStore.error({ message: e.message }))
 
     return () => {
       commonStore.setMovie(null)
@@ -29,8 +29,9 @@ function MovieLoader ({ slug }) {
       commonStore.setImages(null)
       commonStore.setMetadata(null)
       commonStore.setDetails(null)
+      commonStore.setRefreshTs(0)
     }
-  }, [slug, commonStore, commonStore.isInitialized, syncStore?.lastUpdatedAt])
+  }, [slug, commonStore, commonStore.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
 
   // Refresh movie by commonStore.refreshTs
   useEffect(() => {
@@ -43,11 +44,8 @@ function MovieLoader ({ slug }) {
     }
 
     refresh()
-      .catch(console.error)
-
-    return () => {
-    }
-  }, [slug, commonStore, commonStore.refreshTs])
+      .catch((e) => notificationStore.error({ message: e.message }))
+  }, [slug, commonStore, commonStore.refreshTs, notificationStore])
 
   return null
 }
