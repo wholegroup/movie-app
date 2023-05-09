@@ -1,7 +1,7 @@
 import Link from 'next/link.js'
 import { useRouter } from 'next/router.js'
 import { Icon } from '@mdi/react'
-import { mdiArrowLeftBoldCircleOutline } from '@mdi/js'
+import { mdiArrowLeftBoldCircleOutline, mdiInformationOutline } from '@mdi/js'
 import ProfileLoader from './ProfileLoader.js'
 import styles from './Toolbar.module.css'
 import ToolbarUser from './ToolbarUser'
@@ -17,12 +17,25 @@ function Toolbar () {
     <nav className={styles.nav}>
       <div className={styles.first}>
         {router.asPath === '/' && (
-          <Link href='/about'>v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}</Link>
+          <>
+            <div>
+              <Link href='/about'>
+                <Icon id={'go-home'} path={mdiInformationOutline} size={1.5} title={'Information'} />
+              </Link>
+            </div>
+            <div className={styles.version}>
+              <Link href='/about'>
+                {' '}v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
+              </Link>
+            </div>
+          </>
         )}
         {router.asPath !== '/' && (
-          <Link href='/'>
-            <Icon id={'go-home'} path={mdiArrowLeftBoldCircleOutline} size={1.5} title={'Anonymous'} />
-          </Link>
+          <div>
+            <Link href='/'>
+              <Icon id={'go-home'} path={mdiArrowLeftBoldCircleOutline} size={1.5} title={'Anonymous'} />
+            </Link>
+          </div>
         )}
       </div>
       <div>
