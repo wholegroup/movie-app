@@ -1,7 +1,7 @@
 .nav {
     position: sticky;
     top: 0;
-    background: deepskyblue;
+    background: var(--toolbar-bg-color);
     padding: 0 1rem;
     z-index: 10000;
     display: flex;
