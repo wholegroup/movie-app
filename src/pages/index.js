@@ -25,7 +25,7 @@ export default function IndexPage () {
       // close filters panel when leaving index page
       commonStore.setIsFiltersPanelOpen(false)
     }
-  }, [router])
+  }, [router, commonStore])
 
   return (
     <>
