@@ -1,6 +1,8 @@
 import { makeObservable, observable, action, computed } from 'mobx'
 import { SETTINGS_NAMES } from './StorageService.js'
 
+const defaultFilter = {}
+
 class CommonStore {
   /** @type {StorageService} */
   storageService
@@ -38,6 +40,9 @@ class CommonStore {
   /** @type {number} TS/trigger to refresh data after some changes. */
   refreshTs = 0
 
+  /** @type {object} */
+  filter = defaultFilter
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
@@ -66,7 +71,9 @@ class CommonStore {
       details: observable.ref,
       setDetails: action,
       refreshTs: observable,
-      setRefreshTs: action
+      setRefreshTs: action,
+      filter: observable,
+      setFilter: action
     })
   }
 
@@ -279,6 +286,14 @@ class CommonStore {
    */
   setRefreshTs (refreshTs) {
     this.refreshTs = refreshTs
+  }
+
+  /**
+   * Sets filter.
+   * @param {object} filter
+   */
+  setFilter (filter) {
+    this.filter = filter
   }
 }
 
