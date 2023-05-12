@@ -45,3 +45,8 @@
         display: none;
     }
 }
+
+.version {
+    font-size: 0.7rem;
+    align-self: baseline;
+}

@@ -23,7 +23,7 @@ function Toolbar () {
                 <Icon id={'go-home'} path={mdiInformationOutline} size={1.5} title={'Information'} />
               </Link>
             </div>
-            <div className={styles.hide640}>
+            <div className={`${styles.hide640} ${styles.version}`}>
               <Link href='/about'>
                 v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
               </Link>
