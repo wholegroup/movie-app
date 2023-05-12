@@ -1,7 +1,19 @@
 import { makeObservable, observable, action, computed } from 'mobx'
 import { SETTINGS_NAMES } from './StorageService.js'
 
-const defaultFilters = {}
+export const movieDetailsStatusEnum = Object.freeze({
+  ALL: 'All',
+  TO_WATCH: 'To watch',
+  WITH_MARKS: 'With marks'
+})
+
+/** @type {TFilters} */
+const defaultFilters = {
+  // status: movieDetailsStatusEnum.TO_WATCH,
+  status: Object.keys(movieDetailsStatusEnum)
+    .find(key => movieDetailsStatusEnum[key] === movieDetailsStatusEnum.TO_WATCH),
+  years: []
+}
 
 class CommonStore {
   /** @type {StorageService} */
@@ -40,7 +52,7 @@ class CommonStore {
   /** @type {number} TS/trigger to refresh data after some changes. */
   refreshTs = 0
 
-  /** @type {object} */
+  /** @type {TFilters} */
   filters = defaultFilters
 
   /** @type {boolean} */
@@ -78,7 +90,8 @@ class CommonStore {
       filters: observable,
       setFilters: action,
       isFiltersPanelOpen: observable,
-      setIsFiltersPanelOpen: action
+      setIsFiltersPanelOpen: action,
+      years: computed
     })
   }
 
@@ -315,6 +328,23 @@ class CommonStore {
   resetFilters () {
     this.filters = defaultFilters
   }
+
+  /**
+   * Calculates years.
+   * @returns {number[]}
+   */
+  get years () {
+    return [...new Set(this.cards
+      .map(({ year }) => Number(year))
+      .filter(Boolean)
+      .sort())]
+  }
 }
+
+/**
+ * @typedef TFilters
+ * @type {?string} status
+ * @type {?number[]} years
+ */
 
 export default CommonStore
