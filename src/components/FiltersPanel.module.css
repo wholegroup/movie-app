@@ -4,5 +4,11 @@
     position: fixed;
     z-index: 100;
     transition: opacity 5.25s ease;
+    animation: show-animation 0.25s ease;
     /*display: flex;*/
+}
+
+@keyframes show-animation {
+    0%    { opacity: 0; }
+    100%  { opacity: 1; }
 }
