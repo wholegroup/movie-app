@@ -351,7 +351,9 @@ class CommonStore {
     return [...new Set(this.cards
       .map(({ year }) => Number(year))
       .filter(Boolean)
-      .sort())]
+      .sort()
+      .reverse()
+    )]
   }
 }
 
