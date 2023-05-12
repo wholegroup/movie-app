@@ -308,6 +308,13 @@ class CommonStore {
   setIsFiltersPanelOpen (isFiltersPanelOpen) {
     this.isFiltersPanelOpen = isFiltersPanelOpen
   }
+
+  /**
+   * Resets filters.
+   */
+  resetFilters () {
+    this.filters = defaultFilters
+  }
 }
 
 export default CommonStore

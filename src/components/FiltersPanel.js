@@ -15,19 +15,22 @@ function FiltersPanel () {
   return (
     <div className={styles.panel}>
       <div className={styles.filters}>
-        <div>FILTERS PANEL</div>
-        <div>FILTERS PANEL</div>
-        <div>FILTERS PANEL</div>
-        <div>FILTERS PANEL</div>
-        <div>FILTERS PANEL</div>
-        <div>FILTERS PANEL</div>
-        <div>FILTERS PANEL</div>
-        <div>FILTERS PANEL</div>
-        <div>FILTERS PANEL</div>
+        <div>
+          <div>Status</div>
+          <div>FILTERS PANEL</div>
+        </div>
+        <div>
+          <div>Years</div>
+          FILTERS PANEL
+        </div>
       </div>
       <div className={styles.buttons}>
-        <button>Apply</button>
-        <button>Reset</button>
+        <button onClick={() => {
+          commonStore.resetFilters()
+          commonStore.setIsFiltersPanelOpen(false)
+        }}>
+          Reset
+        </button>
       </div>
     </div>
   )

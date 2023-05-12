@@ -14,6 +14,14 @@
 
 .filters {
     display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filters > div {
+    border: 2px solid red;
+    min-width: 200px;
 }
 
 .buttons {
