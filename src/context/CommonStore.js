@@ -1,7 +1,7 @@
 import { makeObservable, observable, action, computed } from 'mobx'
 import { SETTINGS_NAMES } from './StorageService.js'
 
-const defaultFilter = {}
+const defaultFilters = {}
 
 class CommonStore {
   /** @type {StorageService} */
@@ -41,7 +41,7 @@ class CommonStore {
   refreshTs = 0
 
   /** @type {object} */
-  filter = defaultFilter
+  filters = defaultFilters
 
   /**
    * Default constructor.
@@ -72,8 +72,8 @@ class CommonStore {
       setDetails: action,
       refreshTs: observable,
       setRefreshTs: action,
-      filter: observable,
-      setFilter: action
+      filters: observable,
+      setFilters: action
     })
   }
 
@@ -290,10 +290,10 @@ class CommonStore {
 
   /**
    * Sets filter.
-   * @param {object} filter
+   * @param {object} filters
    */
-  setFilter (filter) {
-    this.filter = filter
+  setFilters (filters) {
+    this.filters = filters
   }
 }
 
