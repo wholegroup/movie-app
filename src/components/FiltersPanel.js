@@ -18,7 +18,6 @@ function FiltersPanel () {
    * @param {string} status
    */
   const clickStatus = (status) => {
-    console.log(JSON.stringify(commonStore.filters))
     commonStore.setFilters({
       ...commonStore.filters,
       status

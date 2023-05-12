@@ -240,7 +240,21 @@ class CommonStore {
    * @returns {TMovieCard[]}
    */
   get filteredCards () {
-    return [...this.cards]
+    return [...this.cards
+      .filter(({ year }) => this.filters.years.length === 0 || this.filters.years.includes(year))
+      .filter(({ mark }) => {
+        if (movieDetailsStatusEnum[this.filters.status] === movieDetailsStatusEnum.ALL) {
+          return true
+        }
+        if (movieDetailsStatusEnum[this.filters.status] === movieDetailsStatusEnum.TO_WATCH) {
+          return !mark
+        }
+        if (movieDetailsStatusEnum[this.filters.status] === movieDetailsStatusEnum.WITH_MARKS) {
+          return mark > 0
+        }
+        return false
+      })
+    ]
   }
 
   /**
