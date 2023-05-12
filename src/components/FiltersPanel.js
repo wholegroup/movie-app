@@ -22,6 +22,7 @@ function FiltersPanel () {
       ...commonStore.filters,
       status
     })
+    commonStore.setIsFiltersPanelOpen(false)
   }
 
   /**
@@ -35,6 +36,7 @@ function FiltersPanel () {
         ? commonStore.filters.years.filter(n => n !== year)
         : [...commonStore.filters.years, year]
     })
+    commonStore.setIsFiltersPanelOpen(false)
   }
 
   return (
