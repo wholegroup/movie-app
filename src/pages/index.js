@@ -1,12 +1,14 @@
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
 import CardList from '../components/CardList.js'
 import CardListLoader from '../components/CardsLoader.js'
 import ApiService from '../context/ApiService.js'
+import globalContext from '../context/globalContext.js'
 
 // noinspection JSUnusedGlobalSymbols
 export default function IndexPage () {
+  const { commonStore } = useContext(globalContext)
   const router = useRouter()
 
   useEffect(() => {
@@ -17,6 +19,11 @@ export default function IndexPage () {
       console.log('re-triggering router...')
       router.replace(router.asPath)
         .catch(console.error)
+    }
+
+    return () => {
+      // close filters panel when leaving index page
+      commonStore.setIsFiltersPanelOpen(false)
     }
   }, [router])
 
