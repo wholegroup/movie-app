@@ -1,11 +1,11 @@
 import Link from 'next/link.js'
 import { useRouter } from 'next/router.js'
 import { Icon } from '@mdi/react'
-import { mdiArrowLeftBoldCircleOutline, mdiInformationOutline, mdiFilterMultiple } from '@mdi/js'
+import { mdiArrowLeftBoldCircleOutline, mdiInformationOutline } from '@mdi/js'
 import ProfileLoader from './ProfileLoader.js'
 import styles from './Toolbar.module.css'
 import ToolbarUser from './ToolbarUser'
-import MovieCounter from './MovieCounter.js'
+import ToolbarMenu from './ToolbarMenu'
 
 /**
  * Toolbar.
@@ -39,20 +39,7 @@ function Toolbar () {
         )}
       </div>
       <div>
-          {router.asPath === '/' && (
-            <>
-              <div>
-                <Icon id={'go-home'} path={mdiFilterMultiple} size={1.5} title={'Filter'} />
-              </div>
-              <div className={styles.hide640}>
-                Filters
-              </div>
-              <div>&nbsp;&nbsp;&nbsp;</div>
-              <div>
-                <MovieCounter />
-              </div>
-            </>
-          )}
+        {router.asPath === '/' && <ToolbarMenu />}
       </div>
       <div className={styles.last}>
         <div>
