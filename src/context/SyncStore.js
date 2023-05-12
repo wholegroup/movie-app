@@ -85,10 +85,9 @@ class SyncStore {
 
   /**
    * Sets isInitialized flag.
-   * @param {boolean} isInitialized
    */
-  setIsInitialized (isInitialized) {
-    this.isInitialized = isInitialized
+  setIsInitialized () {
+    this.isInitialized = true
   }
 
   /**
@@ -202,8 +201,6 @@ class SyncStore {
       console.log('Normalizing purged timestamp!')
       this.setPurgedTs(0)
     }
-
-    this.setIsInitialized(true)
   }
 
   /**
@@ -216,6 +213,7 @@ class SyncStore {
     }
 
     await this.initializeStoreData()
+    this.setIsInitialized()
 
     this.workerIntervalId = setInterval(() => {
       this.runWorker()

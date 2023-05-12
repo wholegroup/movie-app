@@ -87,7 +87,7 @@ class CommonStore {
       setDetails: action,
       refreshTs: observable,
       setRefreshTs: action,
-      filters: observable,
+      filters: observable.ref,
       setFilters: action,
       isFiltersPanelOpen: observable,
       setIsFiltersPanelOpen: action,
@@ -115,9 +115,6 @@ class CommonStore {
 
     this.makeReadyIsCompleted = new Promise(resolve => {
       this.makeReadyAsync(additional)
-        .then(() => {
-          this.setIsInitialized()
-        })
         .finally(() => {
           resolve()
         })
@@ -133,6 +130,17 @@ class CommonStore {
    */
   async makeReadyAsync (additional) {
     await additional()
+    await this.initializeStoreData()
+
+    this.setIsInitialized()
+  }
+
+  /**
+   * Initializes store data from storage.
+   * @returns {Promise<void>}
+   */
+  async initializeStoreData () {
+    this.setFilters(await this.storageService.getSettings(SETTINGS_NAMES.USER_FILTERS) || defaultFilters)
   }
 
   /**
@@ -326,6 +334,16 @@ class CommonStore {
    */
   setFilters (filters) {
     this.filters = filters
+  }
+
+  /**
+   * Updates filters.
+   * @param {TFilters} filters
+   * @returns {Promise<void>}
+   */
+  async updateFilters (filters) {
+    this.setFilters(filters)
+    await this.storageService.setSettings(SETTINGS_NAMES.USER_FILTERS, { ...this.filters })
   }
 
   /**

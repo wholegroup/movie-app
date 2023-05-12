@@ -8,7 +8,7 @@ import styles from './FiltersPanel.module.css'
  * Filters Panel.
  */
 function FiltersPanel () {
-  const { commonStore } = useContext(globalContext)
+  const { commonStore, notificationStore } = useContext(globalContext)
   if (!commonStore.isFiltersPanelOpen) {
     return null
   }
@@ -18,10 +18,10 @@ function FiltersPanel () {
    * @param {string} status
    */
   const clickStatus = (status) => {
-    commonStore.setFilters({
+    commonStore.updateFilters({
       ...commonStore.filters,
       status
-    })
+    }).catch(e => notificationStore.error({ message: e.message }))
     commonStore.setIsFiltersPanelOpen(false)
   }
 
@@ -30,12 +30,12 @@ function FiltersPanel () {
    * @param {number} year
    */
   const clickYear = (year) => {
-    commonStore.setFilters({
+    commonStore.updateFilters({
       ...commonStore.filters,
       years: commonStore.filters.years.includes(year)
         ? commonStore.filters.years.filter(n => n !== year)
         : [...commonStore.filters.years, year]
-    })
+    }).catch(e => notificationStore.error({ message: e.message }))
     commonStore.setIsFiltersPanelOpen(false)
   }
 
@@ -46,7 +46,8 @@ function FiltersPanel () {
           <div>Status</div>
           {Object.keys(movieDetailsStatusEnum).map(status => (
             <div key={status} onClick={() => clickStatus(status)}>
-              {commonStore.filters.status === status ? <b>{movieDetailsStatusEnum[status]}</b> : movieDetailsStatusEnum[status]}
+              {commonStore.filters.status === status ?
+                <b>{movieDetailsStatusEnum[status]}</b> : movieDetailsStatusEnum[status]}
             </div>
           ))}
         </div>
@@ -54,7 +55,8 @@ function FiltersPanel () {
           <div>Years</div>
           {commonStore.years.map(year => (
             <div key={year} onClick={() => clickYear(year)}>
-              {commonStore.filters.years.length === 0 || commonStore.filters.years.includes(year) ? <b>{year}</b> : year}
+              {commonStore.filters.years.length === 0 || commonStore.filters.years.includes(year) ?
+                <b>{year}</b> : year}
             </div>
           ))}
         </div>

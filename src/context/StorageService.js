@@ -64,6 +64,8 @@ class StorageService {
    * @returns {Promise<void>}
    */
   async setSettings (name, value) {
+    console.log('name', name)
+    console.log('value', value)
     await this.storage.settings.put(value, name)
   }
 
@@ -292,7 +294,8 @@ class StorageService {
 export const SETTINGS_NAMES = Object.freeze({
   LAST_UPDATED_AT: 'LAST_UPDATED_AT',
   PURGED_TS: 'PURGED_TS',
-  USER_PROFILE: 'USER_PROFILE'
+  USER_PROFILE: 'USER_PROFILE',
+  USER_FILTERS: 'USER_FILTERS'
 })
 
 export default StorageService
