@@ -14,15 +14,21 @@ function FiltersPanel () {
 
   return (
     <div className={styles.panel}>
-      <div>FILTERS PANEL</div>
-      <div>FILTERS PANEL</div>
-      <div>FILTERS PANEL</div>
-      <div>FILTERS PANEL</div>
-      <div>FILTERS PANEL</div>
-      <div>FILTERS PANEL</div>
-      <div>FILTERS PANEL</div>
-      <div>FILTERS PANEL</div>
-      <div>FILTERS PANEL</div>
+      <div className={styles.filters}>
+        <div>FILTERS PANEL</div>
+        <div>FILTERS PANEL</div>
+        <div>FILTERS PANEL</div>
+        <div>FILTERS PANEL</div>
+        <div>FILTERS PANEL</div>
+        <div>FILTERS PANEL</div>
+        <div>FILTERS PANEL</div>
+        <div>FILTERS PANEL</div>
+        <div>FILTERS PANEL</div>
+      </div>
+      <div className={styles.buttons}>
+        <button>Apply</button>
+        <button>Reset</button>
+      </div>
     </div>
   )
 }
