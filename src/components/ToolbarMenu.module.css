@@ -1,0 +1,17 @@
+@media (max-width: 640px) {
+    .hide640 {
+        display: none;
+    }
+}
+
+.buttonLink {
+    box-sizing: content-box;
+    padding: 0 0 0 0.375rem;
+    color: rgba(0, 0, 0, 1);
+    border: 0;
+    background-color: transparent;
+}
+
+.buttonLink:hover {
+    color: rgba(0, 0, 0, 0.5);
+}

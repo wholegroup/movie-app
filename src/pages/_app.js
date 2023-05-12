@@ -2,6 +2,7 @@ import GlobalContextProvider from '../context/GlobalContextProvider.js'
 import Head from 'next/head'
 import WorkboxReloadHook from '../components/WorkboxReloadHook.js'
 import Toolbar from '../components/Toolbar.js'
+import FiltersPanel from '../components/FiltersPanel'
 import ToastsContainer from '../components/ToastsContainer.js'
 import './bs-reboot.css'
 import './_app.css'
@@ -32,6 +33,7 @@ export default function Application ({ Component, pageProps }) {
       <WorkboxReloadHook />
       <GlobalContextProvider {...pageProps}>
         <Toolbar />
+        <FiltersPanel />
         <Component {...pageProps} />
         <ToastsContainer />
       </GlobalContextProvider>

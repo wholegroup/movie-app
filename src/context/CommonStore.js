@@ -43,6 +43,9 @@ class CommonStore {
   /** @type {object} */
   filters = defaultFilters
 
+  /** @type {boolean} */
+  isFiltersPanelOpen = false
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
@@ -73,7 +76,9 @@ class CommonStore {
       refreshTs: observable,
       setRefreshTs: action,
       filters: observable,
-      setFilters: action
+      setFilters: action,
+      isFiltersPanelOpen: observable,
+      setIsFiltersPanelOpen: action
     })
   }
 
@@ -294,6 +299,14 @@ class CommonStore {
    */
   setFilters (filters) {
     this.filters = filters
+  }
+
+  /**
+   * Sets isFiltersPanelOpen
+   * @param {boolean} isFiltersPanelOpen
+   */
+  setIsFiltersPanelOpen (isFiltersPanelOpen) {
+    this.isFiltersPanelOpen = isFiltersPanelOpen
   }
 }
 
