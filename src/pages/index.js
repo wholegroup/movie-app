@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
-import MovieIndex from '../components/CardList.js'
-import MovieIndexLoader from '../components/CardsLoader.js'
+import CardList from '../components/CardList.js'
+import CardListLoader from '../components/CardsLoader.js'
 import ApiService from '../context/ApiService.js'
 
 // noinspection JSUnusedGlobalSymbols
@@ -22,8 +22,8 @@ export default function IndexPage () {
 
   return (
     <>
-      <MovieIndexLoader />
-      <MovieIndex />
+      <CardListLoader />
+      <CardList />
     </>
   )
 }
