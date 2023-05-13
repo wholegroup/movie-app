@@ -46,8 +46,9 @@ function FiltersPanel () {
           <div>Status</div>
           {Object.keys(movieDetailsStatusEnum).map(status => (
             <div key={status} onClick={() => clickStatus(status)}>
-              {commonStore.filters.status === status ?
-                <b>{movieDetailsStatusEnum[status]}</b> : movieDetailsStatusEnum[status]}
+              {commonStore.filters.status === status
+                ? <b>{movieDetailsStatusEnum[status]}</b>
+                : movieDetailsStatusEnum[status]}
             </div>
           ))}
         </div>
@@ -55,8 +56,9 @@ function FiltersPanel () {
           <div>Years</div>
           {commonStore.years.map(year => (
             <div key={year} onClick={() => clickYear(year)}>
-              {commonStore.filters.years.length === 0 || commonStore.filters.years.includes(year) ?
-                <b>{year}</b> : year}
+              {commonStore.filters.years.length === 0 || commonStore.filters.years.includes(year)
+                ? <b>{year}</b>
+                : year}
             </div>
           ))}
         </div>
