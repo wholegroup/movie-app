@@ -7,8 +7,10 @@ function MovieCounter () {
   return (
     <>
       {commonStore.filteredCards.length}
+      <span style={{ fontSize: '0.6rem' }}>
       {' / '}
-      {commonStore.cards.length}
+        {commonStore.cards.length}
+      </span>
     </>
   )
 }
