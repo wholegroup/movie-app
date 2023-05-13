@@ -15,3 +15,7 @@
 .buttonLink:hover {
     color: rgba(0, 0, 0, 0.5);
 }
+
+.modified {
+    color: indianred;
+}

@@ -91,6 +91,7 @@ class CommonStore {
       setFilters: action,
       isFiltersPanelOpen: observable,
       setIsFiltersPanelOpen: action,
+      isFiltersModified: computed,
       years: computed
     })
   }
@@ -373,12 +374,35 @@ class CommonStore {
       .reverse()
     )]
   }
+
+  /**
+   * Calculates if filters are modified.
+   * @returns {boolean}
+   */
+  get isFiltersModified () {
+    const defaultYears = defaultFilters.years.length > 0 ? defaultFilters.years : this.years
+    const filtersYears = this.filters.years.length > 0 ? this.filters.years : this.years
+    if (defaultYears.length !== filtersYears.length) {
+      return true
+    }
+
+    // check intersection
+    if (defaultYears.filter(y => !filtersYears.includes(y)).length > 0) {
+      return true
+    }
+
+    if (defaultFilters.status !== this.filters.status) {
+      return true
+    }
+
+    return false
+  }
 }
 
 /**
  * @typedef TFilters
- * @type {?string} status
- * @type {?number[]} years
+ * @property {string=} status
+ * @property {number[]=} years
  */
 
 export default CommonStore

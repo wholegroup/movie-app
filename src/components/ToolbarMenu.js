@@ -23,7 +23,13 @@ function ToolbarMenu () {
       </div>
       <div>
         <button onClick={togglePanel} className={styles.buttonLink}>
-          <Icon id={'go-home'} path={mdiFilterMultiple} size={1.5} title={'Filter'} />
+          <Icon
+            id={'filters'}
+            path={mdiFilterMultiple}
+            size={1.5}
+            title={'Filters'}
+            className={commonStore.isFiltersModified ? styles.modified : ''}
+          />
         </button>
       </div>
       <div className={styles.hide640}>
