@@ -19,6 +19,9 @@ function ToolbarMenu () {
   return (
     <>
       <div>
+        <MovieCounter />
+      </div>
+      <div>
         <button onClick={togglePanel} className={styles.buttonLink}>
           <Icon id={'go-home'} path={mdiFilterMultiple} size={1.5} title={'Filter'} />
         </button>
@@ -29,9 +32,6 @@ function ToolbarMenu () {
         </button>
       </div>
       <div>&nbsp;&nbsp;&nbsp;</div>
-      <div>
-        <MovieCounter />
-      </div>
     </>
   )
 }
