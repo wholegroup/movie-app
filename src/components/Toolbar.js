@@ -24,9 +24,14 @@ function Toolbar () {
               </Link>
             </div>
             <div className={`${styles.hide640} ${styles.version}`}>
-              <Link href='/about'>
-                v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
-              </Link>
+                <Link href='/about'>
+              <div>
+                AnnualMovies.com
+              </div>
+              <div>
+                  v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
+              </div>
+                </Link>
             </div>
           </>
         )}

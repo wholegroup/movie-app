@@ -48,5 +48,6 @@
 
 .version {
     font-size: 0.7rem;
-    align-self: baseline;
+    /*align-self: baseline;*/
+    text-align: right;
 }
