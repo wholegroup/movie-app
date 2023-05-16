@@ -64,8 +64,6 @@ class StorageService {
    * @returns {Promise<void>}
    */
   async setSettings (name, value) {
-    console.log('name', name)
-    console.log('value', value)
     await this.storage.settings.put(value, name)
   }
 
@@ -170,6 +168,7 @@ class StorageService {
         slug: movie.slug,
         title: movie.title,
         year: movie.year,
+        genres: movie.genres,
         posterHash: mainImage?.hash || null,
         posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || ''),
         mark: details.find(({ movieId }) => movieId === movie.movieId)?.mark || null
