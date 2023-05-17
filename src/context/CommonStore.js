@@ -92,7 +92,9 @@ class CommonStore {
       isFiltersPanelOpen: observable,
       setIsFiltersPanelOpen: action,
       isFiltersModified: computed,
-      years: computed
+      years: computed,
+      genresCounter: computed,
+      genres: computed
     })
   }
 
@@ -373,6 +375,30 @@ class CommonStore {
       .sort()
       .reverse()
     )]
+  }
+
+  /**
+   * Counts genres.
+   * @returns {object}
+   */
+  get genresCounter () {
+    return this.cards
+      .map(({ genres }) => genres)
+      .flat()
+      .filter(Boolean)
+      .reduce((acc, genre) => ({
+        ...acc,
+        [genre]: (acc[genre] || 0) + 1
+      }), {})
+  }
+
+  /**
+   * Calculates genres sorted by counter.
+   * @returns {string[]}
+   */
+  get genres () {
+    return Object.keys(this.genresCounter)
+      .sort((a, b) => (this.genresCounter[b] - this.genresCounter[a]) || a.localeCompare(b))
   }
 
   /**

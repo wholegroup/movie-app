@@ -271,6 +271,7 @@ class StorageService {
  * @property {string} slug
  * @property {string} title
  * @property {number} year
+ * @property {string} genres
  * @property {string} posterHash
  * @property {string} posterUrl
  * @property {?number} mark
