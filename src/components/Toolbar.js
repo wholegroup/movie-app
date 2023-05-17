@@ -37,7 +37,7 @@ function Toolbar () {
         )}
         {router.asPath !== '/' && (
           <div>
-            <Link href='/'>
+            <Link href='/' onClick={() => router.back()}>
               <Icon id={'go-home'} path={mdiArrowLeftBoldCircleOutline} size={1.5} title={'Anonymous'} />
             </Link>
           </div>
