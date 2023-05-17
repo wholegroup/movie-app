@@ -412,17 +412,29 @@ class CommonStore {
    * @returns {boolean}
    */
   get isFiltersModified () {
+    // check years intersection
     const defaultYears = defaultFilters.years.length > 0 ? defaultFilters.years : this.years
     const filtersYears = this.filters.years.length > 0 ? this.filters.years : this.years
     if (defaultYears.length !== filtersYears.length) {
       return true
     }
 
-    // check intersection
     if (defaultYears.filter(y => !filtersYears.includes(y)).length > 0) {
       return true
     }
 
+    // check genres intersection
+    const defaultGenres = defaultFilters.genres.length > 0 ? defaultFilters.genres : this.genres
+    const filtersGenres = this.filters.genres.length > 0 ? this.filters.genres : this.genres
+    if (defaultGenres.length !== filtersGenres.length) {
+      return true
+    }
+
+    if (defaultGenres.filter(y => !filtersGenres.includes(y)).length > 0) {
+      return true
+    }
+
+    // check status
     if (defaultFilters.status !== this.filters.status) {
       return true
     }
