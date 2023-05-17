@@ -34,7 +34,21 @@ function FiltersPanel () {
       ...commonStore.filters,
       years: commonStore.filters.years.includes(year)
         ? commonStore.filters.years.filter(n => n !== year)
-        : [...commonStore.filters.years, year]
+        : [year]
+    }).catch(e => notificationStore.error({ message: e.message }))
+    commonStore.setIsFiltersPanelOpen(false)
+  }
+
+  /**
+   * Genre handler
+   * @param {string} genre
+   */
+  const clickGenre = (genre) => {
+    commonStore.updateFilters({
+      ...commonStore.filters,
+      genres: commonStore.filters.genres.includes(genre)
+        ? commonStore.filters.genres.filter(n => n !== genre)
+        : [genre]
     }).catch(e => notificationStore.error({ message: e.message }))
     commonStore.setIsFiltersPanelOpen(false)
   }
@@ -62,10 +76,21 @@ function FiltersPanel () {
             </div>
           ))}
         </div>
+        <div>
+          <div>Genres</div>
+          {commonStore.genres.slice(0, 5).map(genre => (
+            <div key={genre} onClick={() => clickGenre(genre)}>
+              {commonStore.filters.genres.length === 0 || commonStore.filters.genres.includes(genre)
+                ? <b>{genre}</b>
+                : genre}
+            </div>
+          ))}
+        </div>
       </div>
       <div className={styles.buttons}>
         <button onClick={() => {
           commonStore.resetFilters()
+            .catch(e => notificationStore.error({ message: e.message }))
           commonStore.setIsFiltersPanelOpen(false)
         }}>
           Reset

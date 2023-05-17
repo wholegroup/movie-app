@@ -68,6 +68,7 @@ IndexPage.getInitialProps = async function ({ req }) {
         slug: movie.slug,
         title: movie.title,
         year: movie.year,
+        genres: movie.genres,
         posterHash: mainImage?.hash || null,
         posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || '')
       }

@@ -12,7 +12,8 @@ const defaultFilters = {
   // status: movieDetailsStatusEnum.TO_WATCH,
   status: Object.keys(movieDetailsStatusEnum)
     .find(key => movieDetailsStatusEnum[key] === movieDetailsStatusEnum.TO_WATCH),
-  years: []
+  years: [],
+  genres: []
 }
 
 class CommonStore {
@@ -143,7 +144,10 @@ class CommonStore {
    * @returns {Promise<void>}
    */
   async initializeStoreData () {
-    this.setFilters(await this.storageService.getSettings(SETTINGS_NAMES.USER_FILTERS) || defaultFilters)
+    this.setFilters({
+      ...defaultFilters,
+      ...(await this.storageService.getSettings(SETTINGS_NAMES.USER_FILTERS) || {})
+    })
   }
 
   /**
@@ -253,6 +257,8 @@ class CommonStore {
   get filteredCards () {
     return [...this.cards
       .filter(({ year }) => this.filters.years.length === 0 || this.filters.years.includes(year))
+      .filter(({ genres }) => this.filters.genres.length === 0 ||
+        this.filters.genres.filter(g => genres.includes(g)).length > 0)
       .filter(({ mark }) => {
         if (movieDetailsStatusEnum[this.filters.status] === movieDetailsStatusEnum.ALL) {
           return true
@@ -360,8 +366,8 @@ class CommonStore {
   /**
    * Resets filters.
    */
-  resetFilters () {
-    this.filters = defaultFilters
+  async resetFilters () {
+    return this.updateFilters(defaultFilters)
   }
 
   /**
@@ -429,6 +435,7 @@ class CommonStore {
  * @typedef TFilters
  * @property {string=} status
  * @property {number[]=} years
+ * @property {string[]=} genres
  */
 
 export default CommonStore
