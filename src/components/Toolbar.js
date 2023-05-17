@@ -24,22 +24,25 @@ function Toolbar () {
               </Link>
             </div>
             <div className={`${styles.hide640} ${styles.version}`}>
-                <Link href='/about'>
-              <div>
-                AnnualMovies.com
-              </div>
-              <div>
+              <Link href='/about'>
+                <div>
+                  AnnualMovies.com
+                </div>
+                <div>
                   v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
-              </div>
-                </Link>
+                </div>
+              </Link>
             </div>
           </>
         )}
         {router.asPath !== '/' && (
           <div>
-            <Link href='/' onClick={() => router.back()}>
+            <a href='#' onClick={(e) => {
+              e.preventDefault()
+              router.back()
+            }}>
               <Icon id={'go-home'} path={mdiArrowLeftBoldCircleOutline} size={1.5} title={'Anonymous'} />
-            </Link>
+            </a>
           </div>
         )}
       </div>
