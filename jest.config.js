@@ -1,7 +1,4 @@
 import nextJest from 'next/jest.js'
-import { createRequire } from 'node:module'
-
-const require = createRequire(import.meta.url)
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.mjs and .env files in your test environment
@@ -16,7 +13,7 @@ const config = {
 
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
-    '^dexie$': require.resolve('dexie')
+    '^dexie$': '<rootDir>/node_modules/dexie'
   }
 }
 
