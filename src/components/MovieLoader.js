@@ -16,6 +16,11 @@ function MovieLoader ({ slug }) {
         return
       }
 
+      // don't update before data is loaded
+      if (!syncStore?.lastUpdatedAt) {
+        return
+      }
+
       await commonStore.setRefreshTs(0)
       await commonStore.loadMovieBySlug(slug)
     }
@@ -24,9 +29,12 @@ function MovieLoader ({ slug }) {
       .catch((e) => notificationStore.error({ message: e.message }))
 
     return () => {
-      commonStore.setMovie(null)
-      commonStore.setVotes(null)
-      commonStore.setImages(null)
+      // only when sync is done
+      if (syncStore?.lastUpdatedAt) {
+        commonStore.setMovie(null)
+        commonStore.setVotes(null)
+        commonStore.setImages(null)
+      }
       commonStore.setMetadata(null)
       commonStore.setDetails(null)
       commonStore.setRefreshTs(0)

@@ -16,6 +16,11 @@ function CardsLoader () {
         return
       }
 
+      // don't update before data is loaded
+      if (!syncStore?.lastUpdatedAt) {
+        return
+      }
+
       // nothing changed if lastUpdatedAt is set and not new
       const lastUpdatedAt = syncStore.lastUpdatedAt
       if (lastUpdatedAt && lastUpdatedAtRef.current === lastUpdatedAt && commonStore.cards.length > 0) {
