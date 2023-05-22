@@ -32,7 +32,10 @@ function CardsLoader () {
     }
 
     load()
-      .catch((e) => notificationStore.error({ message: e.message }))
+      .catch((e) => {
+        console.error(e)
+        notificationStore.error({ message: e.message })
+      })
 
     return () => {
       commonStore.setRefreshTs(0)

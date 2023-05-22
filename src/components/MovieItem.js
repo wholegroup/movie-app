@@ -58,7 +58,7 @@ function MovieItem () {
         <div>
           <div onClick={() => openPhoto()}>
             <img
-              src={ApiService.generatePreviewUrl(images.images[0].hash)}
+              src={ApiService.generatePreviewUrl(images?.images[0]?.hash || '')}
               title={movie.title}
               alt={movie.title}
               loading='lazy'
