@@ -30,7 +30,6 @@ export const getServerSideProps = async ({ res }) => {
       ...votes.map(({ updatedAt }) => updatedAt)
     ].reduce((max, c) => c > max ? c : max, '')
 
-
     // xml
     const sortedMovies = movies.sort(({ year: a, title: x }, { year: b, title: y }) => (b - a) || x.localeCompare(y))
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -65,7 +64,6 @@ export const getServerSideProps = async ({ res }) => {
       await syncService.close()
     }
   }
-
 
   return {
     props: {}
