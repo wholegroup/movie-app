@@ -26,6 +26,7 @@ export default function Application ({ Component, pageProps }) {
         <meta name='keywords' content='Keywords' />
         <title>Annual Movies</title>
 
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
         <link rel='manifest' href='/manifest.json' />
         <link href='/icons/icon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
         <link rel='apple-touch-icon' href='/icons/icon-512x512.png'></link>

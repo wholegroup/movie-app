@@ -38,7 +38,7 @@ export const getServerSideProps = async ({ res }) => {
     <url>
       <loc>${BASE_URL}/</loc>
       <lastmod>${maxUpdatedAt}</lastmod>
-      <changefreq>monthly</changefreq>
+      <changefreq>weekly</changefreq>
       <priority>1.0</priority>
     </url>
     <url>
