@@ -1,7 +1,7 @@
 import Link from 'next/link.js'
 import { useRouter } from 'next/router.js'
 import { Icon } from '@mdi/react'
-import { mdiArrowLeftBoldCircleOutline, mdiInformationOutline } from '@mdi/js'
+import { mdiHomeCircleOutline, mdiInformationOutline } from '@mdi/js'
 import ProfileLoader from './ProfileLoader.js'
 import styles from './Toolbar.module.css'
 import ToolbarUser from './ToolbarUser'
@@ -37,12 +37,9 @@ function Toolbar () {
         )}
         {router.asPath !== '/' && (
           <div>
-            <a href='#' onClick={(e) => {
-              e.preventDefault()
-              router.back()
-            }}>
-              <Icon id={'go-home'} path={mdiArrowLeftBoldCircleOutline} size={1.5} title={'Anonymous'} />
-            </a>
+            <Link href='/'>
+              <Icon id={'go-home'} path={mdiHomeCircleOutline} size={1.5} title={'Anonymous'} />
+            </Link>
           </div>
         )}
       </div>

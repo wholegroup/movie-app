@@ -6,6 +6,7 @@ import FiltersPanel from '../components/FiltersPanel'
 import ToastsContainer from '../components/ToastsContainer.js'
 import './bs-reboot.css'
 import './_app.css'
+import PreserveScroll from '../components/PreserveScroll.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**
@@ -31,6 +32,7 @@ export default function Application ({ Component, pageProps }) {
         <meta name='theme-color' content='#317EFB' />
       </Head>
       <WorkboxReloadHook />
+      <PreserveScroll />
       <GlobalContextProvider {...pageProps}>
         <Toolbar />
         <FiltersPanel />

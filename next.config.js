@@ -5,9 +5,6 @@ import runtimeCaching from './cache.js'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    scrollRestoration: true
-  },
   webpack (webpackConfig) {
     return {
       ...webpackConfig,
