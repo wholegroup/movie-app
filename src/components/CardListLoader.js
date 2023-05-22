@@ -5,7 +5,7 @@ import globalContext from '../context/globalContext.js'
 /**
  * Cards loader.
  */
-function CardsLoader () {
+function CardListLoader () {
   const { commonStore, syncStore, notificationStore } = useContext(globalContext)
   const lastUpdatedAtRef = useRef(syncStore?.lastUpdatedAt || '')
 
@@ -59,4 +59,4 @@ function CardsLoader () {
   return null
 }
 
-export default observer(CardsLoader)
+export default observer(CardListLoader)
