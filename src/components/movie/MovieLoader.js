@@ -1,13 +1,15 @@
 import { observer } from 'mobx-react-lite'
 import { useContext, useEffect } from 'react'
-import globalContext from '../context/globalContext.js'
+import { useRouter } from 'next/router.js'
+import movieContext from './movieContext.js'
 
 /**
  * Movie loader.
  * @param {string} slug
  */
-function MovieLoader ({ slug }) {
-  const { commonStore, syncStore, notificationStore } = useContext(globalContext)
+function MovieLoader () {
+  const { query: { slug } } = useRouter()
+  const { movieStore, commonStore, syncStore, notificationStore } = useContext(movieContext)
 
   // Load movie by slug
   useEffect(() => {
@@ -21,8 +23,8 @@ function MovieLoader ({ slug }) {
         return
       }
 
-      await commonStore.setRefreshTs(0)
-      await commonStore.loadMovieBySlug(slug)
+      await movieStore.setRefreshTs(0)
+      await movieStore.loadMovieBySlug(slug)
     }
 
     load()
@@ -31,29 +33,29 @@ function MovieLoader ({ slug }) {
     return () => {
       // only when sync is done
       if (syncStore?.lastUpdatedAt) {
-        commonStore.setMovie(null)
-        commonStore.setVotes(null)
-        commonStore.setImages(null)
+        movieStore.setMovie(null)
+        movieStore.setVotes(null)
+        movieStore.setImages(null)
       }
-      commonStore.setMetadata(null)
-      commonStore.setDetails(null)
-      commonStore.setRefreshTs(0)
+      movieStore.setMetadata(null)
+      movieStore.setDetails(null)
+      movieStore.setRefreshTs(0)
     }
-  }, [slug, commonStore, commonStore.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
+  }, [slug, movieStore, commonStore.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
 
   // Refresh movie by commonStore.refreshTs
   useEffect(() => {
     async function refresh () {
-      if (!commonStore.refreshTs) {
+      if (!movieStore.refreshTs) {
         return
       }
 
-      await commonStore.loadMovieBySlug(slug)
+      await movieStore.loadMovieBySlug(slug)
     }
 
     refresh()
       .catch((e) => notificationStore.error({ message: e.message }))
-  }, [slug, commonStore, commonStore.refreshTs, notificationStore])
+  }, [slug, movieStore, movieStore.refreshTs, notificationStore])
 
   return null
 }

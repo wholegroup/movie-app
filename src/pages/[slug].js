@@ -1,19 +1,18 @@
-import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
-import MovieItem from '../components/MovieItem.js'
-import MovieLoader from '../components/MovieLoader'
+import MovieItem from '../components/movie/MovieItem.js'
+import MovieLoader from '../components/movie/MovieLoader.js'
+import MovieContextProvider from '../components/movie/MovieContextProvider.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**
  * Movie page
  */
-export default function MoviePage () {
-  const { query: { slug } } = useRouter()
+export default function MoviePage ({ ...pageProps }) {
   return (
-    <>
-      <MovieLoader slug={slug} />
+    <MovieContextProvider {...pageProps}>
+      <MovieLoader />
       <MovieItem />
-    </>
+    </MovieContextProvider>
   )
 }
 
@@ -45,7 +44,7 @@ MoviePage.getInitialProps = async function ({ req, query, res }) {
 
     return {
       ts: Date.now(),
-      commonStore: {
+      movieStore: {
         movie,
         votes: await syncService.findVotesByMovieId(movie.movieId),
         images: await syncService.findImagesByMovieId(movie.movieId)

@@ -1,5 +1,5 @@
-import globalContext from '../context/globalContext.js'
-import CommonStore from '../context/CommonStore.js'
+import globalContext from '../../context/globalContext.js'
+import CommonStore from '../../context/CommonStore.js'
 import MovieItem from './MovieItem.js'
 
 // noinspection JSUnusedGlobalSymbols

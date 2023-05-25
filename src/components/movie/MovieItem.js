@@ -4,18 +4,18 @@ import Head from 'next/head.js'
 import PhotoSwipe from 'photoswipe'
 import 'photoswipe/dist/photoswipe.css'
 import { mdiThumbDown, mdiThumbUp } from '@mdi/js'
-import globalContext from '../context/globalContext.js'
-import ApiService from '../context/ApiService.js'
+import movieContext from './movieContext.js'
+import ApiService from '../../context/ApiService.js'
 import styles from './MovieItem.module.css'
 import { Icon } from '@mdi/react'
 
 function MovieItem () {
-  const { commonStore, notificationStore } = useContext(globalContext)
-  if (!commonStore?.movie) {
+  const { movieStore, notificationStore } = useContext(movieContext)
+  if (!movieStore?.movie) {
     return null
   }
 
-  const { movie, images, metadata, details } = commonStore
+  const { movie, images, metadata, details } = movieStore
 
   const openPhoto = () => {
     const pswp = new PhotoSwipe({
@@ -39,9 +39,9 @@ function MovieItem () {
   const clickThumb = async (mark) => {
     try {
       if (details?.mark !== mark) {
-        await commonStore.markAsSeen(movie.movieId, mark)
+        await movieStore.markAsSeen(movie.movieId, mark)
       } else {
-        await commonStore.markAsUnseen(movie.movieId)
+        await movieStore.markAsUnseen(movie.movieId)
       }
     } catch (e) {
       notificationStore.error({ message: e.message })
