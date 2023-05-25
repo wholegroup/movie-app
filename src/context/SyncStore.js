@@ -25,7 +25,7 @@ class SyncStore {
   changesHash = 0
 
   /** @type {number} Last sync timestamp. */
-  syncDate = 0
+  moviesSyncDate = 0
 
   /** @type {WorkerStepEnum[]} */
   workerStepsExecuting = []
@@ -62,9 +62,9 @@ class SyncStore {
       setIsBusy: action,
       changesHash: observable,
       setChangesHash: action,
-      syncDate: observable,
-      setSyncDate: action,
-      nextSyncDate: computed,
+      moviesSyncDate: observable,
+      setMoviesSyncDate: action,
+      nextMoviesSyncDate: computed,
       workerStepsExecuting: observable,
       startWorkerStepExecution: action,
       stopWorkerStepExecution: action,
@@ -108,19 +108,19 @@ class SyncStore {
 
   /**
    * Sets syncDate
-   * @param {number} syncDate
+   * @param {number} moviesSyncDate
    */
-  setSyncDate (syncDate) {
-    this.syncDate = syncDate
+  setMoviesSyncDate (moviesSyncDate) {
+    this.moviesSyncDate = moviesSyncDate
   }
 
   /**
    * Calculates next syncDate.
    * @returns {number}
    */
-  get nextSyncDate () {
+  get nextMoviesSyncDate () {
     // every 30 minutes
-    return this.nextCronDate(this.syncDate, '0 */30 * * * *')
+    return this.nextCronDate(this.moviesSyncDate, '0 */30 * * * *')
   }
 
   /**
@@ -168,7 +168,7 @@ class SyncStore {
    * @returns {boolean}
    */
   get isSynchronizing () {
-    return this.workerStepsExecuting.length > 0 || !this.syncDate
+    return this.workerStepsExecuting.length > 0 || !this.moviesSyncDate
   }
 
   /**
@@ -270,7 +270,7 @@ class SyncStore {
       return await this.synchronizeProfile()
     }
 
-    if (Date.now() >= this.nextSyncDate) {
+    if (Date.now() >= this.nextMoviesSyncDate) {
       return await this.synchronizeMovies()
     }
 
@@ -285,7 +285,7 @@ class SyncStore {
    * Schedules synchronizing movies.
    */
   scheduleSynchronizingMovies () {
-    this.setSyncDate(0)
+    this.setMoviesSyncDate(0)
   }
 
   /**
@@ -323,7 +323,7 @@ class SyncStore {
         await this.storageService.setSettings(SETTINGS_NAMES.LAST_UPDATED_AT, lastUpdatedAt)
       }
 
-      this.setSyncDate(Date.now())
+      this.setMoviesSyncDate(Date.now())
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
