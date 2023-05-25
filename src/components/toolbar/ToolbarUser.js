@@ -12,7 +12,7 @@ function ToolbarUser () {
 
   return (
     <>
-      <Link href='/Users/andrey/Projects/annualmovies.com/movie-app/src/pages/profile'>
+      <Link href='/profile'>
         {picture && (
           <img
             src={picture}
