@@ -355,6 +355,7 @@ class CommonStore {
     }
 
     // check status
+    // noinspection RedundantIfStatementJS
     if (defaultFilters.status !== this.filters.status) {
       return true
     }
