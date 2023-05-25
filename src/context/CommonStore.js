@@ -9,7 +9,6 @@ export const movieDetailsStatusEnum = Object.freeze({
 
 /** @type {TFilters} */
 const defaultFilters = {
-  // status: movieDetailsStatusEnum.TO_WATCH,
   status: Object.keys(movieDetailsStatusEnum)
     .find(key => movieDetailsStatusEnum[key] === movieDetailsStatusEnum.TO_WATCH),
   years: [],

@@ -180,7 +180,6 @@ class StorageService {
    */
   async loadAllDetails () {
     return this.storage.details.toArray()
-    // mark: details.find(({ movieId }) => movieId === movie.movieId)?.mark || null
   }
 
   /**
