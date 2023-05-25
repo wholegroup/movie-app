@@ -38,7 +38,11 @@ function CardList () {
             <CardItem
               key={movieCard.movieId}
               card={movieCard}
-              onClickThumb={(mark) => clickThumb(movieCard.movieId, movieCard.mark, mark)}
+              details={commonStore.allDetailsKey[movieCard.movieId]}
+              onClickThumb={(mark) => clickThumb(
+                movieCard.movieId,
+                commonStore.allDetailsKey[movieCard.movieId]?.mark,
+                mark)}
             />
           ))}
         </div>

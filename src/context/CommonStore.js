@@ -47,6 +47,9 @@ class CommonStore {
   /** @type {TMovieCard[]} */
   cards = []
 
+  /** @type {TDetailsItem[]} */
+  allDetails = []
+
   /** @type {?TUserProfile} */
   profile = null
 
@@ -78,6 +81,9 @@ class CommonStore {
       setImages: action,
       metadata: observable.ref,
       setMetadata: action,
+      allDetails: observable.ref,
+      setAllDetails: action,
+      allDetailsKey: computed,
       cards: observable.ref,
       setCards: action,
       filteredCards: computed,
@@ -200,6 +206,14 @@ class CommonStore {
   }
 
   /**
+   * Sets details.
+   * @param {TDetailsItem[]} allDetails
+   */
+  setAllDetails (allDetails) {
+    this.allDetails = allDetails
+  }
+
+  /**
    * Sets cards.
    * @param {TMovieCard[]} cards
    */
@@ -251,6 +265,27 @@ class CommonStore {
   }
 
   /**
+   * Load all details.
+   * @returns {Promise<void>}
+   */
+  async loadAllDetails () {
+    const allDetails = await this.storageService.loadAllDetails()
+    this.setAllDetails(allDetails)
+  }
+
+  /**
+   * All details with keys.
+   * @returns {TDetailsItem[]}
+   */
+  get allDetailsKey () {
+    return [...this.allDetails]
+      .reduce((acc, details) => ({
+        ...acc,
+        [details.movieId]: details
+      }), {})
+  }
+
+  /**
    * Returns filtered cards.
    * @returns {TMovieCard[]}
    */
@@ -259,15 +294,15 @@ class CommonStore {
       .filter(({ year }) => this.filters.years.length === 0 || this.filters.years.includes(year))
       .filter(({ genres }) => this.filters.genres.length === 0 ||
         this.filters.genres.filter(g => genres.includes(g)).length > 0)
-      .filter(({ mark }) => {
+      .filter(({ movieId }) => {
         if (movieDetailsStatusEnum[this.filters.status] === movieDetailsStatusEnum.ALL) {
           return true
         }
         if (movieDetailsStatusEnum[this.filters.status] === movieDetailsStatusEnum.TO_WATCH) {
-          return !mark
+          return !this.allDetailsKey[movieId]?.mark
         }
         if (movieDetailsStatusEnum[this.filters.status] === movieDetailsStatusEnum.WITH_MARKS) {
-          return mark > 0
+          return this.allDetailsKey[movieId]?.mark > 0
         }
         return false
       })

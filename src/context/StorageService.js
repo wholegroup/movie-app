@@ -157,8 +157,6 @@ class StorageService {
     const movies = await this.storage.movies.toArray()
     /** @type {TImagesItem[]} */
     const images = await this.storage.images.toArray()
-    /** @type {TDetailsItem[]} */
-    const details = await this.storage.details.toArray()
 
     // noinspection UnnecessaryLocalVariableJS
     const cards = movies.map(movie => {
@@ -170,11 +168,19 @@ class StorageService {
         year: movie.year,
         genres: movie.genres,
         posterHash: mainImage?.hash || null,
-        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || ''),
-        mark: details.find(({ movieId }) => movieId === movie.movieId)?.mark || null
+        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || '')
       }
     })
     return cards
+  }
+
+  /**
+   * Load all details.
+   * @returns {Promise<TDetailsItem[]>}
+   */
+  async loadAllDetails () {
+    return this.storage.details.toArray()
+    // mark: details.find(({ movieId }) => movieId === movie.movieId)?.mark || null
   }
 
   /**
@@ -274,7 +280,6 @@ class StorageService {
  * @property {string} genres
  * @property {string} posterHash
  * @property {string} posterUrl
- * @property {?number} mark
  */
 
 /**

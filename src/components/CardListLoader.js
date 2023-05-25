@@ -9,9 +9,11 @@ function CardListLoader () {
   const { commonStore, syncStore, notificationStore } = useContext(globalContext)
   const lastUpdatedAtRef = useRef(syncStore?.lastUpdatedAt || '')
 
-  // Load cards initially
+  /**
+   * Load movie cards.
+   */
   useEffect(() => {
-    async function load () {
+    async function refreshCards () {
       if (!commonStore.isInitialized) {
         return
       }
@@ -23,7 +25,7 @@ function CardListLoader () {
 
       // nothing changed if lastUpdatedAt is set and not new
       const lastUpdatedAt = syncStore.lastUpdatedAt
-      if (lastUpdatedAt && lastUpdatedAtRef.current === lastUpdatedAt && commonStore.cards.length > 0) {
+      if (lastUpdatedAtRef.current === lastUpdatedAt && commonStore.cards.length > 0) {
         return
       }
 
@@ -31,30 +33,38 @@ function CardListLoader () {
       lastUpdatedAtRef.current = lastUpdatedAt
     }
 
-    load()
+    refreshCards()
       .catch((e) => {
         console.error(e)
         notificationStore.error({ message: e.message })
       })
 
     return () => {
-      commonStore.setRefreshTs(0)
     }
   }, [commonStore, commonStore.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
 
-  // Refresh cards by commonStore.refreshTs
+  /**
+   * Load details.
+   */
   useEffect(() => {
-    async function refresh () {
-      if (!commonStore.refreshTs) {
+    async function refreshDetails () {
+      if (!commonStore.isInitialized) {
         return
       }
 
-      await commonStore.loadCards()
+      if (commonStore.allDetails.length > 0) {
+        return
+      }
+
+      await commonStore.loadAllDetails()
     }
 
-    refresh()
-      .catch((e) => notificationStore.error({ message: e.message }))
-  }, [commonStore, commonStore.refreshTs, notificationStore])
+    refreshDetails()
+      .catch((e) => {
+        console.error(e)
+        notificationStore.error({ message: e.message })
+      })
+  }, [commonStore, commonStore.isInitialized, notificationStore])
 
   return null
 }
