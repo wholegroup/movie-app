@@ -2,10 +2,10 @@ import Link from 'next/link.js'
 import { useRouter } from 'next/router.js'
 import { Icon } from '@mdi/react'
 import { mdiHomeCircleOutline, mdiInformationOutline } from '@mdi/js'
-import ProfileLoader from './ProfileLoader.js'
+import ProfileLoader from '../profile/ProfileLoader.js'
 import styles from './Toolbar.module.css'
-import ToolbarUser from './ToolbarUser'
-import ToolbarMenu from './ToolbarMenu'
+import ToolbarUser from './ToolbarUser.js'
+import ToolbarMenu from './ToolbarMenu.js'
 
 /**
  * Toolbar.
@@ -19,12 +19,12 @@ function Toolbar () {
         {router.asPath === '/' && (
           <>
             <div>
-              <Link href='/about'>
+              <Link href='/Users/andrey/Projects/annualmovies.com/movie-app/src/pages/about'>
                 <Icon id={'go-home'} path={mdiInformationOutline} size={1.5} title={'Information'} />
               </Link>
             </div>
             <div className={`${styles.hide640} ${styles.version}`}>
-              <Link href='/about'>
+              <Link href='/Users/andrey/Projects/annualmovies.com/movie-app/src/pages/about'>
                 <div>
                   AnnualMovies.com
                 </div>
@@ -37,7 +37,7 @@ function Toolbar () {
         )}
         {router.asPath !== '/' && (
           <div>
-            <Link href='/'>
+            <Link href='/Users/andrey/Projects/annualmovies.com/movie-app/src/pages'>
               <Icon id={'go-home'} path={mdiHomeCircleOutline} size={1.5} title={'Anonymous'} />
             </Link>
           </div>

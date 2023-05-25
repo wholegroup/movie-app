@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import Link from 'next/link.js'
 import { Icon } from '@mdi/react'
 import { mdiAccountOutline } from '@mdi/js'
-import globalContext from '../context/globalContext.js'
+import globalContext from '../../context/globalContext.js'
 
 function ProfileCardAnonymous () {
   const { commonStore } = useContext(globalContext)

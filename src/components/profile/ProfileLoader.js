@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useContext, useEffect } from 'react'
-import globalContext from '../context/globalContext.js'
+import globalContext from '../../context/globalContext.js'
 
 /**
  * Loads and updates user profile triggered by timestamp.

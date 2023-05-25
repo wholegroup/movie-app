@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import Head from 'next/head.js'
-import globalContext from '../context/globalContext.js'
+import globalContext from '../../context/globalContext.js'
 import CardItem from './CardItem.js'
 import styles from './CardList.module.css'
 

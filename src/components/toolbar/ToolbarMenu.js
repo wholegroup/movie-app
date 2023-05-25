@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Icon } from '@mdi/react'
 import { mdiFilterMultiple } from '@mdi/js'
-import globalContext from '../context/globalContext.js'
+import globalContext from '../../context/globalContext.js'
 import MovieCounter from './MovieCounter.js'
 import styles from './ToolbarMenu.module.css'
 

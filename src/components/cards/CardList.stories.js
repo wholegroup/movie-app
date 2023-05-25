@@ -1,7 +1,7 @@
-import globalContext from '../context/globalContext.js'
-import CommonStore from '../context/CommonStore.js'
-import CardList from './CardList'
-import ApiService from '../context/ApiService.js'
+import globalContext from '../../context/globalContext.js'
+import CommonStore from '../../context/CommonStore.js'
+import CardList from './CardList.js'
+import ApiService from '../../context/ApiService.js'
 
 // noinspection JSUnusedGlobalSymbols
 export const LongTitle = () => {

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import ProfileCard from '../components/ProfileCard.js'
+import ProfileCard from '../components/profile/ProfileCard.js'
 
 /**
  * User Profile.

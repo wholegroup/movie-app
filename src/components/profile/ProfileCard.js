@@ -1,5 +1,5 @@
-import ProfileCardUser from './ProfileCardUser'
-import ProfileCardAnonymous from './ProfileCardAnonymous'
+import ProfileCardUser from './ProfileCardUser.js'
+import ProfileCardAnonymous from './ProfileCardAnonymous.js'
 
 function ProfileCard () {
   return (

@@ -1,5 +1,5 @@
 import CardItem from './CardItem.js'
-import ApiService from '../context/ApiService.js'
+import ApiService from '../../context/ApiService.js'
 
 // noinspection JSUnusedGlobalSymbols
 export const Single = () => {

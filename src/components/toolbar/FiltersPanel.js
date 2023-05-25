@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { useRouter } from 'next/router.js'
 import { observer } from 'mobx-react-lite'
-import globalContext from '../context/globalContext.js'
-import { movieDetailsStatusEnum } from '../context/CommonStore.js'
+import globalContext from '../../context/globalContext.js'
+import { movieDetailsStatusEnum } from '../../context/CommonStore.js'
 import styles from './FiltersPanel.module.css'
 
 /**

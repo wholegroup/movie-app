@@ -3,7 +3,7 @@ import { Icon } from '@mdi/react'
 import { mdiAccount, mdiAccountOutline } from '@mdi/js'
 import { observer } from 'mobx-react-lite'
 import { useContext } from 'react'
-import globalContext from '../context/globalContext.js'
+import globalContext from '../../context/globalContext.js'
 
 function ToolbarUser () {
   const { commonStore } = useContext(globalContext)
@@ -12,7 +12,7 @@ function ToolbarUser () {
 
   return (
     <>
-      <Link href='/profile'>
+      <Link href='/Users/andrey/Projects/annualmovies.com/movie-app/src/pages/profile'>
         {picture && (
           <img
             src={picture}

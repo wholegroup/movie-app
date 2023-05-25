@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
-import CardList from '../components/CardList.js'
-import CardListLoader from '../components/CardListLoader.js'
+import CardList from '../components/cards/CardList.js'
+import CardListLoader from '../components/cards/CardListLoader.js'
 import ApiService from '../context/ApiService.js'
 import globalContext from '../context/globalContext.js'
 

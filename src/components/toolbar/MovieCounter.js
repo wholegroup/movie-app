@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import globalContext from '../context/globalContext.js'
+import globalContext from '../../context/globalContext.js'
 
 function MovieCounter () {
   const { commonStore } = useContext(globalContext)
