@@ -246,6 +246,13 @@ class CommonStore {
    */
   async markAsSeen (movieId, mark) {
     await this.storageService.setMovieMark(movieId, mark)
+    this.setAllDetails(Object.values({
+      ...this.allDetailsKey,
+      [movieId]: {
+        ...this.allDetailsKey[movieId],
+        mark
+      }
+    }))
   }
 
   /**
@@ -255,6 +262,13 @@ class CommonStore {
    */
   async markAsUnseen (movieId) {
     await this.storageService.setMovieMark(movieId, null)
+    this.setAllDetails(Object.values({
+      ...this.allDetailsKey,
+      [movieId]: {
+        ...this.allDetailsKey[movieId],
+        mark: null
+      }
+    }))
   }
 
   /**
