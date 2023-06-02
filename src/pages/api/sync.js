@@ -10,7 +10,7 @@ export default async function handler (req, res) {
   const { user } = await getSession(req, res) || {}
   const isAdmin = process.env.AUTH0_ADMIN_SID?.length > 0 && user?.sid === process.env.AUTH0_ADMIN_SID
 
-  const syncService = new SyncBackendService(process.env.MOVIE_APP_DB)
+  const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
   try {
     await syncService.open()
     if (req.method !== 'POST') {

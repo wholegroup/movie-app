@@ -43,7 +43,7 @@ IndexPage.getInitialProps = async function ({ req }) {
     }
   }
 
-  const syncService = new SyncBackendService(process.env.MOVIE_APP_DB)
+  const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
   try {
     await syncService.open()
 
