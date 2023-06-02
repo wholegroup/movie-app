@@ -367,14 +367,15 @@ class SyncStore {
 
       const profileResponse = await this.apiService.loadProfile()
       if (profileResponse) {
-        const profile = {
-          id: profileResponse.id,
-          isAdmin: profileResponse.isAdmin,
-          email: profileResponse.user.email,
-          name: profileResponse.user.name,
-          picture: profileResponse.user.picture
+        const { info } = profileResponse
+        const userProfile = {
+          id: info.id,
+          isAdmin: info.isAdmin,
+          email: info.user.email,
+          name: info.user.name,
+          picture: info.user.picture
         }
-        await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, profile)
+        await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
       } else {
         await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
       }

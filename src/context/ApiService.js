@@ -69,9 +69,18 @@ class ApiService {
    * Loads user profile.
    * @returns {Promise<?TProfileResponse>}
    */
-  async loadProfile () {
+  async loadProfile (lastUpdatedAt = '') {
     try {
-      const response = await this.apiFetch('/api/profile')
+      const response = await this.apiFetch('/api/sync/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          lastUpdatedAt,
+          details: []
+        })
+      })
       return await response.json()
     } catch (e) {
       if (e.code === 401) {
@@ -115,11 +124,21 @@ class ApiService {
 
 /**
  * @typedef TProfileResponse
+ * @property {TProfileInfo} info
+ */
+
+/**
+ * @typedef TProfileInfo
  * @property {string} id
  * @property {boolean} isAdmin
- * @property {string} user.email
- * @property {string} user.name
- * @property {string} user.picture
+ * @property {TProfileInfoUser} user
+ */
+
+/**
+ * @typedef TProfileInfoUser
+ * @property {string} email
+ * @property {string} name
+ * @property {string} picture
  */
 
 export default ApiService

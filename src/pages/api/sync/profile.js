@@ -3,7 +3,7 @@ import SyncBackendService from '../../../../libs/SyncBackendService.js'
 
 // noinspection JSUnusedGlobalSymbols
 export default withApiAuthRequired(async function account (req, res) {
-  const { user: { sid } } = await getSession(req, res)
+  const { user } = await getSession(req, res)
 
   const syncService = new SyncBackendService(process.env.MOVIE_APP_USERS_DB)
   try {
@@ -21,7 +21,7 @@ export default withApiAuthRequired(async function account (req, res) {
     }
 
     // fetch data
-    const details = await syncService.userDetailsSince(sid, lastUpdatedAt)
+    const details = await syncService.userDetailsSince(user.sid, lastUpdatedAt)
 
     //
     const maxUpdatedAt = [
@@ -32,6 +32,11 @@ export default withApiAuthRequired(async function account (req, res) {
     const responseUpdatedAt = maxUpdatedAt || (lastUpdatedAt && lastUpdatedAt < now ? lastUpdatedAt : now)
 
     res.status(200).json({
+      info: {
+        id: user.sid,
+        isAdmin: process.env.AUTH0_ADMIN_SID?.length > 0 && user.sid === process.env.AUTH0_ADMIN_SID,
+        user
+      },
       details,
       lastUpdatedAt: responseUpdatedAt
     })
