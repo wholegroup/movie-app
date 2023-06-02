@@ -22,9 +22,10 @@ class SyncBackendService {
 
   /**
    * Opens DB and returns new service instance.
+   * @param {boolean} runMigration
    * @returns {Promise<void>}
    */
-  async open () {
+  async open ({ runMigration = false } = {}) {
     if (this.db) {
       throw new Error('Already open!')
     }
@@ -37,6 +38,11 @@ class SyncBackendService {
         resolve(db)
       })
     })
+
+    // run migrations
+    if (runMigration) {
+      await this.migrate()
+    }
   }
 
   /**
@@ -68,6 +74,74 @@ class SyncBackendService {
   }
 
   /**
+   * Checks and runs migrations if necessary.
+   * @returns {Promise<void>}
+   */
+  async migrate () {
+    if (!this.db) {
+      throw Error('Nullable db')
+    }
+
+    const { user_version: userVersion = 0 } = await this.getAsync('SELECT * FROM pragma_user_version')
+
+    if (userVersion < 1) {
+      await this._migrate_001()
+    }
+
+    // // next migrations
+    // if (userVersion < 2) {
+    //   this.log.info('Run _migrate_002')
+    //   await this._migrate_002()
+    // }
+  }
+
+  /**
+   * Migration #001
+   * @returns {Promise<void>}
+   */
+  async _migrate_001 () {
+    await this.runAsync('BEGIN')
+    try {
+      await this.runAsync(`
+          CREATE TABLE details
+          (
+              userId  TEXT    NOT NULL CHECK (LENGTH(userId) > 0),
+              movieId INTEGER NOT NULL, -- local id
+              version INTEGER NOT NULL, -- optimistic lock
+              data    TEXT    NOT NULL  -- json
+          )
+      `)
+      await this.runAsync('PRAGMA user_version = 1') // migration number
+      await this.runAsync('COMMIT')
+    } catch (err) {
+      await this.runAsync('ROLLBACK')
+      throw err
+    }
+  }
+
+  /**
+   * Wraps db.get() with Promise.
+   * @param {string} sql
+   * @param params
+   * @returns {Promise<?object>}
+   * @private
+   */
+  async getAsync (sql, ...params) {
+    if (!this.db) {
+      throw Error('Nullable db')
+    }
+    return new Promise((resolve, reject) => {
+      this.db.get(sql, ...params, (err, row) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(row)
+      })
+    })
+  }
+
+  /**
    * Wraps db.all() with Promise.
    * @param {string} sql
    * @param params
@@ -90,6 +164,35 @@ class SyncBackendService {
   }
 
   /**
+   * Wraps db.run() with Promise.
+   * @param {string} sql
+   * @param params
+   * @returns {Promise<{lastID: ?number, changes: any}>}
+   */
+  async runAsync (sql, params = {}) {
+    if (!this.db) {
+      throw Error('Nullable db')
+    }
+
+    if (!sql.trim()) {
+      throw new Error('Empty query')
+    }
+
+    return new Promise((resolve, reject) => {
+      this.db.run(sql, params, function (err) {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve({
+          lastID: this.lastID,
+          changes: this.changes
+        })
+      })
+    })
+  }
+
+  /**
    * Returns all rows.
    * @param {string} tableName
    * @returns {Promise<Object[]>}
@@ -103,12 +206,40 @@ class SyncBackendService {
   }
 
   /**
+   * Returns all rows.
+   * @param {string} userId
+   * @param {string} tableName
+   * @returns {Promise<Object[]>}
+   * @private
+   */
+  async allUserRows (userId, tableName) {
+    return await this.getAllAsync(`
+        SELECT *
+        FROM ${tableName}
+        WHERE userId = $userId
+    `, { $userId: userId }) || {}
+  }
+
+  /**
    * Returns json data of all objects.
-   * @param tableName
+   * @param {string} tableName
    * @returns {Promise<Object[]>}
    */
   async allData (tableName) {
     const rows = await this.allRows(tableName)
+    // noinspection UnnecessaryLocalVariableJS
+    const allObjects = rows.map(({ data = null }) => JSON.parse(data))
+    return allObjects
+  }
+
+  /**
+   * Returns json data of all objects.
+   * @param {string} userId
+   * @param {string} tableName
+   * @returns {Promise<Object[]>}
+   */
+  async allUserData (userId, tableName) {
+    const rows = await this.allUserRows(userId, tableName)
     // noinspection UnnecessaryLocalVariableJS
     const allObjects = rows.map(({ data = null }) => JSON.parse(data))
     return allObjects
@@ -154,6 +285,20 @@ class SyncBackendService {
       return allMetadata
     }
     return allMetadata.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
+  }
+
+  /**
+   * User's movie details.
+   * @param {string} userId
+   * @param {string} lastUpdatedAt Timestamp
+   * @returns {Promise<Object[]>}
+   */
+  async userDetailsSince (userId, lastUpdatedAt) {
+    const allUserDetails = await this.allUserData(userId, 'details')
+    if (!lastUpdatedAt) {
+      return allUserDetails
+    }
+    return allUserDetails.filter(({ updatedAt }) => updatedAt > lastUpdatedAt)
   }
 
   /**
