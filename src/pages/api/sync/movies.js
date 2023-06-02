@@ -1,5 +1,5 @@
 import { getSession } from '@auth0/nextjs-auth0'
-import SyncBackendService from '../../../libs/SyncBackendService.js'
+import SyncBackendService from '../../../../libs/SyncBackendService.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**

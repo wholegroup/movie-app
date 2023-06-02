@@ -52,7 +52,7 @@ class ApiService {
    * @returns {Promise<TMovieResponse>}
    */
   async loadMovies (lastUpdatedAt = '') {
-    const response = await this.apiFetch('/api/sync', {
+    const response = await this.apiFetch('/api/sync/movies', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
