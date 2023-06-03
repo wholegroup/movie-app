@@ -293,6 +293,7 @@ class StorageService {
  * @typedef TDetailsItem
  * @property {number} movieId
  * @property {?number=} mark
+ * @property {?string=} syncedAt
  */
 
 export const SETTINGS_NAMES = Object.freeze({

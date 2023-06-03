@@ -365,7 +365,11 @@ class SyncStore {
     try {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)
 
-      const profileResponse = await this.apiService.loadProfile()
+      // calculate details to synchronize
+      const allDetails = await this.storageService.loadAllDetails()
+      const notSyncedDetails = allDetails.filter(({ syncedAt }) => !syncedAt)
+
+      const profileResponse = await this.apiService.loadProfile(notSyncedDetails)
       if (profileResponse) {
         const { info } = profileResponse
         const userProfile = {
