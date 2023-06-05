@@ -231,7 +231,8 @@ class StorageService {
       const details = (await this.findDetailsByMovieId(movieId)) || { movieId }
       await this.storage.details.put({
         ...details,
-        mark: mark || null
+        mark: mark || null,
+        syncedAt: null
       }, movieId)
     })
   }

@@ -323,7 +323,7 @@ class SyncStore {
       } = await this.apiService.loadMovies(this.moviesUpdatedAt)
       console.log('Loaded', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images',
         metadata.length, 'metadata items')
-      console.log('Last updated at', lastUpdatedAt)
+      console.log('Movies updated at', lastUpdatedAt)
 
       // save in storage
       await this.storageService.upsertMovies(movies)
