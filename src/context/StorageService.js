@@ -104,6 +104,15 @@ class StorageService {
   }
 
   /**
+   * Upsert details.
+   * @param {TDetailsItem[]} details
+   * @returns {Promise<void>}
+   */
+  async upsertDetails (details) {
+    return this.storage.details.bulkPut(details, details.map(({ movieId }) => movieId))
+  }
+
+  /**
    * Finds movie by slug.
    * @param {string} slug
    * @returns {Promise<TMovieItem>}
