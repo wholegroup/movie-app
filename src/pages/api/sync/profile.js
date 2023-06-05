@@ -14,6 +14,12 @@ export default withApiAuthRequired(async function account (req, res) {
       return
     }
 
+    // synchronize details
+    const detailsToSync = req.body?.details || []
+    if (detailsToSync.length > 0) {
+      await syncService.synchronizeUserDetails(user.sid, detailsToSync)
+    }
+
     // normalize lastUpdateAt
     let lastUpdatedAt = new Date(req.body?.lastUpdatedAt || '').toJSON()
     if (!lastUpdatedAt) {
@@ -37,7 +43,7 @@ export default withApiAuthRequired(async function account (req, res) {
         isAdmin: process.env.AUTH0_ADMIN_SID?.length > 0 && user.sid === process.env.AUTH0_ADMIN_SID,
         user
       },
-      details,
+      details: details.map(nextDetails => ({ ...nextDetails, syncedAt: now })),
       lastUpdatedAt: responseUpdatedAt
     })
   } finally {

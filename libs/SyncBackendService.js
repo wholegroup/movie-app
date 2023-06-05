@@ -434,6 +434,93 @@ class SyncBackendService {
     const votes = await this.votesUpdated(monthAgo.toISOString())
     return votes.map(({ movieId }) => movieId)
   }
+
+  /**
+   * Synchronizes user details.
+   * @param {string} userId
+   * @param {Object[]} detailsToSync
+   * @returns {Promise<void>}
+   */
+  async synchronizeUserDetails (userId, detailsToSync) {
+    const allDetailsByMovieId = (await this.allUserData(userId, 'details'))
+      .reduce((acc, next) => ({ ...acc, [next.movieId]: next }), {})
+    for (const nextDetails of detailsToSync) {
+      const oldDetails = allDetailsByMovieId[nextDetails.movieId]
+      if (oldDetails) {
+        await this.replaceUserRow(userId, nextDetails.movieId, 'details', { ...oldDetails, ...nextDetails })
+      } else {
+        await this.insertUserRow(userId, nextDetails.movieId, 'details', nextDetails)
+      }
+    }
+  }
+
+  /**
+   * Inserts a new row.
+   * @param {string} userId
+   * @param {number} movieId
+   * @param {string} tableName
+   * @param {object} data
+   * @returns {Promise<number>}
+   * @private
+   */
+  async insertUserRow (userId, movieId, tableName, data) {
+    const updatedAt = new Date().toISOString()
+    const { lastID, changes } = await this.runAsync(`
+        INSERT INTO ${tableName}(userId, movieId, version, data)
+        VALUES ($userId, $movieId, 1, $data)
+    `, {
+      $userId: userId,
+      $movieId: movieId,
+      $data: JSON.stringify({
+        ...data,
+        version: 1,
+        updatedAt,
+        movieId
+      })
+    })
+
+    if (!changes) {
+      throw Error('An unknown inserting error')
+    }
+
+    return lastID
+  }
+
+  /**
+   * Replaces a row in the table name.
+   * @param {string} userId
+   * @param {number} movieId
+   * @param {string} tableName
+   * @param {object} data
+   * @private
+   */
+  async replaceUserRow (userId, movieId, tableName, data) {
+    const oldVersion = data.version
+    const updatedAt = new Date().toISOString()
+    const { lastID, changes } = await this.runAsync(
+      `UPDATE ${tableName}
+       SET version = version + 1,
+           data    = :data
+       WHERE userId = :userId
+         AND movieId = :movieId
+         AND version = :oldVersion
+      `, {
+        ':userId': userId,
+        ':movieId': movieId,
+        ':oldVersion': oldVersion,
+        ':data': JSON.stringify({
+          ...data,
+          version: oldVersion + 1,
+          updatedAt
+        })
+      })
+
+    if (!changes) {
+      throw Error('An unknown updating error')
+    }
+
+    return lastID
+  }
 }
 
 export default SyncBackendService
