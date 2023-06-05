@@ -31,7 +31,8 @@ function MovieLoader () {
       .catch((e) => notificationStore.error({ message: e.message }))
 
     return () => {
-      // only when sync is done
+      // only when sync is done to avoid blinking during development
+      // when reactStrictMode is true component rendering called twice
       if (syncStore?.moviesUpdatedAt) {
         movieStore.setMovie(null)
         movieStore.setVotes(null)
