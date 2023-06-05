@@ -24,8 +24,11 @@ class SyncStore {
   /** @type {number} Timestamp to catch any data changes after synchronization. */
   changesHash = 0
 
-  /** @type {number} Last sync timestamp. */
-  moviesSyncDate = 0
+  /** @type {number} Movies sync timestamp. */
+  moviesSyncedTs = 0
+
+  /** @type {string} moviesUpdatedAt timestamp from storage */
+  moviesUpdatedAt = ''
 
   /** @type {WorkerStepEnum[]} */
   workerStepsExecuting = []
@@ -35,9 +38,6 @@ class SyncStore {
 
   /** @type {number} Timestamp when idDelayed set */
   delayedDate = 0
-
-  /** @type {string} moviesUpdatedAt timestamp from storage */
-  moviesUpdatedAt = ''
 
   /** @type {number} profileSyncedTs timestamp */
   profileSyncedTs = 0
@@ -62,9 +62,9 @@ class SyncStore {
       setIsBusy: action,
       changesHash: observable,
       setChangesHash: action,
-      moviesSyncDate: observable,
-      setMoviesSyncDate: action,
-      nextMoviesSyncDate: computed,
+      moviesSyncedTs: observable,
+      setMoviesSyncedTs: action,
+      nextMoviesSyncedDate: computed,
       workerStepsExecuting: observable,
       startWorkerStepExecution: action,
       stopWorkerStepExecution: action,
@@ -108,19 +108,19 @@ class SyncStore {
 
   /**
    * Sets syncDate
-   * @param {number} moviesSyncDate
+   * @param {number} moviesSyncedTs
    */
-  setMoviesSyncDate (moviesSyncDate) {
-    this.moviesSyncDate = moviesSyncDate
+  setMoviesSyncedTs (moviesSyncedTs) {
+    this.moviesSyncedTs = moviesSyncedTs
   }
 
   /**
    * Calculates next syncDate.
    * @returns {number}
    */
-  get nextMoviesSyncDate () {
+  get nextMoviesSyncedDate () {
     // every 30 minutes
-    return this.nextCronDate(this.moviesSyncDate, '0 */30 * * * *')
+    return this.nextCronDate(this.moviesSyncedTs, '0 */30 * * * *')
   }
 
   /**
@@ -168,7 +168,7 @@ class SyncStore {
    * @returns {boolean}
    */
   get isSynchronizing () {
-    return this.workerStepsExecuting.length > 0 || !this.moviesSyncDate
+    return this.workerStepsExecuting.length > 0 || !this.moviesSyncedTs
   }
 
   /**
@@ -270,7 +270,7 @@ class SyncStore {
       return await this.synchronizeProfile()
     }
 
-    if (Date.now() >= this.nextMoviesSyncDate) {
+    if (Date.now() >= this.nextMoviesSyncedDate) {
       return await this.synchronizeMovies()
     }
 
@@ -285,7 +285,7 @@ class SyncStore {
    * Schedules synchronizing movies.
    */
   scheduleSynchronizingMovies () {
-    this.setMoviesSyncDate(0)
+    this.setMoviesSyncedTs(0)
   }
 
   /**
@@ -323,7 +323,7 @@ class SyncStore {
         await this.storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, lastUpdatedAt)
       }
 
-      this.setMoviesSyncDate(Date.now())
+      this.setMoviesSyncedTs(Date.now())
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
