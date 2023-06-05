@@ -39,8 +39,8 @@ class SyncStore {
   /** @type {string} lastUpdatedAt timestamp from storage */
   lastUpdatedAt = ''
 
-  /** @type {number} profileUpdatedAt timestamp */
-  profileUpdatedTs = 0
+  /** @type {number} profileSyncedTs timestamp */
+  profileSyncedTs = 0
 
   /** @type {number} purged timestamp */
   purgedTs = 0
@@ -74,8 +74,8 @@ class SyncStore {
       setIsDelayed: action,
       lastUpdatedAt: observable,
       setLastUpdatedAt: action,
-      profileUpdatedTs: observable,
-      setProfileUpdatedTs: action,
+      profileSyncedTs: observable,
+      setProfileSyncedTs: action,
       nextProfileUpdatingTs: computed,
       purgedTs: observable,
       setPurgedTs: action,
@@ -336,22 +336,22 @@ class SyncStore {
    */
   get nextProfileUpdatingTs () {
     // every hour at 15m:00s
-    return this.nextCronDate(this.profileUpdatedTs, '0 15 * * * *')
+    return this.nextCronDate(this.profileSyncedTs, '0 15 * * * *')
   }
 
   /**
-   * Sets profileUpdatedTs.
-   * @param {number} profileUpdatedTs
+   * Sets profileSyncedTs.
+   * @param {number} profileSyncedTs
    */
-  setProfileUpdatedTs (profileUpdatedTs) {
-    this.profileUpdatedTs = profileUpdatedTs
+  setProfileSyncedTs (profileSyncedTs) {
+    this.profileSyncedTs = profileSyncedTs
   }
 
   /**
    * Schedules updating profile.
    */
   scheduleUpdatingProfile () {
-    this.setProfileUpdatedTs(0)
+    this.setProfileSyncedTs(0)
   }
 
   /**
@@ -379,12 +379,30 @@ class SyncStore {
           name: info.user.name,
           picture: info.user.picture
         }
+
+        // load details
+        const { details, lastUpdatedAt } = profileResponse
+        console.log('Loaded', details.length, 'details')
+        console.log('Details updated at', lastUpdatedAt)
+
+        // save in storage
+        await this.storageService.upsertDetails(details)
+        // await this.storageService.upsertVotes(votes)
+        // await this.storageService.upsertImages(images)
+        // await this.storageService.upsertMetadata(metadata)
+
+        // // update lastUpdatedAt if it's necessary
+        // if (this.lastUpdatedAt !== lastUpdatedAt) {
+        //   this.setLastUpdatedAt(lastUpdatedAt)
+        //   await this.storageService.setSettings(SETTINGS_NAMES.LAST_UPDATED_AT, lastUpdatedAt)
+        // }
+
         await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
       } else {
         await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
       }
 
-      this.setProfileUpdatedTs(Date.now())
+      this.setProfileSyncedTs(Date.now())
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)

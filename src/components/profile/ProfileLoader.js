@@ -21,7 +21,7 @@ function ProfileLoader () {
       notificationStore.error(e)
       console.error(e)
     })
-  }, [syncStore?.profileUpdatedTs, commonStore.isInitialized, commonStore, notificationStore])
+  }, [syncStore?.profileSyncedTs, commonStore.isInitialized, commonStore, notificationStore])
 
   return null
 }
