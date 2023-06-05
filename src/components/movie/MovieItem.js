@@ -10,7 +10,7 @@ import styles from './MovieItem.module.css'
 import { Icon } from '@mdi/react'
 
 function MovieItem () {
-  const { movieStore, notificationStore } = useContext(movieContext)
+  const { movieStore, notificationStore, syncStore } = useContext(movieContext)
   if (!movieStore?.movie) {
     return null
   }
@@ -43,6 +43,7 @@ function MovieItem () {
       } else {
         await movieStore.markAsUnseen(movie.movieId)
       }
+      syncStore.scheduleSynchronizingProfile()
     } catch (e) {
       notificationStore.error({ message: e.message })
     }

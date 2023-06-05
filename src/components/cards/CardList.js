@@ -6,7 +6,7 @@ import CardItem from './CardItem.js'
 import styles from './CardList.module.css'
 
 function CardList () {
-  const { commonStore, notificationStore } = useContext(globalContext)
+  const { commonStore, notificationStore, syncStore } = useContext(globalContext)
 
   /**
    * Thumb handler.
@@ -22,6 +22,7 @@ function CardList () {
       } else {
         await commonStore.markAsUnseen(movieId)
       }
+      syncStore.scheduleSynchronizingProfile()
     } catch (e) {
       notificationStore.error({ message: e.message })
     }
