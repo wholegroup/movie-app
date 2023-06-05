@@ -364,7 +364,7 @@ class SyncStore {
   /**
    * Schedules updating profile.
    */
-  scheduleUpdatingProfile () {
+  scheduleSynchronizingProfile () {
     this.setProfileSyncedTs(0)
   }
 

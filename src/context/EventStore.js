@@ -189,7 +189,7 @@ class EventStore {
 
       // start synchronizing movies right after registration
       this.syncStore.scheduleSynchronizingMovies()
-      this.syncStore.scheduleUpdatingProfile()
+      this.syncStore.scheduleSynchronizingProfile()
     } catch (e) {
       console.log(e)
       this.notificationStore.error(e)
