@@ -447,7 +447,11 @@ class SyncBackendService {
     for (const nextDetails of detailsToSync) {
       const oldDetails = allDetailsByMovieId[nextDetails.movieId]
       if (oldDetails) {
-        await this.replaceUserRow(userId, nextDetails.movieId, 'details', { ...oldDetails, ...nextDetails })
+        await this.replaceUserRow(userId, nextDetails.movieId, 'details', {
+          ...oldDetails,
+          ...nextDetails,
+          version: oldDetails.version
+        })
       } else {
         await this.insertUserRow(userId, nextDetails.movieId, 'details', nextDetails)
       }
