@@ -19,7 +19,7 @@ function MovieLoader () {
       }
 
       // don't update before data is loaded
-      if (!syncStore?.lastUpdatedAt) {
+      if (!syncStore?.moviesUpdatedAt) {
         return
       }
 
@@ -32,7 +32,7 @@ function MovieLoader () {
 
     return () => {
       // only when sync is done
-      if (syncStore?.lastUpdatedAt) {
+      if (syncStore?.moviesUpdatedAt) {
         movieStore.setMovie(null)
         movieStore.setVotes(null)
         movieStore.setImages(null)
@@ -41,7 +41,7 @@ function MovieLoader () {
       movieStore.setDetails(null)
       movieStore.setRefreshTs(0)
     }
-  }, [slug, movieStore, commonStore.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
+  }, [slug, movieStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, notificationStore])
 
   // Refresh movie by commonStore.refreshTs
   useEffect(() => {

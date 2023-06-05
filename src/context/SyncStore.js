@@ -36,8 +36,8 @@ class SyncStore {
   /** @type {number} Timestamp when idDelayed set */
   delayedDate = 0
 
-  /** @type {string} lastUpdatedAt timestamp from storage */
-  lastUpdatedAt = ''
+  /** @type {string} moviesUpdatedAt timestamp from storage */
+  moviesUpdatedAt = ''
 
   /** @type {number} profileSyncedTs timestamp */
   profileSyncedTs = 0
@@ -72,8 +72,8 @@ class SyncStore {
       isDelayed: observable,
       delayedDate: observable,
       setIsDelayed: action,
-      lastUpdatedAt: observable,
-      setLastUpdatedAt: action,
+      moviesUpdatedAt: observable,
+      setMoviesUpdatedAt: action,
       profileSyncedTs: observable,
       setProfileSyncedTs: action,
       nextProfileUpdatingTs: computed,
@@ -181,11 +181,11 @@ class SyncStore {
   }
 
   /**
-   * Sets lastUpdatedAt.
-   * @param {string} lastUpdatedAt
+   * Sets moviesUpdatedAt.
+   * @param {string} moviesUpdatedAt
    */
-  setLastUpdatedAt (lastUpdatedAt) {
-    this.lastUpdatedAt = lastUpdatedAt
+  setMoviesUpdatedAt (moviesUpdatedAt) {
+    this.moviesUpdatedAt = moviesUpdatedAt
   }
 
   /**
@@ -193,7 +193,7 @@ class SyncStore {
    * @returns {Promise<void>}
    */
   async initializeStoreData () {
-    this.setLastUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.LAST_UPDATED_AT) || '')
+    this.setMoviesUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT) || '')
     this.setPurgedTs(await this.storageService.getSettings(SETTINGS_NAMES.PURGED_TS) || 0)
 
     // normalize purgedTs, it has to be less than Date.now()
@@ -306,7 +306,7 @@ class SyncStore {
         images,
         metadata,
         lastUpdatedAt
-      } = await this.apiService.loadMovies(this.lastUpdatedAt)
+      } = await this.apiService.loadMovies(this.moviesUpdatedAt)
       console.log('Loaded', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images',
         metadata.length, 'metadata items')
       console.log('Last updated at', lastUpdatedAt)
@@ -318,9 +318,9 @@ class SyncStore {
       await this.storageService.upsertMetadata(metadata)
 
       // update lastUpdatedAt if it's necessary
-      if (this.lastUpdatedAt !== lastUpdatedAt) {
-        this.setLastUpdatedAt(lastUpdatedAt)
-        await this.storageService.setSettings(SETTINGS_NAMES.LAST_UPDATED_AT, lastUpdatedAt)
+      if (this.moviesUpdatedAt !== lastUpdatedAt) {
+        this.setMoviesUpdatedAt(lastUpdatedAt)
+        await this.storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, lastUpdatedAt)
       }
 
       this.setMoviesSyncDate(Date.now())

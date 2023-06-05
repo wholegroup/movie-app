@@ -7,7 +7,7 @@ import globalContext from '../../context/globalContext.js'
  */
 function CardListLoader () {
   const { commonStore, syncStore, notificationStore } = useContext(globalContext)
-  const lastUpdatedAtRef = useRef(syncStore?.lastUpdatedAt || '')
+  const moviesUpdatedAtRef = useRef(syncStore?.moviesUpdatedAt || '')
 
   /**
    * Load movie cards.
@@ -19,18 +19,18 @@ function CardListLoader () {
       }
 
       // don't update before data is loaded
-      if (!syncStore?.lastUpdatedAt) {
+      if (!syncStore?.moviesUpdatedAt) {
         return
       }
 
-      // nothing changed if lastUpdatedAt is set and not new
-      const lastUpdatedAt = syncStore.lastUpdatedAt
-      if (lastUpdatedAtRef.current === lastUpdatedAt && commonStore.cards.length > 0) {
+      // nothing changed if moviesUpdatedAt is set and not new
+      const moviesUpdatedAt = syncStore.moviesUpdatedAt
+      if (moviesUpdatedAtRef.current === moviesUpdatedAt && commonStore.cards.length > 0) {
         return
       }
 
       await commonStore.loadCards()
-      lastUpdatedAtRef.current = lastUpdatedAt
+      moviesUpdatedAtRef.current = moviesUpdatedAt
     }
 
     refreshCards()
@@ -41,7 +41,7 @@ function CardListLoader () {
 
     return () => {
     }
-  }, [commonStore, commonStore.isInitialized, syncStore?.lastUpdatedAt, notificationStore])
+  }, [commonStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, notificationStore])
 
   /**
    * Load details.
