@@ -7,7 +7,6 @@ import globalContext from '../../context/globalContext.js'
  */
 function CardListLoader () {
   const { commonStore, syncStore, notificationStore } = useContext(globalContext)
-  const moviesUpdatedAtRef = useRef(syncStore?.moviesUpdatedAt || '')
 
   /**
    * Load movie cards.
@@ -18,19 +17,13 @@ function CardListLoader () {
         return
       }
 
-      // don't update before data is loaded
+      // don't update before data is first-loaded because it could be initialized by SSR
       if (!syncStore?.moviesUpdatedAt) {
         return
       }
 
-      // nothing changed if moviesUpdatedAt is set and not new
-      const moviesUpdatedAt = syncStore.moviesUpdatedAt
-      if (moviesUpdatedAtRef.current === moviesUpdatedAt && commonStore.cards.length > 0) {
-        return
-      }
-
+      // caching has to be made in store
       await commonStore.loadCards()
-      moviesUpdatedAtRef.current = moviesUpdatedAt
     }
 
     refreshCards()
@@ -52,10 +45,7 @@ function CardListLoader () {
         return
       }
 
-      if (commonStore.allDetails.length > 0) {
-        return
-      }
-
+      // caching has to be made in store
       await commonStore.loadAllDetails()
     }
 
@@ -64,7 +54,7 @@ function CardListLoader () {
         console.error(e)
         notificationStore.error({ message: e.message })
       })
-  }, [commonStore, commonStore.isInitialized, notificationStore])
+  }, [commonStore, commonStore.isInitialized, syncStore?.profileUpdatedAt, notificationStore])
 
   return null
 }
