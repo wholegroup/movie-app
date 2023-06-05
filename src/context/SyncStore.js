@@ -12,6 +12,9 @@ class SyncStore {
   /** @type {number} worker intervalId */
   workerIntervalId
 
+  /** @type {WorkerStepEnum[]} */
+  workerStepsExecuting = []
+
   /** @type {boolean} isInitialized flag. */
   isInitialized = false
 
@@ -20,6 +23,12 @@ class SyncStore {
 
   /** @type {boolean} isBusy flag. */
   isBusy = false
+
+  /** @type {boolean} Worker is in delayed mode. */
+  isDelayed = false
+
+  /** @type {number} Timestamp when idDelayed set */
+  delayedDate = 0
 
   /** @type {number} Timestamp to catch any data changes after synchronization. */
   changesHash = 0
@@ -30,17 +39,11 @@ class SyncStore {
   /** @type {string} moviesUpdatedAt timestamp from storage */
   moviesUpdatedAt = ''
 
-  /** @type {WorkerStepEnum[]} */
-  workerStepsExecuting = []
-
-  /** @type {boolean} Worker is in delayed mode. */
-  isDelayed = false
-
-  /** @type {number} Timestamp when idDelayed set */
-  delayedDate = 0
-
   /** @type {number} profileSyncedTs timestamp */
   profileSyncedTs = 0
+
+  /** @type {string} profileUpdatedAt timestamp from storage */
+  profileUpdatedAt = ''
 
   /** @type {number} purged timestamp */
   purgedTs = 0
@@ -62,9 +65,6 @@ class SyncStore {
       setIsBusy: action,
       changesHash: observable,
       setChangesHash: action,
-      moviesSyncedTs: observable,
-      setMoviesSyncedTs: action,
-      nextMoviesSyncedDate: computed,
       workerStepsExecuting: observable,
       startWorkerStepExecution: action,
       stopWorkerStepExecution: action,
@@ -72,10 +72,15 @@ class SyncStore {
       isDelayed: observable,
       delayedDate: observable,
       setIsDelayed: action,
+      moviesSyncedTs: observable,
+      setMoviesSyncedTs: action,
+      nextMoviesSyncedDate: computed,
       moviesUpdatedAt: observable,
       setMoviesUpdatedAt: action,
       profileSyncedTs: observable,
       setProfileSyncedTs: action,
+      profileUpdatedAt: observable,
+      setProfileUpdatedAt: action,
       nextProfileUpdatingTs: computed,
       purgedTs: observable,
       setPurgedTs: action,
@@ -189,11 +194,20 @@ class SyncStore {
   }
 
   /**
+   * Sets profileUpdatedAt.
+   * @param {string} profileUpdatedAt
+   */
+  setProfileUpdatedAt (profileUpdatedAt) {
+    this.profileUpdatedAt = profileUpdatedAt
+  }
+
+  /**
    * Initializes store data from storage.
    * @returns {Promise<void>}
    */
   async initializeStoreData () {
     this.setMoviesUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT) || '')
+    this.setProfileUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT) || '')
     this.setPurgedTs(await this.storageService.getSettings(SETTINGS_NAMES.PURGED_TS) || 0)
 
     // normalize purgedTs, it has to be less than Date.now()
@@ -369,7 +383,7 @@ class SyncStore {
       const allDetails = await this.storageService.loadAllDetails()
       const notSyncedDetails = allDetails.filter(({ syncedAt }) => !syncedAt)
 
-      const profileResponse = await this.apiService.loadProfile(notSyncedDetails)
+      const profileResponse = await this.apiService.loadProfile(notSyncedDetails, this.profileUpdatedAt)
       if (profileResponse) {
         const { info } = profileResponse
         const userProfile = {
@@ -383,19 +397,16 @@ class SyncStore {
         // load details
         const { details, lastUpdatedAt } = profileResponse
         console.log('Loaded', details.length, 'details')
-        console.log('Details updated at', lastUpdatedAt)
+        console.log('Profile updated at', lastUpdatedAt)
 
         // save in storage
         await this.storageService.upsertDetails(details)
-        // await this.storageService.upsertVotes(votes)
-        // await this.storageService.upsertImages(images)
-        // await this.storageService.upsertMetadata(metadata)
 
-        // // update lastUpdatedAt if it's necessary
-        // if (this.lastUpdatedAt !== lastUpdatedAt) {
-        //   this.setLastUpdatedAt(lastUpdatedAt)
-        //   await this.storageService.setSettings(SETTINGS_NAMES.LAST_UPDATED_AT, lastUpdatedAt)
-        // }
+        // update lastUpdatedAt if it's necessary
+        if (this.profileUpdatedAt !== lastUpdatedAt) {
+          this.setProfileUpdatedAt(lastUpdatedAt)
+          await this.storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, lastUpdatedAt)
+        }
 
         await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
       } else {
