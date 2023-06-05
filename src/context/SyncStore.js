@@ -321,7 +321,7 @@ class SyncStore {
         metadata,
         lastUpdatedAt
       } = await this.apiService.loadMovies(this.moviesUpdatedAt)
-      console.log('Loaded', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images',
+      console.log('Got', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images,',
         metadata.length, 'metadata items')
       console.log('Movies updated at', lastUpdatedAt)
 
@@ -396,7 +396,7 @@ class SyncStore {
 
         // load details
         const { details, lastUpdatedAt } = profileResponse
-        console.log('Loaded', details.length, 'details')
+        console.log('Got', details.length, 'details')
         console.log('Profile updated at', lastUpdatedAt)
 
         // save in storage
