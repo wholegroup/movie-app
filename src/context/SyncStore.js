@@ -45,6 +45,9 @@ class SyncStore {
   /** @type {string} profileUpdatedAt timestamp from storage */
   profileUpdatedAt = ''
 
+  /** @type {number} reset timestamp */
+  resetTs = 0
+
   /** @type {number} purged timestamp */
   purgedTs = 0
 
@@ -84,7 +87,10 @@ class SyncStore {
       nextProfileUpdatingTs: computed,
       purgedTs: observable,
       setPurgedTs: action,
-      nextPurgingTs: computed
+      nextPurgingTs: computed,
+      resetTs: observable,
+      setResetTs: action,
+      nextResetTs: computed
     })
   }
 
@@ -208,7 +214,14 @@ class SyncStore {
   async initializeStoreData () {
     this.setMoviesUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT) || '')
     this.setProfileUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT) || '')
+    this.setResetTs(await this.storageService.getSettings(SETTINGS_NAMES.RESET_TS) || 0)
     this.setPurgedTs(await this.storageService.getSettings(SETTINGS_NAMES.PURGED_TS) || 0)
+
+    // normalize resetTs, it has to be less than Date.now()
+    if (this.resetTs && !(this.resetTs < Date.now())) {
+      console.log('Normalizing reset timestamp!')
+      this.setResetTs(0)
+    }
 
     // normalize purgedTs, it has to be less than Date.now()
     if (this.purgedTs && !(this.purgedTs < Date.now())) {
@@ -280,6 +293,10 @@ class SyncStore {
    * @returns {Promise<boolean>}
    */
   async doWorkerStep () {
+    if (Date.now() >= this.nextResetTs) {
+      return await this.resetPoint()
+    }
+
     if (Date.now() >= this.nextProfileUpdatingTs) {
       return await this.synchronizeProfile()
     }
@@ -421,6 +438,48 @@ class SyncStore {
   }
 
   /**
+   * Calculates next resetTs.
+   * @returns {number}
+   */
+  get nextResetTs () {
+    // once a month
+    return this.nextCronDate(this.resetTs, '0 0 0 1 * *')
+  }
+
+  /**
+   * Sets resetTs.
+   * @param {number} resetTs
+   */
+  setResetTs (resetTs) {
+    this.resetTs = resetTs
+  }
+
+  /**
+   * Reset starting point.
+   * @returns {Promise<boolean>}
+   */
+  async resetPoint () {
+    const tm = 'Reset starting point...'
+    console.time(tm)
+
+    try {
+      this.startWorkerStepExecution(WorkerStepEnum.RESET_POINT)
+
+      this.setMoviesUpdatedAt('')
+      await this.storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, '')
+
+      this.setProfileUpdatedAt('')
+      await this.storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, '')
+
+      this.setResetTs(Date.now())
+      await this.storageService.setSettings(SETTINGS_NAMES.RESET_TS, this.resetTs)
+    } finally {
+      console.timeEnd(tm)
+      this.stopWorkerStepExecution(WorkerStepEnum.RESET_POINT)
+    }
+  }
+
+  /**
    * Calculates next purgingTs.
    * @returns {number}
    */
@@ -458,6 +517,7 @@ class SyncStore {
 }
 
 const WorkerStepEnum = Object.freeze({
+  RESET_POINT: 'RESET_POINT',
   PURGE_MOVIES: 'PURGE_MOVIES',
   SYNCHRONIZE_MOVIES: 'SYNCHRONIZE_MOVIES',
   SYNCHRONIZE_PROFILE: 'SYNCHRONIZE_PROFILE'
