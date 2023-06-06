@@ -59,9 +59,12 @@ IndexPage.getInitialProps = async function ({ req }) {
     const images = (await imagesPromise)
       .filter(({ movieId }) => visibleIds.includes(movieId))
 
-    const sortedMovies = movies.sort(({ year: a, title: x }, { year: b, title: y }) => (b - a) || x.localeCompare(y))
+    // movie is new before this date
+    const freshDate = new Date()
+    freshDate.setDate(freshDate.getDate() - 14) // minus 14 days
+    const freshDateISO = freshDate.toISOString()
 
-    const cards = sortedMovies.map(movie => {
+    const cards = movies.map(movie => {
       const mainImage = (images.find(nextImages => nextImages.movieId === movie.movieId) || {}).images[0] ?? null
       return {
         movieId: movie.movieId,
@@ -70,7 +73,8 @@ IndexPage.getInitialProps = async function ({ req }) {
         year: movie.year,
         genres: movie.genres,
         posterHash: mainImage?.hash || null,
-        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || '')
+        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || ''),
+        isNew: movie.createdAt > freshDateISO
       }
     })
 

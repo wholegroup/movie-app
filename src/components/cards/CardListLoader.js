@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import globalContext from '../../context/globalContext.js'
 

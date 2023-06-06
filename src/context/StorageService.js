@@ -167,6 +167,11 @@ class StorageService {
     /** @type {TImagesItem[]} */
     const images = await this.storage.images.toArray()
 
+    // movie is new before this date
+    const freshDate = new Date()
+    freshDate.setDate(freshDate.getDate() - 14) // minus 14 days
+    const freshDateISO = freshDate.toISOString()
+
     // noinspection UnnecessaryLocalVariableJS
     const cards = movies.map(movie => {
       const mainImage = images.find(nextImages => nextImages.movieId === movie.movieId)?.images[0] ?? null
@@ -177,7 +182,8 @@ class StorageService {
         year: movie.year,
         genres: movie.genres,
         posterHash: mainImage?.hash || null,
-        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || '')
+        posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || ''),
+        isNew: movie.createdAt > freshDateISO
       }
     })
     return cards
@@ -249,6 +255,7 @@ class StorageService {
  * @property {?string[]} genres
  * @property {?TMoviePerson} directors
  * @property {?TMoviePerson} stars
+ * @property {?string} createdAt
  * @property {?string} updatedAt
  */
 
@@ -289,6 +296,7 @@ class StorageService {
  * @property {string} genres
  * @property {string} posterHash
  * @property {string} posterUrl
+ * @property {boolean} [isNew]
  */
 
 /**

@@ -11,7 +11,7 @@ import styles from './CardItem.module.css'
  */
 function CardItem ({ card, details, onClickThumb }) {
   return (
-    <div className={styles.card} data-movie-id={card.movieId}>
+    <div className={`${styles.card} ${card.isNew ? styles.isNew : ''}`} data-movie-id={card.movieId}>
       <Link href={`/${card.slug}`} prefetch={false}>
         <div>
           <img

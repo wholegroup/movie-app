@@ -194,7 +194,7 @@ class CommonStore {
    * @returns {TMovieCard[]}
    */
   get filteredCards () {
-    return [...this.cards
+    return [...this.cards]
       .filter(({ year }) => this.filters.years.length === 0 || this.filters.years.includes(year))
       .filter(({ genres }) => this.filters.genres.length === 0 ||
         this.filters.genres.filter(g => genres.includes(g)).length > 0)
@@ -210,7 +210,6 @@ class CommonStore {
         }
         return false
       })
-    ]
   }
 
   /**
@@ -218,9 +217,8 @@ class CommonStore {
    * @returns {TMovieCard[]}
    */
   get sortedCards () {
-    return [...this.filteredCards].sort(
-      ({ year: a, title: x }, { year: b, title: y }) => (b - a) || x.localeCompare(y)
-    )
+    return [...this.filteredCards]
+      .sort((a, b) => (b.isNew - a.isNew) || (b.year - a.year) || a.title.localeCompare(b.title))
   }
 
   /**
