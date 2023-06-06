@@ -339,6 +339,7 @@ class SyncBackendService {
         slug,
         fullName
       })),
+      createdAt: movie.createdAt,
       updatedAt: movie.updatedAt
     }
   }
