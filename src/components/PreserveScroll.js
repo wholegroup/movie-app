@@ -8,7 +8,9 @@ function PreserveScroll () {
   useEffect(() => {
     const onRouteChangeStart = () => {
       const oldUrl = router.pathname
-      scrollPositions.current[oldUrl] = window.scrollY
+      if (oldUrl === '/') {
+        scrollPositions.current[oldUrl] = window.scrollY
+      }
     }
 
     const onRouteChangeComplete = (newUrl) => {
