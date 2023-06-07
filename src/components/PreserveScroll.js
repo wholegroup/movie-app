@@ -7,15 +7,15 @@ function PreserveScroll () {
 
   useEffect(() => {
     const onRouteChangeStart = () => {
-      const url = router.pathname
-      scrollPositions.current[url] = window.scrollY
+      const oldUrl = router.pathname
+      scrollPositions.current[oldUrl] = window.scrollY
     }
 
-    const onRouteChangeComplete = (url) => {
-      if (url === '/' && scrollPositions.current[url]) {
+    const onRouteChangeComplete = (newUrl) => {
+      if (newUrl === '/' && scrollPositions.current[newUrl]) {
         // noinspection JSCheckFunctionSignatures
         window.scroll({
-          top: scrollPositions.current[url],
+          top: scrollPositions.current[newUrl],
           behavior: 'instant'
         })
       }
