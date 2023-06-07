@@ -163,6 +163,7 @@ class CardListStore {
       ...this.allDetailsKey,
       [movieId]: {
         ...this.allDetailsKey[movieId],
+        movieId,
         mark
       }
     }))
@@ -179,6 +180,7 @@ class CardListStore {
       ...this.allDetailsKey,
       [movieId]: {
         ...this.allDetailsKey[movieId],
+        movieId,
         mark: null
       }
     }))
