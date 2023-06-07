@@ -1,10 +1,10 @@
 import GlobalContextProvider from '../context/GlobalContextProvider.js'
 import Head from 'next/head'
+import PreserveScroll from '../components/PreserveScroll.js'
 import WorkboxReloadHook from '../components/WorkboxReloadHook.js'
 import ToastsContainer from '../components/ToastsContainer.js'
 import './bs-reboot.css'
 import './_app.css'
-import PreserveScroll from '../components/PreserveScroll.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**

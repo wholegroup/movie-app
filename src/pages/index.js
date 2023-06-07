@@ -5,8 +5,9 @@ import CardList from '../components/cards/CardList.js'
 import CardListLoader from '../components/cards/CardListLoader.js'
 import ApiService from '../context/ApiService.js'
 import globalContext from '../context/globalContext.js'
-import FiltersPanel from '../components/toolbar/FiltersPanel.js'
-import Toolbar from '../components/toolbar/Toolbar.js'
+import FiltersPanel from '../components/cards/FiltersPanel.js'
+import Toolbar from '../components/Toolbar.js'
+import ToolbarMenu from '../components/cards/CardListMenu.js'
 
 // noinspection JSUnusedGlobalSymbols
 export default function IndexPage () {
@@ -31,7 +32,9 @@ export default function IndexPage () {
 
   return (
     <>
-      <Toolbar />
+      <Toolbar>
+        <ToolbarMenu />
+      </Toolbar>
       <FiltersPanel />
       <CardListLoader />
       <CardList />

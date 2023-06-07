@@ -2,15 +2,14 @@ import Link from 'next/link.js'
 import { useRouter } from 'next/router.js'
 import { Icon } from '@mdi/react'
 import { mdiHomeCircleOutline, mdiInformationOutline } from '@mdi/js'
-import ProfileLoader from '../profile/ProfileLoader.js'
+import ProfileLoader from './profile/ProfileLoader.js'
 import styles from './Toolbar.module.css'
-import ToolbarUser from './ToolbarUser.js'
-import ToolbarMenu from './ToolbarMenu.js'
+import ToolbarUser from './profile/ToolbarUser.js'
 
 /**
  * Toolbar.
  */
-function Toolbar () {
+function Toolbar ({ children = null }) {
   const router = useRouter()
 
   return (
@@ -44,7 +43,7 @@ function Toolbar () {
         )}
       </div>
       <div>
-        {router.asPath === '/' && <ToolbarMenu />}
+        {children}
       </div>
       <div className={styles.last}>
         <div>

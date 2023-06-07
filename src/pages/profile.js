@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import Toolbar from '../components/toolbar/Toolbar.js'
+import Toolbar from '../components/Toolbar.js'
 import ProfileCard from '../components/profile/ProfileCard.js'
 
 /**

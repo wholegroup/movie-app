@@ -4,12 +4,12 @@ import { Icon } from '@mdi/react'
 import { mdiFilterMultiple } from '@mdi/js'
 import globalContext from '../../context/globalContext.js'
 import MovieCounter from './MovieCounter.js'
-import styles from './ToolbarMenu.module.css'
+import styles from './CardListMenu.module.css'
 
 /**
  * Toolbar menu in the center.
  */
-function ToolbarMenu () {
+function CardListMenu () {
   const { commonStore } = useContext(globalContext)
 
   const togglePanel = () => {
@@ -42,4 +42,4 @@ function ToolbarMenu () {
   )
 }
 
-export default observer(ToolbarMenu)
+export default observer(CardListMenu)

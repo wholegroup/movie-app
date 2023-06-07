@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Toolbar from '../components/toolbar/Toolbar.js'
+import Toolbar from '../components/Toolbar.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**
