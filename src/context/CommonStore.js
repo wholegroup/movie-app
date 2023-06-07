@@ -14,6 +14,9 @@ class CommonStore {
   /** @type {?TUserProfile} */
   profile = null
 
+  /** @type {Object} Global cache object */
+  cache = {}
+
   /**
    * Default constructor.
    * @param {StorageService} storageService

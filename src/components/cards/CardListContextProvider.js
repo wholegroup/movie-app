@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import globalContext from '../../context/globalContext.js'
 import cardListContext from './cardListContext.js'
 import CardListStore from './CardListStore.js'
@@ -36,7 +36,25 @@ function CardListContextProvider ({ children, ...pageProps }) {
       contextValueRef.current.commonStore = Object.assign(
         contextValueRef.current.commonStore, pageProps.commonStore)
     }
+
+    /**
+     * Restore from cache
+     */
+    if (commonStore.cache[`${CardListContextProvider.name}`]) {
+      contextValueRef.current.cardListStore = Object.assign(
+        contextValueRef.current.cardListStore, commonStore.cache[`${CardListContextProvider.name}`])
+    }
   }
+
+  useEffect(() => {
+    return () => {
+      commonStore.cache[`${CardListContextProvider.name}`] = {
+        filters: contextValueRef.current.cardListStore.filters,
+        cards: contextValueRef.current.cardListStore.cards,
+        allDetails: contextValueRef.current.cardListStore.allDetails
+      }
+    }
+  }, [commonStore.isInitialized, notificationStore])
 
   return (
     <cardListContext.Provider value={contextValueRef.current}>

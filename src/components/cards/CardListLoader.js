@@ -37,7 +37,6 @@ function CardListLoader () {
         return
       }
 
-      // caching has to be made in store
       await cardListStore.loadCards()
     }
 
@@ -60,7 +59,6 @@ function CardListLoader () {
         return
       }
 
-      // caching has to be made in store
       await cardListStore.loadAllDetails()
     }
 
