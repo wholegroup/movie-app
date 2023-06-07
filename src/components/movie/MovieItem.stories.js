@@ -1,11 +1,11 @@
-import globalContext from '../../context/globalContext.js'
-import CommonStore from '../../context/CommonStore.js'
+import movieContext from './movieContext.js'
+import MovieStore from './MovieStore.js'
 import MovieItem from './MovieItem.js'
 
 // noinspection JSUnusedGlobalSymbols
 export const Simple = () => {
   const contextValue = {
-    commonStore: Object.assign(new CommonStore(null, null), {
+    movieStore: Object.assign(new MovieStore(null), {
       movie: {
         movieId: 141590,
         slug: 'a-good-person',
@@ -61,9 +61,9 @@ export const Simple = () => {
 
   return (
     <>
-      <globalContext.Provider value={contextValue}>
+      <movieContext.Provider value={contextValue}>
         <MovieItem />
-      </globalContext.Provider>
+      </movieContext.Provider>
     </>
   )
 }
