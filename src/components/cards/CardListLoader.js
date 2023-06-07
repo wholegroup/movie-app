@@ -24,6 +24,26 @@ function CardListLoader () {
   }, [cardListStore, commonStore.isInitialized, notificationStore])
 
   /**
+   * Load details.
+   * It has to be called before bellow loading cards to avoid blinking movie counter.
+   */
+  useEffect(() => {
+    async function refreshDetails () {
+      if (!commonStore.isInitialized) {
+        return
+      }
+
+      await cardListStore.loadAllDetails()
+    }
+
+    refreshDetails()
+      .catch((e) => {
+        console.error(e)
+        notificationStore.error({ message: e.message })
+      })
+  }, [cardListStore, commonStore.isInitialized, syncStore?.profileUpdatedAt, notificationStore])
+
+  /**
    * Load movie cards.
    */
   useEffect(() => {
@@ -49,25 +69,6 @@ function CardListLoader () {
     return () => {
     }
   }, [cardListStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, notificationStore])
-
-  /**
-   * Load details.
-   */
-  useEffect(() => {
-    async function refreshDetails () {
-      if (!commonStore.isInitialized) {
-        return
-      }
-
-      await cardListStore.loadAllDetails()
-    }
-
-    refreshDetails()
-      .catch((e) => {
-        console.error(e)
-        notificationStore.error({ message: e.message })
-      })
-  }, [cardListStore, commonStore.isInitialized, syncStore?.profileUpdatedAt, notificationStore])
 
   return null
 }
