@@ -54,7 +54,7 @@ function CardListContextProvider ({ children, ...pageProps }) {
         allDetails: contextValueRef.current.cardListStore.allDetails
       }
     }
-  }, [commonStore.isInitialized, notificationStore])
+  }, [commonStore.isInitialized, commonStore.cache, notificationStore])
 
   return (
     <cardListContext.Provider value={contextValueRef.current}>

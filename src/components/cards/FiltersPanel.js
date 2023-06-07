@@ -1,5 +1,4 @@
 import { useContext } from 'react'
-import { useRouter } from 'next/router.js'
 import { observer } from 'mobx-react-lite'
 import cardListContext from './cardListContext.js'
 import { movieDetailsStatusEnum } from './CardListStore.js'
@@ -9,7 +8,6 @@ import styles from './FiltersPanel.module.css'
  * Filters Panel.
  */
 function FiltersPanel () {
-  const router = useRouter()
   const { cardListStore, notificationStore } = useContext(cardListContext)
   if (!cardListStore.isFiltersPanelOpen) {
     return null
