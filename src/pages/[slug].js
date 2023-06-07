@@ -1,4 +1,5 @@
 import SyncBackendService from '../../libs/SyncBackendService.js'
+import Toolbar from '../components/toolbar/Toolbar.js'
 import MovieItem from '../components/movie/MovieItem.js'
 import MovieLoader from '../components/movie/MovieLoader.js'
 import MovieContextProvider from '../components/movie/MovieContextProvider.js'
@@ -10,6 +11,7 @@ import MovieContextProvider from '../components/movie/MovieContextProvider.js'
 export default function MoviePage ({ ...pageProps }) {
   return (
     <MovieContextProvider {...pageProps}>
+      <Toolbar />
       <MovieLoader />
       <MovieItem />
     </MovieContextProvider>

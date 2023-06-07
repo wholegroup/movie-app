@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Toolbar from '../components/toolbar/Toolbar.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**
@@ -11,6 +12,7 @@ export default function AboutPage () {
         <title>About </title>
         <meta name='description' content='About movie application' />
       </Head>
+      <Toolbar />
       <div>about page</div>
     </>
   )

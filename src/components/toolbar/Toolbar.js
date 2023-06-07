@@ -38,7 +38,7 @@ function Toolbar () {
         {router.asPath !== '/' && (
           <div>
             <Link href='/'>
-              <Icon id={'go-home'} path={mdiHomeCircleOutline} size={1.5} title={'Anonymous'} />
+              <Icon id={'go-home'} path={mdiHomeCircleOutline} size={1.5} title={'Go home'} />
             </Link>
           </div>
         )}

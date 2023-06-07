@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import Toolbar from '../components/toolbar/Toolbar.js'
 import ProfileCard from '../components/profile/ProfileCard.js'
 
 /**
@@ -7,6 +8,7 @@ import ProfileCard from '../components/profile/ProfileCard.js'
 function ProfilePage () {
   return (
     <>
+      <Toolbar />
       <ProfileCard />
     </>
   )
