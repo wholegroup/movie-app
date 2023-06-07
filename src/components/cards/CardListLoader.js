@@ -9,6 +9,21 @@ function CardListLoader () {
   const { cardListStore, commonStore, syncStore, notificationStore } = useContext(cardListContext)
 
   /**
+   * Initialize filters.
+   */
+  useEffect(() => {
+    if (!commonStore.isInitialized) {
+      return
+    }
+
+    cardListStore.updateFilters()
+      .catch((e) => {
+        console.error(e)
+        notificationStore.error({ message: e.message })
+      })
+  }, [cardListStore, commonStore.isInitialized, notificationStore])
+
+  /**
    * Load movie cards.
    */
   useEffect(() => {

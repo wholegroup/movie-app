@@ -20,7 +20,7 @@ function FiltersPanel () {
    * @param {string} status
    */
   const clickStatus = (status) => {
-    cardListStore.updateFilters({
+    cardListStore.changeFilters({
       ...cardListStore.filters,
       status
     }).catch(e => notificationStore.error({ message: e.message }))
@@ -36,7 +36,7 @@ function FiltersPanel () {
    * @param {number} year
    */
   const clickYear = (year) => {
-    cardListStore.updateFilters({
+    cardListStore.changeFilters({
       ...cardListStore.filters,
       years: cardListStore.filters.years.includes(year)
         ? cardListStore.filters.years.filter(n => n !== year)
@@ -54,7 +54,7 @@ function FiltersPanel () {
    * @param {string} genre
    */
   const clickGenre = (genre) => {
-    cardListStore.updateFilters({
+    cardListStore.changeFilters({
       ...cardListStore.filters,
       genres: cardListStore.filters.genres.includes(genre)
         ? cardListStore.filters.genres.filter(n => n !== genre)

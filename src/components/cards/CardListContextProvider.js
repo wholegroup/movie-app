@@ -9,10 +9,8 @@ function CardListContextProvider ({ children, ...pageProps }) {
 
   let contextValue
   if (typeof window !== 'undefined') {
-    const cardListStore = new CardListStore(storageService)
-    cardListStore.initializeStoreData().catch(console.error)
     contextValue = {
-      cardListStore: cardListStore,
+      cardListStore: new CardListStore(storageService),
       commonStore,
       syncStore,
       notificationStore

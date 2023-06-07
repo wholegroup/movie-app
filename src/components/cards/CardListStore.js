@@ -57,10 +57,10 @@ class CardListStore {
   }
 
   /**
-   * Initializes store data from storage.
+   * Updates filters from storage.
    * @returns {Promise<void>}
    */
-  async initializeStoreData () {
+  async updateFilters () {
     this.setFilters({
       ...defaultFilters,
       ...(await this.storageService.getSettings(SETTINGS_NAMES.USER_FILTERS) || {})
@@ -193,11 +193,11 @@ class CardListStore {
   }
 
   /**
-   * Updates filters.
+   * Changes filters.
    * @param {TFilters} filters
    * @returns {Promise<void>}
    */
-  async updateFilters (filters) {
+  async changeFilters (filters) {
     this.setFilters(filters)
     await this.storageService.setSettings(SETTINGS_NAMES.USER_FILTERS, { ...this.filters })
   }
@@ -214,7 +214,7 @@ class CardListStore {
    * Resets filters.
    */
   async resetFilters () {
-    return this.updateFilters(defaultFilters)
+    return this.changeFilters(defaultFilters)
   }
 
   /**
