@@ -27,8 +27,7 @@ function FiltersPanel () {
     cardListStore.setIsFiltersPanelOpen(false)
 
     // scroll to top
-    router.replace(router.asPath)
-      .catch(e => notificationStore.error({ message: e.message }))
+    window.scroll({ top: 0, behavior: 'smooth' })
   }
 
   /**
@@ -45,8 +44,7 @@ function FiltersPanel () {
     cardListStore.setIsFiltersPanelOpen(false)
 
     // scroll to top
-    router.replace(router.asPath)
-      .catch(e => notificationStore.error({ message: e.message }))
+    window.scroll({ top: 0, behavior: 'smooth' })
   }
 
   /**
@@ -63,8 +61,7 @@ function FiltersPanel () {
     cardListStore.setIsFiltersPanelOpen(false)
 
     // scroll to top
-    router.replace(router.asPath)
-      .catch(e => notificationStore.error({ message: e.message }))
+    window.scroll({ top: 0, behavior: 'smooth' })
   }
 
   const clickReset = () => {
@@ -73,8 +70,7 @@ function FiltersPanel () {
     cardListStore.setIsFiltersPanelOpen(false)
 
     // scroll to top
-    router.replace(router.asPath)
-      .catch(e => notificationStore.error({ message: e.message }))
+    window.scroll({ top: 0, behavior: 'smooth' })
   }
 
   return (
