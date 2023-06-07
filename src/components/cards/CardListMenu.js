@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Icon } from '@mdi/react'
 import { mdiFilterMultiple } from '@mdi/js'
-import globalContext from '../../context/globalContext.js'
+import cardListContext from './cardListContext.js'
 import MovieCounter from './MovieCounter.js'
 import styles from './CardListMenu.module.css'
 
@@ -10,10 +10,10 @@ import styles from './CardListMenu.module.css'
  * Toolbar menu in the center.
  */
 function CardListMenu () {
-  const { commonStore } = useContext(globalContext)
+  const { cardListStore } = useContext(cardListContext)
 
   const togglePanel = () => {
-    commonStore.setIsFiltersPanelOpen(!commonStore.isFiltersPanelOpen)
+    cardListStore.setIsFiltersPanelOpen(!cardListStore.isFiltersPanelOpen)
   }
 
   return (
@@ -28,7 +28,7 @@ function CardListMenu () {
             path={mdiFilterMultiple}
             size={1.5}
             title={'Filters'}
-            className={commonStore.isFiltersModified ? styles.modified : ''}
+            className={cardListStore.isFiltersModified ? styles.modified : ''}
           />
         </button>
       </div>

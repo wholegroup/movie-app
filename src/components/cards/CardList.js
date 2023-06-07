@@ -1,12 +1,12 @@
 import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import Head from 'next/head.js'
-import globalContext from '../../context/globalContext.js'
+import cardListContext from './cardListContext.js'
 import CardItem from './CardItem.js'
 import styles from './CardList.module.css'
 
 function CardList () {
-  const { commonStore, notificationStore, syncStore } = useContext(globalContext)
+  const { cardListStore, notificationStore, syncStore } = useContext(cardListContext)
 
   /**
    * Thumb handler.
@@ -18,9 +18,9 @@ function CardList () {
   const clickThumb = async (movieId, oldMark, newMark) => {
     try {
       if (oldMark !== newMark) {
-        await commonStore.markAsSeen(movieId, newMark)
+        await cardListStore.markAsSeen(movieId, newMark)
       } else {
-        await commonStore.markAsUnseen(movieId)
+        await cardListStore.markAsUnseen(movieId)
       }
       syncStore.scheduleSynchronizingProfile()
     } catch (e) {
@@ -35,14 +35,14 @@ function CardList () {
       </Head>
       <main className={styles.main}>
         <div className={styles.grid}>
-          {commonStore.sortedCards.map(movieCard => (
+          {cardListStore.sortedCards.map(movieCard => (
             <CardItem
               key={movieCard.movieId}
               card={movieCard}
-              details={commonStore.allDetailsKey[movieCard.movieId]}
+              details={cardListStore.allDetailsKey[movieCard.movieId]}
               onClickThumb={(mark) => clickThumb(
                 movieCard.movieId,
-                commonStore.allDetailsKey[movieCard.movieId]?.mark,
+                cardListStore.allDetailsKey[movieCard.movieId]?.mark,
                 mark)}
             />
           ))}

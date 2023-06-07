@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { useRouter } from 'next/router.js'
 import { observer } from 'mobx-react-lite'
-import globalContext from '../../context/globalContext.js'
-import { movieDetailsStatusEnum } from '../../context/CommonStore.js'
+import cardListContext from './cardListContext.js'
+import { movieDetailsStatusEnum } from './CardListStore.js'
 import styles from './FiltersPanel.module.css'
 
 /**
@@ -10,8 +10,8 @@ import styles from './FiltersPanel.module.css'
  */
 function FiltersPanel () {
   const router = useRouter()
-  const { commonStore, notificationStore } = useContext(globalContext)
-  if (!commonStore.isFiltersPanelOpen) {
+  const { cardListStore, notificationStore } = useContext(cardListContext)
+  if (!cardListStore.isFiltersPanelOpen) {
     return null
   }
 
@@ -20,11 +20,11 @@ function FiltersPanel () {
    * @param {string} status
    */
   const clickStatus = (status) => {
-    commonStore.updateFilters({
-      ...commonStore.filters,
+    cardListStore.updateFilters({
+      ...cardListStore.filters,
       status
     }).catch(e => notificationStore.error({ message: e.message }))
-    commonStore.setIsFiltersPanelOpen(false)
+    cardListStore.setIsFiltersPanelOpen(false)
 
     // scroll to top
     router.replace(router.asPath)
@@ -36,13 +36,13 @@ function FiltersPanel () {
    * @param {number} year
    */
   const clickYear = (year) => {
-    commonStore.updateFilters({
-      ...commonStore.filters,
-      years: commonStore.filters.years.includes(year)
-        ? commonStore.filters.years.filter(n => n !== year)
+    cardListStore.updateFilters({
+      ...cardListStore.filters,
+      years: cardListStore.filters.years.includes(year)
+        ? cardListStore.filters.years.filter(n => n !== year)
         : [year]
     }).catch(e => notificationStore.error({ message: e.message }))
-    commonStore.setIsFiltersPanelOpen(false)
+    cardListStore.setIsFiltersPanelOpen(false)
 
     // scroll to top
     router.replace(router.asPath)
@@ -54,13 +54,23 @@ function FiltersPanel () {
    * @param {string} genre
    */
   const clickGenre = (genre) => {
-    commonStore.updateFilters({
-      ...commonStore.filters,
-      genres: commonStore.filters.genres.includes(genre)
-        ? commonStore.filters.genres.filter(n => n !== genre)
+    cardListStore.updateFilters({
+      ...cardListStore.filters,
+      genres: cardListStore.filters.genres.includes(genre)
+        ? cardListStore.filters.genres.filter(n => n !== genre)
         : [genre]
     }).catch(e => notificationStore.error({ message: e.message }))
-    commonStore.setIsFiltersPanelOpen(false)
+    cardListStore.setIsFiltersPanelOpen(false)
+
+    // scroll to top
+    router.replace(router.asPath)
+      .catch(e => notificationStore.error({ message: e.message }))
+  }
+
+  const clickReset = () => {
+    cardListStore.resetFilters()
+      .catch(e => notificationStore.error({ message: e.message }))
+    cardListStore.setIsFiltersPanelOpen(false)
 
     // scroll to top
     router.replace(router.asPath)
@@ -74,7 +84,7 @@ function FiltersPanel () {
           <div>Status</div>
           {Object.keys(movieDetailsStatusEnum).map(status => (
             <div key={status} onClick={() => clickStatus(status)}>
-              {commonStore.filters.status === status
+              {cardListStore.filters.status === status
                 ? <b>{movieDetailsStatusEnum[status]}</b>
                 : movieDetailsStatusEnum[status]}
             </div>
@@ -82,9 +92,9 @@ function FiltersPanel () {
         </div>
         <div>
           <div>Years</div>
-          {commonStore.years.map(year => (
+          {cardListStore.years.map(year => (
             <div key={year} onClick={() => clickYear(year)}>
-              {commonStore.filters.years.length === 0 || commonStore.filters.years.includes(year)
+              {cardListStore.filters.years.length === 0 || cardListStore.filters.years.includes(year)
                 ? <b>{year}</b>
                 : year}
             </div>
@@ -92,9 +102,9 @@ function FiltersPanel () {
         </div>
         <div>
           <div>Genres</div>
-          {commonStore.genres.slice(0, 5).map(genre => (
+          {cardListStore.genres.slice(0, 5).map(genre => (
             <div key={genre} onClick={() => clickGenre(genre)}>
-              {commonStore.filters.genres.length === 0 || commonStore.filters.genres.includes(genre)
+              {cardListStore.filters.genres.length === 0 || cardListStore.filters.genres.includes(genre)
                 ? <b>{genre}</b>
                 : genre}
             </div>
@@ -102,11 +112,7 @@ function FiltersPanel () {
         </div>
       </div>
       <div className={styles.buttons}>
-        <button onClick={() => {
-          commonStore.resetFilters()
-            .catch(e => notificationStore.error({ message: e.message }))
-          commonStore.setIsFiltersPanelOpen(false)
-        }}>
+        <button onClick={() => clickReset()}>
           Reset
         </button>
       </div>

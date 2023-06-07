@@ -1,12 +1,12 @@
-import globalContext from '../../context/globalContext.js'
-import CommonStore from '../../context/CommonStore.js'
+import cardListContext from './cardListContext.js'
 import CardList from './CardList.js'
 import ApiService from '../../context/ApiService.js'
+import CardListStore from './CardListStore.js'
 
 // noinspection JSUnusedGlobalSymbols
 export const LongTitle = () => {
   const contextValue = {
-    commonStore: Object.assign(new CommonStore(null, null), {
+    cardListStore: Object.assign(new CardListStore(null), {
       cards: [
         {
           movieId: 141590,
@@ -29,9 +29,9 @@ export const LongTitle = () => {
 
   return (
     <>
-      <globalContext.Provider value={contextValue}>
+      <cardListContext.Provider value={contextValue}>
         <CardList />
-      </globalContext.Provider>
+      </cardListContext.Provider>
     </>
   )
 }

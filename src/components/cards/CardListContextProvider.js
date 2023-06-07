@@ -1,23 +1,25 @@
 import { useContext } from 'react'
-import movieContext from './movieContext.js'
-import MovieStore from './MovieStore.js'
 import globalContext from '../../context/globalContext.js'
+import cardListContext from './cardListContext.js'
+import CardListStore from './CardListStore.js'
 
-function MovieContextProvider ({ children, ...pageProps }) {
+function CardListContextProvider ({ children, ...pageProps }) {
   const { storageService } = useContext(globalContext)
   const { commonStore, syncStore, notificationStore } = useContext(globalContext)
 
   let contextValue
   if (typeof window !== 'undefined') {
+    const cardListStore = new CardListStore(storageService)
+    cardListStore.initializeStoreData().catch(console.error)
     contextValue = {
-      movieStore: new MovieStore(storageService),
+      cardListStore: cardListStore,
       commonStore,
       syncStore,
       notificationStore
     }
   } else {
     contextValue = {
-      movieStore: new MovieStore(null),
+      cardListStore: new CardListStore(null),
       commonStore
     }
   }
@@ -25,9 +27,9 @@ function MovieContextProvider ({ children, ...pageProps }) {
   /**
    * Initialize predefined data.
    */
-  if (pageProps.movieStore) {
-    contextValue.movieStore = Object.assign(
-      contextValue.movieStore, pageProps.movieStore)
+  if (pageProps.cardListStore) {
+    contextValue.cardListStore = Object.assign(
+      contextValue.cardListStore, pageProps.cardListStore)
   }
 
   if (pageProps.commonStore) {
@@ -36,10 +38,10 @@ function MovieContextProvider ({ children, ...pageProps }) {
   }
 
   return (
-    <movieContext.Provider value={contextValue}>
+    <cardListContext.Provider value={contextValue}>
       {children}
-    </movieContext.Provider>
+    </cardListContext.Provider>
   )
 }
 
-export default MovieContextProvider
+export default CardListContextProvider

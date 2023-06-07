@@ -1,12 +1,12 @@
 import { useContext, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
-import globalContext from '../../context/globalContext.js'
+import cardListContext from './cardListContext.js'
 
 /**
  * Cards loader.
  */
 function CardListLoader () {
-  const { commonStore, syncStore, notificationStore } = useContext(globalContext)
+  const { cardListStore, commonStore, syncStore, notificationStore } = useContext(cardListContext)
 
   /**
    * Load movie cards.
@@ -23,7 +23,7 @@ function CardListLoader () {
       }
 
       // caching has to be made in store
-      await commonStore.loadCards()
+      await cardListStore.loadCards()
     }
 
     refreshCards()
@@ -34,7 +34,7 @@ function CardListLoader () {
 
     return () => {
     }
-  }, [commonStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, notificationStore])
+  }, [cardListStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, notificationStore])
 
   /**
    * Load details.
@@ -46,7 +46,7 @@ function CardListLoader () {
       }
 
       // caching has to be made in store
-      await commonStore.loadAllDetails()
+      await cardListStore.loadAllDetails()
     }
 
     refreshDetails()
@@ -54,7 +54,7 @@ function CardListLoader () {
         console.error(e)
         notificationStore.error({ message: e.message })
       })
-  }, [commonStore, commonStore.isInitialized, syncStore?.profileUpdatedAt, notificationStore])
+  }, [cardListStore, commonStore.isInitialized, syncStore?.profileUpdatedAt, notificationStore])
 
   return null
 }

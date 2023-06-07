@@ -1,17 +1,16 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import SyncBackendService from '../../libs/SyncBackendService.js'
 import CardList from '../components/cards/CardList.js'
 import CardListLoader from '../components/cards/CardListLoader.js'
 import ApiService from '../context/ApiService.js'
-import globalContext from '../context/globalContext.js'
 import FiltersPanel from '../components/cards/FiltersPanel.js'
 import Toolbar from '../components/Toolbar.js'
 import ToolbarMenu from '../components/cards/CardListMenu.js'
+import CardListContextProvider from '../components/cards/CardListContextProvider.js'
 
 // noinspection JSUnusedGlobalSymbols
-export default function IndexPage () {
-  const { commonStore } = useContext(globalContext)
+export default function IndexPage ({ ...pageProps }) {
   const router = useRouter()
 
   useEffect(() => {
@@ -23,22 +22,17 @@ export default function IndexPage () {
       router.replace(router.asPath)
         .catch(console.error)
     }
-
-    return () => {
-      // close filters panel when leaving index page
-      commonStore.setIsFiltersPanelOpen(false)
-    }
-  }, [router, commonStore])
+  }, [router])
 
   return (
-    <>
+    <CardListContextProvider {...pageProps}>
       <Toolbar>
         <ToolbarMenu />
       </Toolbar>
       <FiltersPanel />
       <CardListLoader />
       <CardList />
-    </>
+    </CardListContextProvider >
   )
 }
 
@@ -86,7 +80,7 @@ IndexPage.getInitialProps = async function ({ req }) {
     })
 
     return {
-      commonStore: {
+      cardListStore: {
         cards
       },
       ts: Date.now()

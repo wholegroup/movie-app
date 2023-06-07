@@ -1,15 +1,15 @@
 import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import globalContext from '../../context/globalContext.js'
+import cardListContext from './cardListContext.js'
 
 function MovieCounter () {
-  const { commonStore } = useContext(globalContext)
+  const { cardListStore } = useContext(cardListContext)
   return (
     <>
-      {commonStore.filteredCards.length}
+      {cardListStore.filteredCards.length}
       <span style={{ fontSize: '0.6rem' }}>
       {' / '}
-        {commonStore.cards.length}
+        {cardListStore.cards.length}
       </span>
     </>
   )
