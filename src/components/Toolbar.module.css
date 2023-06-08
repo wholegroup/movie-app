@@ -3,7 +3,7 @@
     top: 0;
     background: var(--toolbar-bg-color);
     padding: 0 1rem;
-    z-index: 10000;
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
     height: 3rem;
