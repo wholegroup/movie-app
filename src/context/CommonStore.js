@@ -14,6 +14,9 @@ class CommonStore {
   /** @type {?TUserProfile} */
   profile = null
 
+  /** @type {Object} Confirm dialog parameters. */
+  confirmDialog = {}
+
   /** @type {Object} Global cache object */
   cache = {}
 
@@ -27,7 +30,9 @@ class CommonStore {
       isInitialized: observable,
       setIsInitialized: action,
       profile: observable,
-      setProfile: action
+      setProfile: action,
+      confirmDialog: observable,
+      setConfirmDialog: action
     })
   }
 
@@ -108,6 +113,14 @@ class CommonStore {
    */
   async updateProfile () {
     this.setProfile(await this.storageService.getSettings(SETTINGS_NAMES.USER_PROFILE) || null)
+  }
+
+  /**
+   * Sets confirmDialog.
+   * @param {object} confirmDialog
+   */
+  setConfirmDialog (confirmDialog) {
+    this.confirmDialog = confirmDialog
   }
 }
 
