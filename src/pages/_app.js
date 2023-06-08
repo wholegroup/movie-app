@@ -1,8 +1,8 @@
 import GlobalContextProvider from '../context/GlobalContextProvider.js'
 import Head from 'next/head'
-import PreserveScroll from '../components/PreserveScroll.js'
-import WorkboxReloadHook from '../components/WorkboxReloadHook.js'
-import ToastsContainer from '../components/ToastsContainer.js'
+import PreserveScroll from '../components/app/PreserveScroll.js'
+import WorkboxReloadHook from '../components/app/WorkboxReloadHook.js'
+import ToastsContainer from '../components/app/ToastsContainer.js'
 import './bs-reboot.css'
 import './_app.css'
 

@@ -1,7 +1,7 @@
-import globalContext from '../context/globalContext.js'
+import globalContext from '../../context/globalContext.js'
 
 import ConfirmDialog from './ConfirmDialog.js'
-import CommonStore from '../context/CommonStore.js'
+import CommonStore from '../../context/CommonStore.js'
 
 // noinspection JSUnusedGlobalSymbols
 export const DefaultYesCancel = () => {

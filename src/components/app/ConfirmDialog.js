@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import styles from './ConfirmDialog.module.css'
 import { useContext } from 'react'
-import globalContext from '../context/globalContext.js'
+import globalContext from '../../context/globalContext.js'
 
 function ConfirmDialog () {
   const { commonStore } = useContext(globalContext)
