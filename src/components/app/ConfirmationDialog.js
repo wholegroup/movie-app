@@ -1,18 +1,18 @@
 import { observer } from 'mobx-react-lite'
-import styles from './ConfirmDialog.module.css'
+import styles from './ConfirmationDialog.module.css'
 import { useContext } from 'react'
 import globalContext from '../../context/globalContext.js'
 
-function ConfirmDialog () {
+function ConfirmationDialog () {
   const { commonStore } = useContext(globalContext)
 
-  if (!commonStore.confirmDialog?.isOpen) {
+  if (!commonStore.confirmation?.isOpen) {
     return null
   }
 
-  const header = commonStore.confirmDialog.header || 'Please confirm'
-  const message = commonStore.confirmDialog.message || 'Are you sure?'
-  const buttons = commonStore.confirmDialog.buttons || [
+  const header = commonStore.confirmation.header || 'Please confirm'
+  const message = commonStore.confirmation.message || 'Are you sure?'
+  const buttons = commonStore.confirmation.buttons || [
     {
       value: 'Close',
       onClick: () => {
@@ -21,8 +21,8 @@ function ConfirmDialog () {
   ]
 
   const clickHandler = (button) => {
-    if (commonStore.confirmDialog.autoCloseable ?? true) {
-      commonStore.closeConfirmDialog()
+    if (commonStore.confirmation.autoCloseable ?? true) {
+      commonStore.closeConfirmation()
     }
     setTimeout(() => button.onClick(), 0)
   }
@@ -45,4 +45,4 @@ function ConfirmDialog () {
   )
 }
 
-export default observer(ConfirmDialog)
+export default observer(ConfirmationDialog)

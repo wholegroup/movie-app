@@ -1,6 +1,6 @@
 import globalContext from '../../context/globalContext.js'
 
-import ConfirmDialog from './ConfirmDialog.js'
+import ConfirmationDialog from './ConfirmationDialog.js'
 import CommonStore from '../../context/CommonStore.js'
 
 // noinspection JSUnusedGlobalSymbols
@@ -8,7 +8,7 @@ export const CancelYesDefault = (args) => {
   const contextValue = {
     commonStore: Object.assign(new CommonStore(null), {})
   }
-  contextValue.commonStore.openConfirmCancelYesDialog(args.onYes, {
+  contextValue.commonStore.openConfirmation(args.onYes, {
     message: 'Are you sure?',
     autoCloseable: false
   })
@@ -16,7 +16,7 @@ export const CancelYesDefault = (args) => {
   return (
     <>
       <globalContext.Provider value={contextValue}>
-        <ConfirmDialog />
+        <ConfirmationDialog />
       </globalContext.Provider>
     </>
   )
@@ -24,7 +24,7 @@ export const CancelYesDefault = (args) => {
 
 // noinspection JSUnusedGlobalSymbols
 export default {
-  component: ConfirmDialog,
+  component: ConfirmationDialog,
   decorators: [story => <>{story()}</>],
   argTypes: {
     onYes: { action: 'Yes! Yes!' }
