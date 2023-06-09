@@ -136,7 +136,7 @@ class CommonStore {
     this.setConfirmation(Object.assign({
       isOpen: true,
       header: 'Please confirm',
-      message: 'Is it ok?',
+      message: 'Are you sure?',
       buttons: [
         {
           value: 'Cancel',

@@ -6,16 +6,12 @@ import CardItem from './CardItem.js'
 import styles from './CardList.module.css'
 
 function CardList () {
-  const { cardListStore, notificationStore, syncStore } = useContext(cardListContext)
+  const { cardListStore, commonStore, notificationStore, syncStore } = useContext(cardListContext)
 
   /**
-   * Thumb handler.
-   * @param {number} movieId
-   * @param {number} oldMark
-   * @param {number} newMark
-   * @returns {Promise<void>}
+   * Marks
    */
-  const clickThumb = async (movieId, oldMark, newMark) => {
+  const markHandler = async (movieId, oldMark, newMark) => {
     try {
       if (oldMark !== newMark) {
         await cardListStore.markAsSeen(movieId, newMark)
@@ -26,6 +22,26 @@ function CardList () {
     } catch (e) {
       notificationStore.error({ message: e.message })
     }
+  }
+
+  /**
+   * Thumb handler.
+   * @param {number} movieId
+   * @param {number} oldMark
+   * @param {number} newMark
+   */
+  const clickThumb = (movieId, oldMark, newMark) => {
+    if (!oldMark) {
+      markHandler(movieId, oldMark, newMark)
+        .catch(console.error)
+      return
+    }
+
+    // ask to confirm
+    commonStore.openConfirmation(() => {
+      markHandler(movieId, oldMark, newMark)
+        .catch(console.error)
+    })
   }
 
   return (

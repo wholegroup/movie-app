@@ -10,7 +10,7 @@ import styles from './MovieItem.module.css'
 import { Icon } from '@mdi/react'
 
 function MovieItem () {
-  const { movieStore, notificationStore, syncStore } = useContext(movieContext)
+  const { movieStore, commonStore, notificationStore, syncStore } = useContext(movieContext)
   if (!movieStore?.movie) {
     return null
   }
@@ -32,11 +32,9 @@ function MovieItem () {
   }
 
   /**
-   * Thumb handler.
-   * @param {number} mark
-   * @returns {Promise<void>}
+   * Marks
    */
-  const clickThumb = async (mark) => {
+  const markHandler = async (mark) => {
     try {
       if (details?.mark !== mark) {
         await movieStore.markAsSeen(movie.movieId, mark)
@@ -47,6 +45,23 @@ function MovieItem () {
     } catch (e) {
       notificationStore.error({ message: e.message })
     }
+  }
+
+  /**
+   * Thumb handler.
+   */
+  const clickThumb = (mark) => {
+    if (!details?.mark) {
+      markHandler(mark)
+        .catch(console.error)
+      return
+    }
+
+    // ask to confirm
+    commonStore.openConfirmation(() => {
+      markHandler(mark)
+        .catch(console.error)
+    })
   }
 
   return (
