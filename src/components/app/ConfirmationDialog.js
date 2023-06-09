@@ -1,7 +1,8 @@
-import { observer } from 'mobx-react-lite'
-import styles from './ConfirmationDialog.module.css'
 import { useContext } from 'react'
+import { observer } from 'mobx-react-lite'
+import FocusTrap from 'focus-trap-react'
 import globalContext from '../../context/globalContext.js'
+import styles from './ConfirmationDialog.module.css'
 
 function ConfirmationDialog () {
   const { commonStore } = useContext(globalContext)
@@ -29,18 +30,19 @@ function ConfirmationDialog () {
 
   return (
     <div className={styles.overlay}>
-
-      <div className={styles.modal}>
-        <div className={styles.header}>
-          {header}
+      <FocusTrap>
+        <div className={styles.modal}>
+          <div className={styles.header}>
+            {header}
+          </div>
+          <div className={styles.body}>
+            {message}
+          </div>
+          <div className={styles.buttons}>
+            {buttons.map((btn, i) => <button key={i} onClick={() => clickHandler(btn)}>{btn.value}</button>)}
+          </div>
         </div>
-        <div className={styles.body}>
-          {message}
-        </div>
-        <div className={styles.buttons}>
-          {buttons.map((btn, i) => <button key={i} onClick={() => clickHandler(btn)}>{btn.value}</button>)}
-        </div>
-      </div>
+      </FocusTrap>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import Head from 'next/head'
 import PreserveScroll from '../components/app/PreserveScroll.js'
 import WorkboxReloadHook from '../components/app/WorkboxReloadHook.js'
 import ToastsContainer from '../components/app/ToastsContainer.js'
+import ConfirmationDialog from '../components/app/ConfirmationDialog'
 import './bs-reboot.css'
 import './_app.css'
 
@@ -35,6 +36,7 @@ export default function Application ({ Component, pageProps }) {
       <GlobalContextProvider {...pageProps}>
         <Component {...pageProps} />
         <ToastsContainer />
+        <ConfirmationDialog />
       </GlobalContextProvider>
     </>
   )
