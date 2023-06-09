@@ -18,12 +18,12 @@ function Toolbar ({ children = null }) {
         {router.asPath === '/' && (
           <>
             <div>
-              <Link href='/Users/andrey/Projects/annualmovies.com/movie-app/src/pages/about'>
+              <Link href='/about'>
                 <Icon id={'go-home'} path={mdiInformationOutline} size={1.5} title={'Information'} />
               </Link>
             </div>
             <div className={`${styles.hide640} ${styles.version}`}>
-              <Link href='/Users/andrey/Projects/annualmovies.com/movie-app/src/pages/about'>
+              <Link href='/about'>
                 <div>
                   AnnualMovies.com
                 </div>
@@ -36,7 +36,7 @@ function Toolbar ({ children = null }) {
         )}
         {router.asPath !== '/' && (
           <div>
-            <Link href='/Users/andrey/Projects/annualmovies.com/movie-app/src/pages'>
+            <Link href='/'>
               <Icon id={'go-home'} path={mdiHomeCircleOutline} size={1.5} title={'Go home'} />
             </Link>
           </div>
