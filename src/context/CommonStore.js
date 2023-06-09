@@ -1,5 +1,6 @@
 import { makeObservable, observable, action } from 'mobx'
 import { SETTINGS_NAMES } from './StorageService.js'
+import confirmDialog from '../components/app/ConfirmDialog.js'
 
 class CommonStore {
   /** @type {StorageService} */
@@ -121,6 +122,47 @@ class CommonStore {
    */
   setConfirmDialog (confirmDialog) {
     this.confirmDialog = confirmDialog
+  }
+
+  /**
+   *
+   * @param message
+   * @param onYes
+   */
+  /**
+   * Opens confirmation dialog.
+   * @param {string }message
+   * @param {function} onYes
+   * @param {object} opts
+   */
+  openConfirmCancelYesDialog (onYes, opts = {}) {
+    if (this.confirmDialog.isOpen) {
+      throw new Error('Already open')
+    }
+
+    this.setConfirmDialog(Object.assign({
+      isOpen: true,
+      header: 'Please confirm',
+      message: 'Is it ok?',
+      buttons: [
+        {
+          value: 'Cancel',
+          onClick: () => {
+          }
+        },
+        {
+          value: 'Yes',
+          onClick: onYes
+        }
+      ]
+    }, opts))
+  }
+
+  /**
+   * Closes confirm dialog.
+   */
+  closeConfirmDialog () {
+    this.setConfirmDialog({})
   }
 }
 

@@ -10,17 +10,35 @@ function ConfirmDialog () {
     return null
   }
 
+  const header = commonStore.confirmDialog.header || 'Please confirm'
+  const message = commonStore.confirmDialog.message || 'Are you sure?'
+  const buttons = commonStore.confirmDialog.buttons || [
+    {
+      value: 'Close',
+      onClick: () => {
+      }
+    }
+  ]
+
+  const clickHandler = (button) => {
+    if (commonStore.confirmDialog.autoCloseable ?? true) {
+      commonStore.closeConfirmDialog()
+    }
+    setTimeout(() => button.onClick(), 0)
+  }
+
   return (
     <div className={styles.overlay}>
 
       <div className={styles.modal}>
         <div className={styles.header}>
-          Please confirm...
+          {header}
         </div>
-        <div className={styles.body}>body</div>
+        <div className={styles.body}>
+          {message}
+        </div>
         <div className={styles.buttons}>
-          <button>Cancel</button>
-          <button>Yes</button>
+          {buttons.map((btn, i) => <button key={i} onClick={() => clickHandler(btn)}>{btn.value}</button>)}
         </div>
       </div>
     </div>
