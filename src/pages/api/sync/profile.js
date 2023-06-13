@@ -17,7 +17,7 @@ export default withApiAuthRequired(async function account (req, res) {
     // synchronize details
     const detailsToSync = req.body?.details || []
     if (detailsToSync.length > 0) {
-      await syncService.synchronizeUserDetails(user.sid, detailsToSync)
+      await syncService.synchronizeUserDetails(user.sub, detailsToSync)
     }
 
     // normalize lastUpdateAt
@@ -27,7 +27,7 @@ export default withApiAuthRequired(async function account (req, res) {
     }
 
     // fetch data
-    const details = await syncService.userDetailsSince(user.sid, lastUpdatedAt)
+    const details = await syncService.userDetailsSince(user.sub, lastUpdatedAt)
 
     //
     const maxUpdatedAt = [
@@ -39,8 +39,8 @@ export default withApiAuthRequired(async function account (req, res) {
 
     res.status(200).json({
       info: {
-        id: user.sid,
-        isAdmin: process.env.AUTH0_ADMIN_SID?.length > 0 && user.sid === process.env.AUTH0_ADMIN_SID,
+        id: user.sub,
+        isAdmin: process.env.AUTH0_ADMIN_SUB?.length > 0 && user.sub === process.env.AUTH0_ADMIN_SUB,
         user
       },
       details: details.map(nextDetails => ({ ...nextDetails, syncedAt: now })),

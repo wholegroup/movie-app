@@ -8,7 +8,7 @@ import SyncBackendService from '../../../../libs/SyncBackendService.js'
  */
 export default async function handler (req, res) {
   const { user } = await getSession(req, res) || {}
-  const isAdmin = process.env.AUTH0_ADMIN_SID?.length > 0 && user?.sid === process.env.AUTH0_ADMIN_SID
+  const isAdmin = process.env.AUTH0_ADMIN_SUB?.length > 0 && user?.sub === process.env.AUTH0_ADMIN_SUB
 
   const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
   try {
