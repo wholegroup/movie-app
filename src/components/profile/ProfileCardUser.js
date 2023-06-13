@@ -7,10 +7,21 @@ import { mdiAccount } from '@mdi/js'
 import styles from './ProfileCardUser.module.css'
 
 function ProfileCardUser () {
-  const { commonStore } = useContext(globalContext)
+  const { commonStore, storageService } = useContext(globalContext)
+
   const profile = commonStore.profile
   if (!profile) {
     return null
+  }
+
+  // handle logout
+  const handleLogout = (ev) => {
+    ev.preventDefault()
+    storageService.clearAllUserData()
+      .then(() => {
+        window.location.href = '/api/auth/logout'
+      })
+      .catch(console.error)
   }
 
   // noinspection HtmlUnknownTarget
@@ -30,7 +41,7 @@ function ProfileCardUser () {
       <div>{profile.email}</div>
       <div>&nbsp;</div>
       <div>
-        <Link href='/api/auth/logout'>Logout</Link>
+        <Link href='#' onClick={handleLogout}>Logout</Link>
       </div>
     </>
   )

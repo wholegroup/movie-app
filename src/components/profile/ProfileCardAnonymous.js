@@ -6,9 +6,20 @@ import { mdiAccountOutline } from '@mdi/js'
 import globalContext from '../../context/globalContext.js'
 
 function ProfileCardAnonymous () {
-  const { commonStore } = useContext(globalContext)
+  const { commonStore, storageService } = useContext(globalContext)
   if (commonStore.profile != null) {
     return null
+  }
+
+  const handleB = (ev) => {
+    ev.preventDefault()
+    commonStore.openConfirmation(() => {
+      storageService.clearAllUserData()
+        .then(() => {
+          window.location.href = '/'
+        })
+        .catch(console.error)
+    })
   }
 
   // noinspection HtmlUnknownTarget
@@ -17,6 +28,10 @@ function ProfileCardAnonymous () {
       <div>
         <Icon id={'account'} path={mdiAccountOutline} size={10} title={'Anonymous'} />
       </div>
+      <div>
+        <Link href='#' onClick={handleB}>Clear all user data</Link>
+      </div>
+      <div>&nbsp;</div>
       <div>
         <Link href='/api/auth/login'>Login</Link>
       </div>

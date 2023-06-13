@@ -242,6 +242,16 @@ class StorageService {
       }, movieId)
     })
   }
+
+  /**
+   * Clears all user data.
+   * @returns {Promise<void>}
+   */
+  async clearAllUserData () {
+    await this.storage.details.clear()
+    await this.storage.metadata.clear()
+    await this.storage.settings.clear()
+  }
 }
 
 /**
