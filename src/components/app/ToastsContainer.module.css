@@ -20,7 +20,6 @@
     position: fixed;
     bottom: 0;
     right: 0;
-    padding: 1rem;
 
     z-index: var(--bs-toast-zindex);
     width: max-content;
@@ -29,6 +28,7 @@
 }
 
 .toast {
+    margin: 1rem;
     width: var(--bs-toast-max-width);
     max-width: 100%;
     font-size: var(--bs-toast-font-size);
