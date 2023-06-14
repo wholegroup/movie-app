@@ -41,8 +41,9 @@
 }
 
 @media (max-width: 640px) {
-    .hide640 {
-        display: none;
+    .onlyIcon640 {
+        max-width: 48px;
+        overflow: hidden;
     }
 }
 

@@ -17,19 +17,9 @@ function Toolbar ({ children = null }) {
       <div className={styles.first}>
         {router.asPath === '/' && (
           <>
-            <div>
+            <div className={styles.onlyIcon640}>
               <Link href='/about'>
-                <Icon id={'go-home'} path={mdiInformationOutline} size={1.5} title={'Information'} />
-              </Link>
-            </div>
-            <div className={`${styles.hide640} ${styles.version}`}>
-              <Link href='/about'>
-                <div>
-                  AnnualMovies.com
-                </div>
-                <div>
-                  v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
-                </div>
+                <img src='/toolbar.png' height='36' alt='logo' />
               </Link>
             </div>
           </>
