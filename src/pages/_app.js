@@ -1,9 +1,10 @@
-import GlobalContextProvider from '../context/GlobalContextProvider.js'
 import Head from 'next/head'
-import PreserveScroll from '../components/app/PreserveScroll.js'
-import WorkboxReloadHook from '../components/app/WorkboxReloadHook.js'
-import ToastsContainer from '../components/app/ToastsContainer.js'
+import GlobalContextProvider from '../context/GlobalContextProvider'
+import PreserveScroll from '../components/app/PreserveScroll'
+import WorkboxReloadHook from '../components/app/WorkboxReloadHook'
+import ToastsContainer from '../components/app/ToastsContainer'
 import ConfirmationDialog from '../components/app/ConfirmationDialog'
+import ErrorPageWrapper from '../components/app/ErrorPageWrapper'
 import './bs-reboot.css'
 import './_app.css'
 
@@ -25,7 +26,7 @@ export default function Application ({ Component, pageProps }) {
         <meta name='keywords' content='Keywords' />
         <title>Annual Movies</title>
 
-        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+        <link rel='sitemap' type='application/xml' title='Sitemap' href='/sitemap.xml' />
         <link rel='manifest' href='/manifest.json' />
         <link href='/icons/icon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
         <link rel='apple-touch-icon' href='/icons/icon-512x512.png'></link>
@@ -34,7 +35,9 @@ export default function Application ({ Component, pageProps }) {
       <WorkboxReloadHook />
       <PreserveScroll />
       <GlobalContextProvider {...pageProps}>
-        <Component {...pageProps} />
+        <ErrorPageWrapper>
+          <Component {...pageProps} />
+        </ErrorPageWrapper>
         <ToastsContainer />
         <ConfirmationDialog />
       </GlobalContextProvider>

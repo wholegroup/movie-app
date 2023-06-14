@@ -5,7 +5,6 @@ import movieContext from './movieContext.js'
 
 /**
  * Movie loader.
- * @param {string} slug
  */
 function MovieLoader () {
   const { query: { slug } } = useRouter()
@@ -28,7 +27,13 @@ function MovieLoader () {
     }
 
     load()
-      .catch((e) => notificationStore.error({ message: e.message }))
+      .catch((e) => {
+        console.error(e)
+        notificationStore.error({ message: e.message })
+        commonStore.setResponseError({
+          statusCode: 404
+        })
+      })
 
     return () => {
       // only when sync is done to avoid blinking during development
@@ -55,7 +60,13 @@ function MovieLoader () {
     }
 
     refresh()
-      .catch((e) => notificationStore.error({ message: e.message }))
+      .catch((e) => {
+        console.error(e)
+        notificationStore.error({ message: e.message })
+        commonStore.setResponseError({
+          statusCode: 500
+        })
+      })
   }, [slug, movieStore, movieStore.refreshTs, notificationStore])
 
   return null

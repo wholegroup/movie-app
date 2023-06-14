@@ -40,8 +40,14 @@ MoviePage.getInitialProps = async function ({ req, query, res }) {
     const movie = await syncService.findMovieBySlug(slug)
     if (!movie) {
       res.statusCode = 404
-      res.end('404 Not found')
-      return
+      return {
+        commonStore: {
+          responseError: {
+            statusCode: res.statusCode
+          }
+        },
+        ts: Date.now()
+      }
     }
 
     return {

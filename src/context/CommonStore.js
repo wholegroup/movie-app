@@ -20,6 +20,9 @@ class CommonStore {
   /** @type {Object} Global cache object */
   cache = {}
 
+  /** @type {Object} Response error. */
+  responseError = null
+
   /**
    * Default constructor.
    * @param {StorageService} storageService
@@ -32,7 +35,9 @@ class CommonStore {
       profile: observable,
       setProfile: action,
       confirmation: observable,
-      setConfirmation: action
+      setConfirmation: action,
+      responseError: observable,
+      setResponseError: action
     })
   }
 
@@ -156,6 +161,14 @@ class CommonStore {
    */
   closeConfirmation () {
     this.setConfirmation({})
+  }
+
+  /**
+   * Sets responseError
+   * @param {object=} responseError
+   */
+  setResponseError (responseError = null) {
+    this.responseError = responseError
   }
 }
 
