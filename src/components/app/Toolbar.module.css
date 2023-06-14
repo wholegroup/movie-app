@@ -8,6 +8,11 @@
     justify-content: space-between;
     height: 3rem;
     align-items: center;
+    color: #34487c;
+}
+
+.nav button {
+    color: inherit;
 }
 
 .nav a {

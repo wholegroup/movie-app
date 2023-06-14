@@ -7,7 +7,6 @@
 .buttonLink {
     box-sizing: content-box;
     padding: 0 0 0 0.375rem;
-    color: rgba(0, 0, 0, 1);
     border: 0;
     background-color: transparent;
 }
@@ -17,5 +16,5 @@
 }
 
 .modified {
-    color: indianred;
+    color: #be4063;
 }

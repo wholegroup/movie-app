@@ -1,7 +1,7 @@
 import Link from 'next/link.js'
 import { useRouter } from 'next/router.js'
 import { Icon } from '@mdi/react'
-import { mdiHomeCircleOutline, mdiInformationOutline } from '@mdi/js'
+import { mdiHomeCircleOutline } from '@mdi/js'
 import ProfileLoader from '../profile/ProfileLoader.js'
 import styles from './Toolbar.module.css'
 import ToolbarUser from '../profile/ToolbarUser.js'
