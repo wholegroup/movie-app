@@ -199,7 +199,7 @@ class StorageService {
 
   /**
    * Purges movies that wasn't updated 30 days.
-   * @returns {Promise<void>}
+   * @returns {Promise<number>}
    */
   async purgeMovies () {
     // find ids to purge
@@ -225,6 +225,8 @@ class StorageService {
         })
       }
     }
+
+    return idsToPurge.length
   }
 
   /**

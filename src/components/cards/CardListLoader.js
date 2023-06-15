@@ -68,7 +68,7 @@ function CardListLoader () {
 
     return () => {
     }
-  }, [cardListStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, notificationStore])
+  }, [cardListStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, syncStore?.changesHash, notificationStore])
 
   return null
 }

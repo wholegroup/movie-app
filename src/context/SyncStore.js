@@ -506,9 +506,10 @@ class SyncStore {
 
     try {
       this.startWorkerStepExecution(WorkerStepEnum.PURGE_MOVIES)
-      await this.storageService.purgeMovies()
+      const purgedNumber = await this.storageService.purgeMovies()
       this.setPurgedTs(Date.now())
       await this.storageService.setSettings(SETTINGS_NAMES.PURGED_TS, this.purgedTs)
+      return purgedNumber > 0
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.PURGE_MOVIES)
