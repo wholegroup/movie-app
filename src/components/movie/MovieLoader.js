@@ -7,7 +7,8 @@ import movieContext from './movieContext.js'
  * Movie loader.
  */
 function MovieLoader () {
-  const { query: { slug } } = useRouter()
+  const { query } = useRouter()
+  const slug = query.slug.join('/')
   const { movieStore, commonStore, syncStore, notificationStore } = useContext(movieContext)
 
   // Load movie by slug

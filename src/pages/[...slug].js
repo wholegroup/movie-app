@@ -32,7 +32,7 @@ MoviePage.getInitialProps = async function ({ req, query, res }) {
   }
 
   // load movie data on backend
-  const { slug } = query
+  const slug = query.slug.join('/')
   const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
   try {
     await syncService.open()
