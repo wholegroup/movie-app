@@ -18,7 +18,7 @@ function Custom404 () {
     return () => {
       router.events.off('routeChangeComplete', onRouteChangeComplete)
     }
-  }, [commonStore])
+  }, [commonStore, router.events])
 
   return (
     <>

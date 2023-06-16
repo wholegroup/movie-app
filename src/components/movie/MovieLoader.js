@@ -48,7 +48,7 @@ function MovieLoader () {
       movieStore.setDetails(null)
       movieStore.setRefreshTs(0)
     }
-  }, [slug, movieStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, notificationStore])
+  }, [slug, movieStore, commonStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt, notificationStore])
 
   // Refresh movie by commonStore.refreshTs
   useEffect(() => {
@@ -68,7 +68,7 @@ function MovieLoader () {
           statusCode: 500
         })
       })
-  }, [slug, movieStore, movieStore.refreshTs, notificationStore])
+  }, [slug, movieStore, commonStore, movieStore.refreshTs, notificationStore])
 
   return null
 }
