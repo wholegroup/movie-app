@@ -9,7 +9,7 @@ function ProfileCard () {
       <ProfileCardUser />
       <div className={styles.footer}>
         <div>
-          {new Date().getUTCFullYear()} &copy; AnnualMovies.com
+          &copy; {new Date().getUTCFullYear()} AnnualMovies.com
         </div>
         <div>
           v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
