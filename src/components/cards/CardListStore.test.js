@@ -1,8 +1,8 @@
-import CommonStore from './CommonStore.js'
+import CardListStore from './CardListStore.js'
 
-describe('CommonStore', () => {
+describe('CardListStore', () => {
   it('computed genres', () => {
-    const commonStore = Object.assign(new CommonStore(null, null), {
+    const cardListStore = Object.assign(new CardListStore(null), {
       cards: [
         { genres: ['Drama', 'Sport'] },
         { genres: ['Action', 'Crime', 'Thriller'] },
@@ -13,7 +13,7 @@ describe('CommonStore', () => {
         { genres: ['Adventure', 'Comedy', 'Crime'] }
       ]
     })
-    expect(commonStore.genresCounter).toEqual({
+    expect(cardListStore.genresCounter).toEqual({
       Action: 4,
       Adventure: 4,
       Animation: 1,
@@ -23,7 +23,7 @@ describe('CommonStore', () => {
       Sport: 1,
       Thriller: 2
     })
-    expect(commonStore.genres).toEqual([
+    expect(cardListStore.genres).toEqual([
       'Action',
       'Adventure',
       'Comedy',
