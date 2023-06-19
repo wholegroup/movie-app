@@ -41,7 +41,8 @@
     "uuid": "^9.0.0"
   },
   "browser": {
-    "sqlite3": false
+    "sqlite3": false,
+    "fs": false
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.0.22",

@@ -1,4 +1,5 @@
 import * as sqlite3 from 'sqlite3'
+import * as fs from 'fs'
 
 // I added browser property into package.json to ignore importing sqlite3 by webpack in client side
 // (because of getInitialProps)
@@ -17,7 +18,12 @@ class SyncBackendService {
    * @param {string} filename Path to DB
    */
   constructor (filename) {
-    this.filename = filename
+    if (!filename) {
+      console.log('Empty database filename. Using :memory:.')
+      this.filename = ':memory:'
+    } else {
+      this.filename = filename
+    }
   }
 
   /**
@@ -199,6 +205,16 @@ class SyncBackendService {
    * @private
    */
   async allRows (tableName) {
+    if (this.filename === ':memory:') {
+      console.log('tableName', tableName)
+      await this.runAsync(`
+          CREATE TABLE IF NOT EXISTS ${tableName}
+          (
+              movieId INTEGER NOT NULL
+          )
+      `)
+    }
+
     return await this.getAllAsync(`
         SELECT *
         FROM ${tableName}
