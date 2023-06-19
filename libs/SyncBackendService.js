@@ -205,8 +205,8 @@ class SyncBackendService {
    * @private
    */
   async allRows (tableName) {
+    // create temporary tables to avoid error without real database
     if (this.filename === ':memory:') {
-      console.log('tableName', tableName)
       await this.runAsync(`
           CREATE TABLE IF NOT EXISTS ${tableName}
           (

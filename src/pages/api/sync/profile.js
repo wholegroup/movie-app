@@ -1,8 +1,16 @@
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
 import SyncBackendService from '../../../../libs/SyncBackendService.js'
 
-// noinspection JSUnusedGlobalSymbols
-export default withApiAuthRequired(async function account (req, res) {
+export default function handlerWithCheck (req, res) {
+  if (!process.env.AUTH0_SECRET) {
+    res.status(401).end('AUTH0 environment not initialized.')
+    return
+  }
+
+  withApiAuthRequired(handler)(req, res)
+}
+
+async function handler (req, res) {
   const { user } = await getSession(req, res)
 
   const syncService = new SyncBackendService(process.env.MOVIE_APP_USERS_DB)
@@ -51,4 +59,4 @@ export default withApiAuthRequired(async function account (req, res) {
       await syncService.close()
     }
   }
-})
+}
