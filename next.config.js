@@ -14,7 +14,8 @@ const nextConfig = {
       // },
       ...{}
     }
-  }
+  },
+  output: 'standalone'
 }
 
 const withPWA = nextPWA({
