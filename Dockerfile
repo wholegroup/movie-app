@@ -1,4 +1,4 @@
-# example is https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+# example is https://github.com/vercel/next.js/blob/canary/examples/with-docker
 FROM node:18.16.0-bullseye-slim AS base
 
 # Install dependencies based on the preferred package manager
