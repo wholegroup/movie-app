@@ -52,8 +52,11 @@ function CardListLoader () {
         return
       }
 
-      // don't update before data is first-loaded because it could be initialized by SSR
-      if (!syncStore?.moviesUpdatedAt) {
+      // don't update before data is first-loaded because it could be filled by SSR
+      // but only if cardListStore does have cards
+      // because after resetting user data movies in indexedDb are still exist even moviesUpdatedAt is empty,
+      // and we need to load them
+      if (!syncStore?.moviesUpdatedAt && cardListStore.cards > 0) {
         return
       }
 
