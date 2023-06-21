@@ -1,8 +1,8 @@
 {
-  "name": "Next.JS Progressive Web App",
-  "short_name": "Next PWA",
+  "short_name": "Annual Movies",
+  "name": "Annual Movies",
   "theme_color": "#ffffff",
-  "background_color": "#004740",
+  "background_color": "#00BFFF",
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",

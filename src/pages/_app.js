@@ -30,7 +30,7 @@ export default function Application ({ Component, pageProps }) {
         <link rel='manifest' href='/manifest.json' />
         <link href='/icons/icon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
         <link rel='apple-touch-icon' href='/icons/icon-512x512.png'></link>
-        <meta name='theme-color' content='#317EFB' />
+        <meta name='theme-color' content='#00BFFF' />
       </Head>
       <WorkboxReloadHook />
       <PreserveScroll />
