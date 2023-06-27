@@ -5,6 +5,7 @@ import WorkboxReloadHook from '../components/app/WorkboxReloadHook'
 import ToastsContainer from '../components/app/ToastsContainer'
 import ConfirmationDialog from '../components/app/ConfirmationDialog'
 import ErrorPageWrapper from '../components/app/ErrorPageWrapper'
+import GoogleAnalytics from '../components/app/GoogleAnalytics.js'
 import './bs-reboot.css'
 import './_app.css'
 
@@ -41,6 +42,7 @@ export default function Application ({ Component, pageProps }) {
         <ToastsContainer />
         <ConfirmationDialog />
       </GlobalContextProvider>
+      <GoogleAnalytics />
     </>
   )
 }
