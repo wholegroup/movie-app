@@ -50,7 +50,7 @@ class EventStore {
     }
 
     // create event source
-    this.eventSource = new window.EventSource('/api/event/subscribe')
+    this.eventSource = new window.EventSource(`${process.env.NEXT_PUBLIC_SSE_ENDPOINT}/subscribe`)
     this.eventSource.onopen = () => this.onOpenHandler()
     this.eventSource.onerror = () => this.onErrorHandler()
     this.eventSource.onmessage = async (e) => this.onMessageHandler(e)
@@ -132,7 +132,7 @@ class EventStore {
    * @param {string} subscriberId
    */
   async register (subscriberId) {
-    const response = await window.fetch('/api/event/register', {
+    const response = await window.fetch(`${process.env.NEXT_PUBLIC_SSE_ENDPOINT}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
