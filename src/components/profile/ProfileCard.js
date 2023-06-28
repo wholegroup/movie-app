@@ -12,7 +12,7 @@ function ProfileCard () {
           &copy; {new Date().getUTCFullYear()} AnnualMovies.com
         </div>
         <div>
-          v{process.env.NEXT_PUBLIC_MOVIE_VERSION || '00.00.00'}
+          v{process.env.NEXT_PUBLIC_MOVIE_APP_VERSION || '00.00.00'}
         </div>
       </div>
     </div>

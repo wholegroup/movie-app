@@ -4,12 +4,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "NEXT_PUBLIC_MOVIE_VERSION=$(date -u +%y.%m.%d) next dev -p 3300",
+    "dev": "NEXT_PUBLIC_MOVIE_APP_VERSION=$(date -u +%y.%m.%d) next dev -p 3300",
     "test": "jest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "analyze": "ANALYZE=true next build",
-    "build": "NEXT_PUBLIC_MOVIE_VERSION=$(date -u +%y.%m.%d) next build",
+    "build": "NEXT_PUBLIC_MOVIE_APP_VERSION=$(date -u +%y.%m.%d) next build",
     "start": "next start -p 3400",
     "lint": "next lint"
   },
