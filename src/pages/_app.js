@@ -23,9 +23,9 @@ export default function Application ({ Component, pageProps }) {
           name='viewport'
           content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no'
         />
-        <meta name='description' content='Description' />
-        <meta name='keywords' content='Keywords' />
-        <title>Annual Movies</title>
+        <meta name='description' content='Annual Movies. Only Best Movies.' />
+        <meta name='keywords' content='best movies' />
+        <title>Annual Movies. Only Best.</title>
 
         <link rel='sitemap' type='application/xml' title='Sitemap' href='/sitemap.xml' />
         <link rel='manifest' href='/manifest.json' />
