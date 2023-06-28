@@ -18,6 +18,10 @@ function MovieItem () {
   const { movie, images, metadata, details } = movieStore
 
   const openPhoto = () => {
+    if (!images) {
+      console.log('no images')
+      return
+    }
     const pswp = new PhotoSwipe({
       dataSource: [{
         src: ApiService.generatePosterUrl(images.images[0].hash),
