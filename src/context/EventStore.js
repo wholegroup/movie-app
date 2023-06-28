@@ -134,7 +134,10 @@ class EventStore {
         Accept: 'application/json'
       },
       body: JSON.stringify({
-        subscriberId
+        subscriberId,
+        registration: { // necessary but any object with registration info
+          enabled: 1
+        }
       })
     })
 
