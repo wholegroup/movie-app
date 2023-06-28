@@ -4,6 +4,7 @@ import ApiService from './ApiService.js'
 import CommonStore from './CommonStore.js'
 import SyncStore from './SyncStore.js'
 import NotificationStore from './NotificationStore.js'
+import EventStore from './EventStore.js'
 import globalContext from './globalContext.js'
 
 function GlobalContextProvider ({ children, ...pageProps }) {
@@ -16,12 +17,14 @@ function GlobalContextProvider ({ children, ...pageProps }) {
       const commonStore = new CommonStore(storageService)
       const syncStore = new SyncStore(storageService, apiService)
       const notificationStore = new NotificationStore()
+      const eventStore = new EventStore(syncStore)
       commonContextRef.current = {
         storageService,
         apiService,
         syncStore,
         commonStore,
-        notificationStore
+        notificationStore,
+        eventStore
       }
     } else {
       // server rendering
@@ -44,16 +47,18 @@ function GlobalContextProvider ({ children, ...pageProps }) {
   useEffect(() => {
     // initialize store/service only after mounting
     const { storageService } = commonContextRef.current
-    const { commonStore, syncStore } = commonContextRef.current
+    const { commonStore, syncStore, eventStore } = commonContextRef.current
 
     commonStore.makeReady(async () => {
       await storageService.makeReadyAsync()
       await syncStore.makeReadyAsync()
+      await eventStore.subscribe()
     })
 
     return () => {
       // dispose resources after unmount
       commonStore.disposeAsync(async () => {
+        await eventStore.unsubscribe()
         await syncStore.disposeAsync()
         await storageService.disposeAsync()
       }).catch(console.error)

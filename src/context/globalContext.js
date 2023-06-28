@@ -7,6 +7,7 @@ import React from 'react'
  * @property {CommonStore=} commonStore
  * @property {SyncStore=} syncStore
  * @property {NotificationStore=} notificationStore
+ * @property {EventStore=} eventStore
  */
 
 /** @type {React.Context<?TGlobalContext>} */

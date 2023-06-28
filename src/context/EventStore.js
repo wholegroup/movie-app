@@ -134,7 +134,7 @@ class EventStore {
         Accept: 'application/json'
       },
       body: JSON.stringify({
-        SubscriberId: subscriberId
+        subscriberId
       })
     })
 
@@ -155,7 +155,7 @@ class EventStore {
    * @param {TEventMessage} message
    */
   async processMessage (message) {
-    switch (message.MessageName) {
+    switch (message.messageName) {
       case 'confirmation':
         console.log('SSE confirmation')
         await this.processMessageConfirmation(message)
@@ -167,7 +167,7 @@ class EventStore {
         break
 
       default:
-        console.log(`Unknown message name ${message.MessageName}`)
+        console.log(`Unknown message name ${message.messageName}`)
     }
   }
 
@@ -179,8 +179,8 @@ class EventStore {
   async processMessageConfirmation (message) {
     try {
       // register myself
-      console.log(`Registering subscriberId = ${message.SubscriberId}`)
-      await this.register(message.SubscriberId)
+      console.log(`Registering subscriberId = ${message.subscriberId}`)
+      await this.register(message.subscriberId)
 
       // start synchronizing movies right after registration
       this.syncStore.scheduleSynchronizingMovies()
@@ -195,14 +195,14 @@ class EventStore {
 /**
  * SSE message.
  * @typedef TEventMessage
- * @property {string} MessageName
- * @property {string} MessageTimestamp
+ * @property {string} timestamp
+ * @property {string} messageName
  */
 
 /**
  * Confirmation SSE message
  * @typedef {TEventMessage} TEventMessageConfirmation
- * @property {string} SubscriberId
+ * @property {string} subscriberId
  */
 
 export default EventStore
