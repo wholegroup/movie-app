@@ -7,9 +7,6 @@ class EventStore {
   /** @type {SyncStore} Synchronization store. */
   syncStore = null
 
-  /** @type {NotificationStore} Notification store. */
-  notificationStore = null
-
   /** @type {EventSource} */
   eventSource = null
 
@@ -18,11 +15,9 @@ class EventStore {
 
   /**
    * Constructor.
-   * @param {NotificationStore} notificationStore
    * @param {SyncStore} syncStore
    */
-  constructor (syncStore, notificationStore) {
-    this.notificationStore = notificationStore
+  constructor (syncStore) {
     this.syncStore = syncStore
     makeObservable(this, {
       isActive: observable,
@@ -192,7 +187,6 @@ class EventStore {
       this.syncStore.scheduleSynchronizingProfile()
     } catch (e) {
       console.log(e)
-      this.notificationStore.error(e)
       this.resubscribe()
     }
   }
