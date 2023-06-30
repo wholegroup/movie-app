@@ -19,7 +19,7 @@ class SyncStore {
   isInitialized = false
 
   /** @type {boolean} isOnline flag.  */
-  isOnline = true
+  isOnline = false
 
   /** @type {boolean} isBusy flag. */
   isBusy = false

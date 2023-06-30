@@ -1,0 +1,17 @@
+.block {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+}
+
+.offline {
+    width: 10px;
+    color: indianred;
+    transition: all 1s ease-in;
+}
+
+.online {
+    width: 10px;
+    color: green;
+    transition: all 1s ease-in;
+}
