@@ -1,3 +1,5 @@
+const imageEndpoint = process.env.NEXT_PUBLIC_MOVIE_APP_IMG_HOST || 'https://img.annualmovies.com'
+
 class ApiService {
   /**
    * Makes api fetch.
@@ -102,7 +104,7 @@ class ApiService {
       return '/no_poster_270_400.png'
     }
 
-    const imgHosts = (process.env.NEXT_PUBLIC_MOVIE_APP_IMG_HOST || '/').split(';')
+    const imgHosts = imageEndpoint.split(';')
     const imgHost = imgHosts[hash.charCodeAt(0) % imgHosts.length]
     return `${imgHost}/270_400/${hash.charAt(0)}/${hash}_270_400.jpeg`
   }
@@ -113,7 +115,7 @@ class ApiService {
    * @returns {string} url
    */
   static generatePosterUrl (hash) {
-    const imgHosts = (process.env.NEXT_PUBLIC_MOVIE_APP_IMG_HOST || '/').split(';')
+    const imgHosts = imageEndpoint.split(';')
     const imgHost = imgHosts[hash.charCodeAt(0) % imgHosts.length]
     return `${imgHost}/800_1185/${hash.charAt(0)}/${hash}_800_1185.jpeg`
   }

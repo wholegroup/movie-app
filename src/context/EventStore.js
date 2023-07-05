@@ -1,5 +1,7 @@
 import { makeObservable, action, observable } from 'mobx'
 
+const sseEndpoint = process.env.NEXT_PUBLIC_SSE_ENDPOINT || 'https://sse.annualmovies.com'
+
 /**
  * Server-Sent Events store.
  */
@@ -45,7 +47,7 @@ class EventStore {
     }
 
     // create event source
-    this.eventSource = new window.EventSource(`${process.env.NEXT_PUBLIC_SSE_ENDPOINT}/subscribe`)
+    this.eventSource = new window.EventSource(`${sseEndpoint}/subscribe`)
     this.eventSource.onopen = () => this.onOpenHandler()
     this.eventSource.onerror = () => this.onErrorHandler()
     this.eventSource.onmessage = async (e) => this.onMessageHandler(e)
@@ -127,7 +129,7 @@ class EventStore {
    * @param {string} subscriberId
    */
   async register (subscriberId) {
-    const response = await window.fetch(`${process.env.NEXT_PUBLIC_SSE_ENDPOINT}/register`, {
+    const response = await window.fetch(`${sseEndpoint}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
