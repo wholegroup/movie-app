@@ -5,6 +5,7 @@ import { Icon } from '@mdi/react'
 import { mdiAccountOutline } from '@mdi/js'
 import globalContext from '../../context/globalContext.js'
 
+/* eslint-disable @next/next/no-html-link-for-pages */
 function ProfileCardAnonymous () {
   const { commonStore, storageService } = useContext(globalContext)
   if (commonStore.profile != null) {
@@ -33,7 +34,7 @@ function ProfileCardAnonymous () {
       </div>
       <div>&nbsp;</div>
       <div>
-        <Link href='/api/auth/login'>Login</Link>
+        <a href='/api/auth/login' title='login'>Login</a>
       </div>
     </>
   )
