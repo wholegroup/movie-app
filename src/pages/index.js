@@ -66,7 +66,7 @@ IndexPage.getInitialProps = async function ({ req }) {
     const freshDateISO = freshDate.toISOString()
 
     const cards = movies.map(movie => {
-      const mainImage = (images.find(nextImages => nextImages.movieId === movie.movieId) || {}).images[0] ?? null
+      const mainImage = images.find(nextImages => nextImages.movieId === movie.movieId)?.images?.[0] ?? null
       return {
         movieId: movie.movieId,
         slug: movie.slug,
