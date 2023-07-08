@@ -5,7 +5,7 @@ function Sitemap () {
 }
 
 export const getServerSideProps = async ({ res }) => {
-  const BASE_URL = 'https://www.annualmovies.com'
+  const BASE_URL = 'https://annualmovies.com'
   const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
   try {
     await syncService.open()

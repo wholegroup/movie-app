@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.annualmovies.com/sitemap.xml
+Sitemap: https://annualmovies.com/sitemap.xml
 
