@@ -82,7 +82,7 @@ jobs:
   merge:
     runs-on: ubuntu-22.04
     needs:
-      - build
+      - build-and-push-image
     steps:
       - name: Download digests
         uses: actions/download-artifact@v3
