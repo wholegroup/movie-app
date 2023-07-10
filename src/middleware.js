@@ -7,6 +7,6 @@ import { NextResponse } from 'next/server'
 export function middleware (request) {
   const response = NextResponse.next()
   const clientIp = request.headers?.get('x-real-ip') || request.headers?.get('x-forwarded-for')
-  console.log(`${clientIp ?? '?'} [${new Date().toISOString()}] ${request.method} ${request.url} ${response.status}`)
+  console.log(`${clientIp ?? '???'} [${new Date().toISOString()}] ${request.method} ${request.nextUrl?.pathname ?? '???'} ${response.status}`)
   return response
 }
