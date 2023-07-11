@@ -13,7 +13,7 @@ function OnlineIndicator () {
         id={'online-indicator'}
         path={mdiCircle}
         title={'Online Indicator'}
-        className={syncStore?.isOnline ? styles.online : styles.offline}
+        className={syncStore?.isOnline2 ? styles.online : styles.offline}
       />
     </div>
   )

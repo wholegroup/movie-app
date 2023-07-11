@@ -4,14 +4,27 @@
     top: 2px;
 }
 
-.offline {
-    width: 10px;
-    color: indianred;
-    transition: all 1s ease-in;
-}
-
 .online {
     width: 10px;
     color: green;
     transition: all 1s ease-in;
+}
+
+.offline {
+    width: 10px;
+    color: indianred;
+    transition: all 1s ease-in;
+    animation: blinkingColor 5s infinite;
+}
+
+@keyframes blinkingColor {
+    0% {
+        color: indianred;
+    }
+    50% {
+        color: yellow;
+    }
+    100% {
+        color: indianred;
+    }
 }
