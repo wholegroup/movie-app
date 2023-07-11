@@ -56,7 +56,7 @@ function CardListLoader () {
       // but only if cardListStore does have cards
       // because after resetting user data movies in indexedDb are still exist even moviesUpdatedAt is empty,
       // and we need to load them
-      if (!syncStore?.moviesUpdatedAt && cardListStore.cards > 0) {
+      if (!syncStore?.moviesUpdatedAt && cardListStore.cards.length > 0) {
         return
       }
 
