@@ -198,7 +198,7 @@ class StorageService {
   }
 
   /**
-   * Purges movies that wasn't updated 30 days.
+   * Purges movies that wasn't updated 7 * 3/weeks days.
    * @returns {Promise<number>}
    */
   async purgeMovies () {
@@ -208,7 +208,7 @@ class StorageService {
     const lastUpdatedAt = votes.reduce((res, { updatedAt }) => updatedAt > res ? updatedAt : res, '')
     const lastUpdatedTs = new Date(lastUpdatedAt).getTime() || Date.now()
     const idsToPurge = votes
-      .filter(({ updatedAt }) => (new Date(updatedAt).getTime() || 0) < (lastUpdatedTs - 1000 * 60 * 60 * 24 * 30))
+      .filter(({ updatedAt }) => (new Date(updatedAt).getTime() || 0) < (lastUpdatedTs - 1000 * 60 * 60 * 24 * 7 * 3))
       .map(({ movieId }) => movieId)
 
     // deleting by chunks
