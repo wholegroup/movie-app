@@ -76,7 +76,7 @@ function MovieItem () {
       </Head>
       <div className={styles.container}>
         <div>
-          <div onClick={() => openPhoto()}>
+          <div onClick={() => openPhoto()} style={{ position: 'relative' }}>
             <img
               src={ApiService.generatePreviewUrl(images?.images[0]?.hash || '')}
               title={movie.title}
