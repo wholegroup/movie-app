@@ -18,7 +18,8 @@ function CardItem ({ card, details, onClickThumb }) {
             src={card.posterUrl}
             title={card.title}
             alt={card.title}
-            loading='lazy'
+            width='270'
+            height='400'
           />
         </div>
         <h1 className={styles.title}>{card.title}</h1>

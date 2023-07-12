@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import Head from 'next/head.js'
 import PhotoSwipe from 'photoswipe'
 import 'photoswipe/dist/photoswipe.css'
-import { mdiThumbDown, mdiThumbUp } from '@mdi/js'
+import { mdiThumbDown, mdiThumbUp, mdiMagnifyPlus } from '@mdi/js'
 import movieContext from './movieContext.js'
 import ApiService from '../../context/ApiService.js'
 import styles from './MovieItem.module.css'
@@ -81,8 +81,10 @@ function MovieItem () {
               src={ApiService.generatePreviewUrl(images?.images[0]?.hash || '')}
               title={movie.title}
               alt={movie.title}
-              loading='lazy'
+              width='270'
+              height='400'
             />
+            <div className={styles.zoom}><Icon path={mdiMagnifyPlus} /></div>
           </div>
           <div className={styles.thumbs}>
             <button type='button' onClick={() => clickThumb(5)}>
