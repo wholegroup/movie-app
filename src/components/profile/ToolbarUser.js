@@ -12,7 +12,7 @@ function ToolbarUser () {
 
   return (
     <>
-      <Link href='/profile' prefetch={false}>
+      <Link href='/profile'>
         {picture && (
           <img
             src={picture}

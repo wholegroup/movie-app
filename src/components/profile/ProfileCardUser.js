@@ -41,7 +41,7 @@ function ProfileCardUser () {
       <div>{profile.email}</div>
       <div>&nbsp;</div>
       <div>
-        <Link href='#' onClick={handleLogout} prefetch={false}>Logout</Link>
+        <Link href='#' onClick={handleLogout}>Logout</Link>
       </div>
     </>
   )

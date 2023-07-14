@@ -1,4 +1,6 @@
+import { useMemo } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router.js'
 import GlobalContextProvider from '../context/GlobalContextProvider'
 import PreserveScroll from '../components/app/PreserveScroll'
 import WorkboxReloadHook from '../components/app/WorkboxReloadHook'
@@ -14,6 +16,16 @@ import './_app.css'
  * Application entry point.
  */
 export default function Application ({ Component, pageProps }) {
+  const router = useRouter()
+
+  useMemo(() => {
+    router.prefetch = async () => {
+    }
+    // or we can create a custom link (with a tag only),
+    // and call router.push() instead of using the next link component.
+    // https://github.com/vercel/next.js/discussions/24437#discussioncomment-3752350
+  }, [router])
+
   return (
     <>
       <Head>
