@@ -20,7 +20,7 @@ function Toolbar ({ children = null }) {
         {router.asPath === '/' && (
           <>
             <div className={styles.onlyIcon640}>
-              <Link href='/about'>
+              <Link href='/about' prefetch={false}>
                 <img src='/toolbar.png' height='36' alt='logo' />
               </Link>
             </div>
@@ -28,7 +28,7 @@ function Toolbar ({ children = null }) {
         )}
         {router.asPath !== '/' && (
           <div>
-            <Link href='/'>
+            <Link href='/' prefetch={false}>
               <Icon id={'go-home'} path={mdiHomeCircleOutline} size={1.5} title={'Go home'} />
             </Link>
           </div>

@@ -30,7 +30,7 @@ function ProfileCardAnonymous () {
         <Icon id={'account'} path={mdiAccountOutline} size={10} title={'Anonymous'} />
       </div>
       <div>
-        <Link href='#' onClick={handleB}>Clear all user data</Link>
+        <Link href='#' onClick={handleB} prefetch={false}>Clear all user data</Link>
       </div>
       <div>&nbsp;</div>
       <div>
