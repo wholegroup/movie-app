@@ -71,8 +71,9 @@ function MovieItem () {
   return (
     <>
       <Head>
-        <title>{`${movie.title}, ${movie.year}`}</title>
-        <meta name='description' content={`${movie.title}, ${movie.year}`} />
+        <title>{`${movie.title} (${movie.year}`})</title>
+        <meta name='description' content={`${movie.title} (${movie.year}). ${movie.runtime}. ${movie.genres.join(', ')}.`} />
+        <meta name='keywords' content={`${movie.title}, ${movie.year}, ${movie.genres.join(', ')}`} />
       </Head>
       <div className={styles.container}>
         <div>
