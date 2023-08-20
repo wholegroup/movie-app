@@ -44,6 +44,7 @@ export default function Application ({ Component, pageProps }) {
         <link href='/icons/icon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
         <link rel='apple-touch-icon' href='/icons/apple-icon-180x180.png'></link>
         <meta name='theme-color' content='#00BFFF' />
+        <meta property="og:site_name" content="Annual Movies" />
       </Head>
       <WorkboxReloadHook />
       <PreserveScroll />

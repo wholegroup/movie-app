@@ -74,6 +74,9 @@ function MovieItem () {
         <title>{`${movie.title} (${movie.year}`})</title>
         <meta name='description' content={`${movie.title} (${movie.year}). ${movie.runtime}. ${movie.genres.join(', ')}.`} />
         <meta name='keywords' content={`${movie.title}, ${movie.year}, ${movie.genres.join(', ')}`} />
+        <meta property='og:title' content={movie.title} />
+        <meta property='og:description' content={movie.description} />
+        <meta property='og:image' content={ApiService.generatePreviewUrl(images?.images[0]?.hash || '')} />
       </Head>
       <div className={styles.container}>
         <div>
