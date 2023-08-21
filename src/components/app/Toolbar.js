@@ -5,7 +5,6 @@ import { mdiHomeCircleOutline } from '@mdi/js'
 import ProfileLoader from '../profile/ProfileLoader.js'
 import styles from './Toolbar.module.css'
 import ToolbarUser from '../profile/ToolbarUser.js'
-import OnlineIndicator from './OnlineIndicator'
 
 /**
  * Toolbar.
@@ -15,7 +14,6 @@ function Toolbar ({ children = null }) {
 
   return (
     <nav className={styles.nav}>
-      <OnlineIndicator />
       <div className={styles.first}>
         {router.asPath === '/' && (
           <>
