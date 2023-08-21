@@ -1,0 +1,23 @@
+.spinner {
+    position: relative;
+    display: inline-block;
+}
+
+.spinner:before {
+    content: '';
+    border: 1px solid gray;
+    border-radius: 50%;
+    border-right-color: transparent;
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    top: -4px;
+    left: -4px;
+    animation: spinner-border 2.75s linear infinite;
+}
+
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg);
+    }
+}

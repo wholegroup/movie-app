@@ -1,18 +1,21 @@
+import { useContext } from 'react'
+import { observer } from 'mobx-react-lite'
 import Link from 'next/link.js'
 import { Icon } from '@mdi/react'
 import { mdiAccount, mdiAccountOutline } from '@mdi/js'
-import { observer } from 'mobx-react-lite'
-import { useContext } from 'react'
 import globalContext from '../../context/globalContext.js'
+import styles from './ToolbarUser.module.css'
 
 function ToolbarUser () {
-  const { commonStore } = useContext(globalContext)
+  const { commonStore, syncStore } = useContext(globalContext)
   const isAuthenticated = commonStore.profile != null
   const { picture = null } = commonStore.profile || {}
+  const { isOnline = false, isSynchronizing = false } = syncStore || {}
+  const isSpinning = !isOnline || isSynchronizing
 
   return (
     <>
-      <Link href='/profile'>
+      <Link href='/profile' className={isSpinning ? styles.spinner : ''}>
         {picture && (
           <img
             src={picture}
