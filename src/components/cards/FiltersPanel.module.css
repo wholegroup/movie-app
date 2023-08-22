@@ -2,7 +2,7 @@
     background-color: var(--toolbar-bg-color);
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 1000;
     transition: opacity 5.25s ease;
     animation: show-animation 0.25s ease;
     color: #34487c;
