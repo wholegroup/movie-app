@@ -2,6 +2,7 @@
     position: sticky;
     top: 0;
     background: var(--toolbar-bg-color);
+    box-shadow: 0 3px 3px -3px rgba(0, 0, 0, 0.3);
     padding: 0 1rem;
     z-index: 1000;
     display: flex;
