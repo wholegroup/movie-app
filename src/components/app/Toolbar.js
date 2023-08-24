@@ -15,7 +15,7 @@ function Toolbar ({ children = null }) {
   return (
     <nav className={styles.nav}>
       <div className={styles.first}>
-        {router.asPath === '/' && (
+        {router.pathname === '/' && (
           <>
             <div className={styles.onlyIcon640}>
               <Link href='/about'>
@@ -24,7 +24,7 @@ function Toolbar ({ children = null }) {
             </div>
           </>
         )}
-        {router.asPath !== '/' && (
+        {router.pathname !== '/' && (
           <div>
             <Link href='/'>
               <Icon id={'go-home'} path={mdiHomeCircleOutline} size={1.5} title={'Go home'} />
