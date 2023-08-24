@@ -62,7 +62,7 @@ function FiltersPanel () {
     window.scroll({ top: 0, behavior: 'smooth' })
   }
 
-  const clickReset = (ev) => {
+  const clickReset = () => {
     cardListStore.resetFilters()
       .catch(e => notificationStore.error({ message: e.message }))
     cardListStore.setIsFiltersPanelOpen(false)
