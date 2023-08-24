@@ -15,9 +15,11 @@ function FiltersPanel () {
 
   /**
    * Status handler
+   * @param ev
    * @param {string} status
    */
-  const clickStatus = (status) => {
+  const clickStatus = (ev, status) => {
+    ev.preventDefault()
     cardListStore.changeFilters({
       ...cardListStore.filters,
       status
@@ -30,9 +32,11 @@ function FiltersPanel () {
 
   /**
    * Year handler
+   * @param ev
    * @param {number} year
    */
-  const clickYear = (year) => {
+  const clickYear = (ev, year) => {
+    ev.preventDefault()
     cardListStore.changeFilters({
       ...cardListStore.filters,
       years: cardListStore.filters.years.includes(year)
@@ -47,9 +51,11 @@ function FiltersPanel () {
 
   /**
    * Genre handler
+   * @param ev
    * @param {string} genre
    */
-  const clickGenre = (genre) => {
+  const clickGenre = (ev, genre) => {
+    ev.preventDefault()
     cardListStore.changeFilters({
       ...cardListStore.filters,
       genres: cardListStore.filters.genres.includes(genre)
@@ -62,7 +68,8 @@ function FiltersPanel () {
     window.scroll({ top: 0, behavior: 'smooth' })
   }
 
-  const clickReset = () => {
+  const clickReset = (ev) => {
+    ev.preventDefault()
     cardListStore.resetFilters()
       .catch(e => notificationStore.error({ message: e.message }))
     cardListStore.setIsFiltersPanelOpen(false)
@@ -78,7 +85,7 @@ function FiltersPanel () {
           <div>Status</div>
           {Object.keys(movieDetailsStatusEnum).map(status => (
             <div key={status}>
-              <a href='javascript:' onClick={() => clickStatus(status)}>
+              <a href='#' onClick={(ev) => clickStatus(ev, status)}>
                 {cardListStore.filters.status === status
                   ? <b>{movieDetailsStatusEnum[status]}</b>
                   : movieDetailsStatusEnum[status]}
@@ -90,7 +97,7 @@ function FiltersPanel () {
           <div>Years</div>
           {cardListStore.years.map(year => (
             <div key={year}>
-              <a href='javascript:' onClick={() => clickYear(year)}>
+              <a href='#' onClick={(ev) => clickYear(ev, year)}>
                 {cardListStore.filters.years.length === 0 || cardListStore.filters.years.includes(year)
                   ? <b>{year}</b>
                   : year}
@@ -102,7 +109,7 @@ function FiltersPanel () {
           <div>Genres</div>
           {cardListStore.genres.slice(0, 5).map(genre => (
             <div key={genre}>
-              <a href='javascript:' onClick={() => clickGenre(genre)}>
+              <a href='#' onClick={(ev) => clickGenre(ev, genre)}>
                 {cardListStore.filters.genres.length === 0 || cardListStore.filters.genres.includes(genre)
                   ? <b>{genre}</b>
                   : genre}
@@ -112,7 +119,7 @@ function FiltersPanel () {
         </div>
       </div>
       <div className={styles.buttons}>
-        {cardListStore.isFiltersModified ? <a href='javascript:' onClick={() => clickReset()}>Reset filters</a> : ''}
+        {cardListStore.isFiltersModified ? <a href='#' onClick={(ev) => clickReset(ev)}>Reset filters</a> : ''}
         {!cardListStore.isFiltersModified ? <>&nbsp;</> : ''}
       </div>
     </div>

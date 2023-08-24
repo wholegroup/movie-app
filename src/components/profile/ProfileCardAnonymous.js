@@ -11,7 +11,8 @@ function ProfileCardAnonymous () {
     return null
   }
 
-  const handleClearing = () => {
+  const handleClearing = (ev) => {
+    ev.preventDefault()
     commonStore.openConfirmation(() => {
       storageService.clearAllUserData()
         .then(() => {
@@ -28,7 +29,7 @@ function ProfileCardAnonymous () {
         <Icon id={'account'} path={mdiAccountOutline} size={10} title={'Anonymous'} />
       </div>
       <div>
-        <a href='javascript:' onClick={handleClearing}>Clear all user data</a>
+        <a href='#' onClick={handleClearing}>Clear all user data</a>
       </div>
       <div>&nbsp;</div>
       <div>

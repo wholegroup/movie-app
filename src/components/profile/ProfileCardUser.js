@@ -14,7 +14,8 @@ function ProfileCardUser () {
   }
 
   // handle logout
-  const handleLogout = () => {
+  const handleLogout = (ev) => {
+    ev.preventDefault()
     storageService.clearAllUserData()
       .then(() => {
         window.location.href = '/api/auth/logout'
@@ -39,7 +40,7 @@ function ProfileCardUser () {
       <div>{profile.email}</div>
       <div>&nbsp;</div>
       <div>
-        <a href='javascript:' onClick={handleLogout}>Logout</a>
+        <a href='#' onClick={handleLogout}>Logout</a>
       </div>
     </>
   )
