@@ -7,6 +7,7 @@
     animation: show-animation 0.25s ease;
     color: #34487c;
     box-shadow: 0 3px 3px -3px rgba(0, 0, 0, 0.3);
+    font-family: "Courier New", serif;
 }
 
 @keyframes show-animation {
@@ -14,18 +15,32 @@
     100%  { opacity: 1; }
 }
 
+.panel a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: normal;
+}
+
 .filters {
     display: flex;
     gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
 .filters > div {
-    min-width: 200px;
+    flex: 1 1 0px;
 }
 
 .buttons {
     text-align: center;
     line-height: 3rem;
+}
+
+.name {
+    font-size: 120%;
+    font-weight: bold;
 }

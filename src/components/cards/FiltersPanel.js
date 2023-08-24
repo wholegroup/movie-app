@@ -82,7 +82,7 @@ function FiltersPanel () {
     <div className={styles.panel}>
       <div className={styles.filters}>
         <div>
-          <div>Status</div>
+          <div className={styles.name}>Status:</div>
           {Object.keys(movieDetailsStatusEnum).map(status => (
             <div key={status}>
               <a href='#' onClick={(ev) => clickStatus(ev, status)}>
@@ -94,7 +94,7 @@ function FiltersPanel () {
           ))}
         </div>
         <div>
-          <div>Years</div>
+          <div className={styles.name}>Years:</div>
           {cardListStore.years.map(year => (
             <div key={year}>
               <a href='#' onClick={(ev) => clickYear(ev, year)}>
@@ -106,7 +106,7 @@ function FiltersPanel () {
           ))}
         </div>
         <div>
-          <div>Genres</div>
+          <div className={styles.name}>Genres:</div>
           {cardListStore.genres.slice(0, 5).map(genre => (
             <div key={genre}>
               <a href='#' onClick={(ev) => clickGenre(ev, genre)}>
@@ -119,7 +119,7 @@ function FiltersPanel () {
         </div>
       </div>
       <div className={styles.buttons}>
-        {cardListStore.isFiltersModified ? <a href='#' onClick={(ev) => clickReset(ev)}>Reset filters</a> : ''}
+        {cardListStore.isFiltersModified ? <a href='#' onClick={(ev) => clickReset(ev)}>reset filters</a> : ''}
         {!cardListStore.isFiltersModified ? <>&nbsp;</> : ''}
       </div>
     </div>
