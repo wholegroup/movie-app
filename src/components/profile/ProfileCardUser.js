@@ -1,6 +1,5 @@
 import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import Link from 'next/link.js'
 import globalContext from '../../context/globalContext.js'
 import { Icon } from '@mdi/react'
 import { mdiAccount } from '@mdi/js'
@@ -15,8 +14,7 @@ function ProfileCardUser () {
   }
 
   // handle logout
-  const handleLogout = (ev) => {
-    ev.preventDefault()
+  const handleLogout = () => {
     storageService.clearAllUserData()
       .then(() => {
         window.location.href = '/api/auth/logout'
@@ -41,7 +39,7 @@ function ProfileCardUser () {
       <div>{profile.email}</div>
       <div>&nbsp;</div>
       <div>
-        <Link href='#' onClick={handleLogout}>Logout</Link>
+        <a href='javascript:' onClick={handleLogout}>Logout</a>
       </div>
     </>
   )
