@@ -17,7 +17,7 @@ export default function IndexPage ({ ...pageProps }) {
     // we have to trigger router with current url because
     // index page is returned by Service Worker for any url
     // to support SPA we need to run routing on client side.
-    if (router.asPath !== '/') {
+    if (router.pathname !== '/') {
       console.log('re-triggering router...')
       router.replace(router.asPath)
         .catch(console.error)
