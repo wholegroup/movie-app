@@ -32,7 +32,7 @@
 }
 
 .filters > div {
-    flex: 1 1 0px;
+    flex: 1 1 0;
 }
 
 .buttons {
@@ -43,4 +43,5 @@
 .name {
     font-size: 120%;
     font-weight: bold;
+    line-height: 3rem;
 }
