@@ -27,12 +27,5 @@
 
 .buttons {
     text-align: center;
-}
-
-.buttons button {
-    margin: 1rem 1rem;
-    font-size: 0.8rem;
-    line-height: 1rem;
-    border-radius: 3px;
-    border-width: 1px;
+    line-height: 3rem;
 }
