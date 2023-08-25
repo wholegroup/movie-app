@@ -6,7 +6,7 @@ function WorkboxReloadHook () {
       console.log('New SW detected! Reloading the application.')
       window.location.reload()
     }
-    window.workbox?.addEventListener('installed', listener)
+    window.workbox?.addEventListener('activated', listener)
     return () => {
       window.workbox?.removeEventListener(listener)
     }
