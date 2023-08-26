@@ -6,7 +6,7 @@ import CardListLoader from '../components/cards/CardListLoader.js'
 import ApiService from '../context/ApiService.js'
 import FiltersPanel from '../components/cards/FiltersPanel.js'
 import Toolbar from '../components/app/Toolbar.js'
-import ToolbarMenu from '../components/cards/CardListMenu.js'
+import CardListMenu from '../components/cards/CardListMenu.js'
 import CardListContextProvider from '../components/cards/CardListContextProvider.js'
 
 // noinspection JSUnusedGlobalSymbols
@@ -28,7 +28,7 @@ export default function IndexPage ({ ...pageProps }) {
   return (
     <CardListContextProvider {...pageProps}>
       <Toolbar>
-        <ToolbarMenu />
+        <CardListMenu />
       </Toolbar>
       <FiltersPanel />
       <CardListLoader />
