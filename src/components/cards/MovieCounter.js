@@ -6,10 +6,10 @@ function MovieCounter () {
   const { cardListStore } = useContext(cardListContext)
   return (
     <>
-      {cardListStore.filteredCards.length}
+      <span data-clear={0}>{cardListStore.filteredCards.length}</span>
       <span style={{ fontSize: '0.6rem' }}>
       {' / '}
-        {cardListStore.cards.length}
+        <span data-clear={0}>{cardListStore.cards.length}</span>
       </span>
     </>
   )

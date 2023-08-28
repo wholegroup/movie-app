@@ -47,6 +47,7 @@ function CardList () {
     <>
       <main className={styles.main}>
         <div className={styles.grid}>
+          <noscript>begin:6ae9d088-96e0-4f9c-a709-d1a283163e57</noscript>
           {cardListStore.sortedCards.map(movieCard => (
             <CardItem
               key={movieCard.movieId}
@@ -58,6 +59,7 @@ function CardList () {
                 mark)}
             />
           ))}
+          <noscript>end:6ae9d088-96e0-4f9c-a709-d1a283163e57</noscript>
         </div>
       </main>
     </>
