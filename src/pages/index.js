@@ -12,12 +12,13 @@ import CardListContextProvider from '../components/cards/CardListContextProvider
 // noinspection JSUnusedGlobalSymbols
 export default function IndexPage ({ ...pageProps }) {
   const router = useRouter()
+  const cleanPath = router.asPath.split('?')[0].split('#')[0]
 
   useEffect(() => {
     // we have to trigger router with current url because
     // index page is returned by Service Worker for any url
     // to support SPA we need to run routing on client side.
-    const cleanPath = router.asPath.split('?')[0].split('#')[0]
+    const cleanPath = router.asPath.split('?')[0].split('#')[0] // doubled to avoid dependency
     if (cleanPath !== '/') {
       console.log('re-triggering router...')
       router.replace(router.asPath)
@@ -31,9 +32,9 @@ export default function IndexPage ({ ...pageProps }) {
         <CardListMenu />
       </Toolbar>
       <FiltersPanel />
-      <CardListLoader />
       <CardList />
-    </CardListContextProvider >
+      {cleanPath === '/' && <CardListLoader />}
+    </CardListContextProvider>
   )
 }
 
