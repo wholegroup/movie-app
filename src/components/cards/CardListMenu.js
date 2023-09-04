@@ -18,26 +18,32 @@ function CardListMenu () {
 
   return (
     <>
-      <div>
-        <MovieCounter />
-      </div>
-      <div>
-        <button onClick={togglePanel} className={styles.buttonLink}>
-          <Icon
-            id={'filters'}
-            path={mdiFilterMultiple}
-            size={1.5}
-            title={'Filters'}
-            className={cardListStore.isFiltersModified ? styles.modified : ''}
-          />
-        </button>
-      </div>
-      <div className={styles.hide640}>
-        <button onClick={togglePanel} className={styles.buttonLink}>
-          Filters
-        </button>
-      </div>
-      <div>&nbsp;&nbsp;&nbsp;</div>
+      <noscript>begin:6ae9d088-96e0-4f9c-a709-d1a283163e57</noscript>
+      {cardListStore.cards.length > 0 && (
+        <>
+          <div>
+            <MovieCounter />
+          </div>
+          <div>
+            <button onClick={togglePanel} className={styles.buttonLink}>
+              <Icon
+                id={'filters'}
+                path={mdiFilterMultiple}
+                size={1.5}
+                title={'Filters'}
+                className={cardListStore.isFiltersModified ? styles.modified : ''}
+              />
+            </button>
+          </div>
+          <div className={styles.hide640}>
+            <button onClick={togglePanel} className={styles.buttonLink}>
+              Filters
+            </button>
+          </div>
+          <div>&nbsp;&nbsp;&nbsp;</div>
+        </>
+      )}
+      <noscript>end:6ae9d088-96e0-4f9c-a709-d1a283163e57</noscript>
     </>
   )
 }
