@@ -21,6 +21,7 @@ const nextConfig = {
 const withPWA = nextPWA({
   dest: 'public',
   runtimeCaching,
+  navigateFallback: '/',
   dynamicStartUrl: false, // if enabled the app fetches index page every time
   reloadOnOnline: false,
   disableDevLogs: true,
