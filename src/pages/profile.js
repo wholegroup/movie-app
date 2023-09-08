@@ -1,11 +1,10 @@
-import { observer } from 'mobx-react-lite'
 import Toolbar from '../components/app/Toolbar.js'
 import ProfileCard from '../components/profile/ProfileCard.js'
 
 /**
  * User Profile.
  */
-function ProfilePage () {
+export default function ProfilePage () {
   return (
     <>
       <Toolbar />
@@ -13,5 +12,3 @@ function ProfilePage () {
     </>
   )
 }
-
-export default observer(ProfilePage)
