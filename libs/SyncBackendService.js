@@ -1,5 +1,4 @@
 import * as sqlite3 from 'sqlite3'
-import * as fs from 'fs'
 
 // I added browser property into package.json to ignore importing sqlite3 by webpack in client side
 // (because of getInitialProps)
@@ -449,7 +448,7 @@ class SyncBackendService {
     const monthAgo = new Date()
     monthAgo.setDate(monthAgo.getDate() - 31)
     const votes = await this.votesUpdated(monthAgo.toISOString())
-    return votes.map(({ movieId }) => movieId)
+    return votes.map(({ movieId }) => movieId).slice(0, 3)
   }
 
   /**

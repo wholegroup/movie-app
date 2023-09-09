@@ -40,10 +40,6 @@
     "sqlite3": "^5.1.6",
     "uuid": "^9.0.0"
   },
-  "browser": {
-    "sqlite3": false,
-    "fs": false
-  },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.4.0",
     "@storybook/addon-interactions": "^7.4.0",
