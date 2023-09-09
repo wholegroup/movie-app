@@ -38,14 +38,11 @@ export default function IndexPage ({ ...pageProps }) {
   )
 }
 
-IndexPage.getInitialProps = async function ({ req }) {
-  const isClient = !req
-  if (isClient) {
-    return {
-      ts: Date.now()
-    }
-  }
-
+// noinspection JSUnusedGlobalSymbols
+/**
+ * @returns {Promise<object>}
+ */
+export const getServerSideProps = async function () {
   const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
   try {
     await syncService.open()
@@ -82,10 +79,12 @@ IndexPage.getInitialProps = async function ({ req }) {
     })
 
     return {
-      cardListStore: {
-        cards
-      },
-      ts: Date.now()
+      props: {
+        cardListStore: {
+          cards
+        },
+        ts: Date.now()
+      }
     }
   } finally {
     if (syncService.isOpen()) {

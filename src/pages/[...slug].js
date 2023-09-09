@@ -18,20 +18,13 @@ export default function MoviePage ({ ...pageProps }) {
   )
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
- *
- * @param {import('next').NextPageContext} params
+ * @param {ParsedUrlQuery} [query]
+ * @param {ServerResponse} [res]
  * @returns {Promise<object>}
  */
-MoviePage.getInitialProps = async function ({ req, query, res }) {
-  const isClient = !req
-  if (isClient) {
-    return {
-      ts: Date.now()
-    }
-  }
-
-  // load movie data on backend
+export const getServerSideProps = async function ({ query, res }) {
   const slug = query.slug.join('/')
   const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
   try {
@@ -41,21 +34,25 @@ MoviePage.getInitialProps = async function ({ req, query, res }) {
     if (!movie) {
       res.statusCode = 404
       return {
-        commonStore: {
-          responseError: {
-            statusCode: res.statusCode
-          }
-        },
-        ts: Date.now()
+        props: {
+          commonStore: {
+            responseError: {
+              statusCode: res.statusCode
+            }
+          },
+          ts: Date.now()
+        }
       }
     }
 
     return {
-      ts: Date.now(),
-      movieStore: {
-        movie,
-        votes: await syncService.findVotesByMovieId(movie.movieId),
-        images: await syncService.findImagesByMovieId(movie.movieId)
+      props: {
+        ts: Date.now(),
+        movieStore: {
+          movie,
+          votes: await syncService.findVotesByMovieId(movie.movieId),
+          images: await syncService.findImagesByMovieId(movie.movieId)
+        }
       }
     }
   } finally {
