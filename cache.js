@@ -32,6 +32,18 @@ const runtimeCaching = [
     }
   },
 
+  // to handle requests to getServerSideProps
+  {
+    urlPattern: /\/_next\/data\/.+\/.+\.json(?:\?.+)?$/i,
+    handler: async function () {
+      // shall I add X-Nextjs-Matched-Path: '/' or /[...slug] ?... as NextJS does
+      const emptyJson = { pageProps: {}, __N_SSP: true }
+      const emptyBlob = new Blob([JSON.stringify(emptyJson)], { type: 'application/json' })
+      const emptyOptions = { status: 200, headers: {} }
+      return new Response(emptyBlob, emptyOptions)
+    }
+  },
+
   // // to support Single Page Application (loading index page for all urls)
   // // commented in favor of navigateFallback in next.config.js
   // {

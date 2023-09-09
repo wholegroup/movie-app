@@ -4,6 +4,7 @@ function Sitemap () {
   return null
 }
 
+// noinspection JSUnusedGlobalSymbols
 export const getServerSideProps = async ({ res }) => {
   const BASE_URL = 'https://annualmovies.com'
   const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
