@@ -448,7 +448,7 @@ class SyncBackendService {
     const monthAgo = new Date()
     monthAgo.setDate(monthAgo.getDate() - 31)
     const votes = await this.votesUpdated(monthAgo.toISOString())
-    return votes.map(({ movieId }) => movieId).slice(0, 3)
+    return votes.map(({ movieId }) => movieId)
   }
 
   /**
