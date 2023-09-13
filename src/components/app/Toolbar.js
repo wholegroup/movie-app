@@ -5,6 +5,7 @@ import { mdiHomeCircleOutline } from '@mdi/js'
 import ProfileLoader from '../profile/ProfileLoader.js'
 import styles from './Toolbar.module.css'
 import ToolbarUser from '../profile/ToolbarUser.js'
+import ToolbarLogo from './ToolbarLogo.js'
 
 /**
  * Toolbar.
@@ -15,15 +16,7 @@ function Toolbar ({ children = null }) {
   return (
     <nav className={styles.nav}>
       <div className={styles.first}>
-        {router.pathname === '/' && (
-          <>
-            <div className={styles.onlyIcon640}>
-              <Link href='/about'>
-                <img src='/toolbar.png' height='36' alt='logo' />
-              </Link>
-            </div>
-          </>
-        )}
+        {router.pathname === '/' && <ToolbarLogo />}
         {router.pathname !== '/' && (
           <div>
             <Link href='/'>
