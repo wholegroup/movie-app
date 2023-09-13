@@ -76,7 +76,11 @@ function MovieItem () {
         <meta name='keywords' content={`${movie.title}, ${movie.year}, ${movie.genres.join(', ')}`} />
         <meta property='og:title' content={movie.title} />
         <meta property='og:description' content={movie.description} />
-        <meta property='og:image' content={ApiService.generatePreviewUrl(images?.images[0]?.hash || '')} />
+        <meta property='og:image' content={ApiService.generatePosterUrl(images?.images[0]?.hash || '')} />
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta name='twitter:title' content={movie.title} />
+        <meta name='twitter:description' content={movie.description} />
+        <meta name='twitter:image' content={ApiService.generatePosterUrl(images?.images[0]?.hash || '')} />
       </Head>
       <div className={styles.container}>
         <div>
