@@ -68,6 +68,23 @@ function MovieItem () {
     })
   }
 
+  const idJsonObject = {
+    __html: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Movie',
+      actor: movie.stars.map(({ fullName }) => ({
+        '@type': 'Person',
+        name: fullName
+      })),
+      name: movie.title,
+      description: movie.description,
+      director: movie.directors.map(({ fullName }) => ({
+        '@type': 'Person',
+        name: fullName
+      }))
+    })
+  }
+
   return (
     <>
       <Head>
@@ -81,6 +98,7 @@ function MovieItem () {
         <meta name='twitter:title' content={movie.title} />
         <meta name='twitter:description' content={movie.description} />
         <meta name='twitter:image' content={ApiService.generatePosterUrl(images?.images[0]?.hash || '')} />
+        <script id='ld_json_data' type='application/ld+json' dangerouslySetInnerHTML={idJsonObject} />
       </Head>
       <div className={styles.container}>
         <div>
