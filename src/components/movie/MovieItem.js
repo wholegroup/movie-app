@@ -72,12 +72,13 @@ function MovieItem () {
     __html: JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Movie',
+      name: movie.title,
+      description: movie.description,
+      image: ApiService.generatePosterUrl(images?.images[0]?.hash || ''),
       actor: movie.stars.map(({ fullName }) => ({
         '@type': 'Person',
         name: fullName
       })),
-      name: movie.title,
-      description: movie.description,
       director: movie.directors.map(({ fullName }) => ({
         '@type': 'Person',
         name: fullName
