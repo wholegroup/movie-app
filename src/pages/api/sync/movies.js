@@ -51,8 +51,8 @@ export default async function handler (req, res) {
       ...((await imagesPromise)
         .filter(({ movieId }) => updatedImagesMoviesIds.includes(movieId))), // updated images
       ...((await allImagesPromise)
-        .filter(({ movieId }) => !updatedImagesMoviesIds.includes(movieId)))
         .filter(({ movieId }) => moviesIds.includes(movieId)) // + images of updated movies
+        .filter(({ movieId }) => !updatedImagesMoviesIds.includes(movieId)))
     ]
 
     const metadata = (isAdmin ? await syncService.metadataSince(lastUpdatedAt) : [])
