@@ -31,8 +31,9 @@ export default async function handler (req, res) {
     const visibleIdsPromise = syncService.publicVisibleMovieIds()
     const moviesPromise = syncService.moviesUpdated(lastUpdatedAt)
     const votesPromise = syncService.votesUpdated(lastUpdatedAt)
+    const imagesPromise = syncService.imagesUpdated(lastUpdatedAt)
     // since a movie can disappear and then appear again we still need to fetch its poster uploaded earlier
-    const imagesPromise = syncService.imagesUpdated('')
+    const allImagesPromise = syncService.imagesUpdated('')
 
     await Promise.all([visibleIdsPromise, moviesPromise, votesPromise, imagesPromise])
 
@@ -41,8 +42,19 @@ export default async function handler (req, res) {
       .filter(({ movieId }) => visibleIds.includes(movieId))
     const votes = (await votesPromise)
       .filter(({ movieId }) => visibleIds.includes(movieId))
-    const images = (await imagesPromise)
+
+    const moviesIds = movies.map(({ movieId }) => movieId)
+    const updatedImagesMoviesIds = (await imagesPromise)
       .filter(({ movieId }) => visibleIds.includes(movieId))
+      .map(({ movieId }) => movieId)
+    const images = [
+      ...((await imagesPromise)
+        .filter(({ movieId }) => updatedImagesMoviesIds.includes(movieId))), // updated images
+      ...((await allImagesPromise)
+        .filter(({ movieId }) => !updatedImagesMoviesIds.includes(movieId)))
+        .filter(({ movieId }) => moviesIds.includes(movieId)) // + images of updated movies
+    ]
+
     const metadata = (isAdmin ? await syncService.metadataSince(lastUpdatedAt) : [])
       .filter(({ movieId }) => visibleIds.includes(movieId))
 
