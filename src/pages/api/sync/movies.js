@@ -31,7 +31,8 @@ export default async function handler (req, res) {
     const visibleIdsPromise = syncService.publicVisibleMovieIds()
     const moviesPromise = syncService.moviesUpdated(lastUpdatedAt)
     const votesPromise = syncService.votesUpdated(lastUpdatedAt)
-    const imagesPromise = syncService.imagesUpdated(lastUpdatedAt)
+    // since a movie can disappear and then appear again we still need to fetch its poster uploaded earlier
+    const imagesPromise = syncService.imagesUpdated('')
 
     await Promise.all([visibleIdsPromise, moviesPromise, votesPromise, imagesPromise])
 
