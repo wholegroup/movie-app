@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import cardListContext from './cardListContext.js'
 import { movieDetailsStatusEnum } from './CardListStore.js'
@@ -9,9 +9,25 @@ import styles from './FiltersPanel.module.css'
  */
 function FiltersPanel () {
   const { cardListStore, notificationStore } = useContext(cardListContext)
-  if (!cardListStore.isFiltersPanelOpen) {
-    return null
-  }
+  const panelRef = useRef(null)
+
+  /**
+   * Closes panel by outside click/touch
+   */
+  useEffect(() => {
+    const outsideListener = (evt) => {
+      if (!panelRef.current?.contains(evt.target)) {
+        cardListStore.setIsFiltersPanelOpen(false)
+      }
+    }
+
+    document.addEventListener('click', outsideListener)
+    document.addEventListener('touchstart', outsideListener)
+    return () => {
+      document.removeEventListener('click', outsideListener)
+      document.removeEventListener('touchstart', outsideListener)
+    }
+  }, [cardListStore])
 
   /**
    * Status handler
@@ -68,6 +84,10 @@ function FiltersPanel () {
     window.scroll({ top: 0, behavior: 'smooth' })
   }
 
+  /**
+   * Reset handler.
+   * @param ev
+   */
   const clickReset = (ev) => {
     ev.preventDefault()
     cardListStore.resetFilters()
@@ -79,7 +99,7 @@ function FiltersPanel () {
   }
 
   return (
-    <div className={styles.panel}>
+    <div ref={panelRef} className={styles.panel}>
       <div className={styles.filters}>
         <div>
           <div className={styles.name}>Status:</div>

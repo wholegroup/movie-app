@@ -4,7 +4,7 @@ import SyncBackendService from '../../libs/SyncBackendService.js'
 import CardList from '../components/cards/CardList.js'
 import CardListLoader from '../components/cards/CardListLoader.js'
 import ApiService from '../context/ApiService.js'
-import FiltersPanel from '../components/cards/FiltersPanel.js'
+import Filters from '../components/cards/Filters.js'
 import Toolbar from '../components/app/Toolbar.js'
 import CardListMenu from '../components/cards/CardListMenu.js'
 import CardListContextProvider from '../components/cards/CardListContextProvider.js'
@@ -31,7 +31,7 @@ export default function IndexPage ({ ...pageProps }) {
       <Toolbar>
         <CardListMenu />
       </Toolbar>
-      <FiltersPanel />
+      <Filters />
       <CardList />
       {cleanPath === '/' && <CardListLoader />}
     </CardListContextProvider>

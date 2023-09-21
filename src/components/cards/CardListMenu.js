@@ -12,7 +12,8 @@ import styles from './CardListMenu.module.css'
 function CardListMenu () {
   const { cardListStore } = useContext(cardListContext)
 
-  const togglePanel = () => {
+  const togglePanel = (evt) => {
+    evt.stopPropagation()
     cardListStore.setIsFiltersPanelOpen(!cardListStore.isFiltersPanelOpen)
   }
 
