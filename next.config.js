@@ -22,6 +22,9 @@ const withPWA = nextPWA({
   dest: 'public',
   runtimeCaching,
   navigateFallback: '/',
+  navigateFallbackDenylist: [
+    /api\/.*/
+  ],
   dynamicStartUrl: false, // if enabled the app fetches index page every time
   reloadOnOnline: false,
   disableDevLogs: true,
