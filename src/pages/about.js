@@ -18,8 +18,8 @@ export default function AboutPage () {
           This is a sample application to figure out how better to develop <b>PWA</b> (Progressive Web Apps)
           offline-first
           applications with <b>SSR</b> support (Server-Side Rendering) made as <b>SPA</b> (Single-page application).
-          Usually, for offline-first applications, you don't need to use SSR, but for things like public catalog-like
-          apps it's necessary (SEO, external links to cards).
+          Usually, for offline-first applications, you don&apos;t need to use SSR, but for things like public catalog-like
+          apps it&apos;s necessary (SEO, external links to cards).
         </p>
         <p>
           Like many others, I use the React framework to build SPAs. I keep all data in client IndexedDB to work in
