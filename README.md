@@ -9,3 +9,9 @@ Like many others, I use the React framework to build SPAs. I keep all data in cl
 The backend is made in the Next.js framework, which provides out-of-the-box support for SSR and generates **SW** (Service worker) for PWA. 
 
 The result is [https://annualmovies.com](https://annualmovies.com)
+
+<img src="https://annualmovies.com/noprecache/screenshot_02-landscape.png" width="800" title="Annual Movies application screenshot on iPad">
+
+
+<img src="https://annualmovies.com/noprecache/screenshot_01-portrait.png" width="360" title="Annual Movies application screenshot on iPhone">
+
