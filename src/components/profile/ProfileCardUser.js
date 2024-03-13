@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import globalContext from '../../context/globalContext.js'
 import { Icon } from '@mdi/react'
 import { mdiAccount } from '@mdi/js'
+import globalContext from '../../context/globalContext.js'
 import styles from './ProfileCardUser.module.css'
 
 function ProfileCardUser () {

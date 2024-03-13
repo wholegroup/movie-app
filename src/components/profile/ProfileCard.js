@@ -1,5 +1,6 @@
 import ProfileCardUser from './ProfileCardUser.js'
 import ProfileCardAnonymous from './ProfileCardAnonymous.js'
+import ProfileCardAdminInfo from './ProfileCardAdminInfo.js'
 import styles from './ProfileCard.module.css'
 
 function ProfileCard () {
@@ -7,6 +8,7 @@ function ProfileCard () {
     <div style={{ textAlign: 'center' }}>
       <ProfileCardAnonymous />
       <ProfileCardUser />
+      <ProfileCardAdminInfo />
       <div className={styles.footer}>
         <div>
           &copy; {new Date().getUTCFullYear()} AnnualMovies.com
