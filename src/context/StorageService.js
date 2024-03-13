@@ -3,16 +3,16 @@ import ApiService from './ApiService.js'
 
 /**
  * @typedef TStorage
- * @property {import('dexie').Table} settings
- * @property {import('dexie').Table} movies
- * @property {import('dexie').Table} votes
- * @property {import('dexie').Table} images
- * @property {import('dexie').Table} metadata
- * @property {import('dexie').Table} details
+ * @property {Dexie.Table} settings
+ * @property {Dexie.Table<TMovieItem>} movies
+ * @property {Dexie.Table<TVotesItem>} votes
+ * @property {Dexie.Table<TImagesItem>} images
+ * @property {Dexie.Table<TMetadataItem>} metadata
+ * @property {Dexie.Table<TDetailsItem>} details
  */
 
 class StorageService {
-  /** @type {import('dexie').Dexie|TStorage} */
+  /** @type {Dexie|TStorage} */
   storage = null
 
   /**
@@ -162,9 +162,7 @@ class StorageService {
    * @returns {Promise<TMovieCard[]>}
    */
   async loadAllCards () {
-    /** @type {TMovieItem[]} */
     const movies = await this.storage.movies.toArray()
-    /** @type {TImagesItem[]} */
     const images = await this.storage.images.toArray()
 
     // movie is new before this date
@@ -203,7 +201,6 @@ class StorageService {
    */
   async purgeMovies () {
     // find ids to purge
-    /** @type {TVotesItem[]} */
     const votes = await this.storage.votes.toArray()
     const lastUpdatedAt = votes.reduce((res, { updatedAt }) => updatedAt > res ? updatedAt : res, '')
     const lastUpdatedTs = new Date(lastUpdatedAt).getTime() || Date.now()
@@ -238,9 +235,7 @@ class StorageService {
     await this.storage.transaction('rw', this.storage.details, async () => {
       const details = (await this.findDetailsByMovieId(movieId)) || { movieId }
       await this.storage.details.put({
-        ...details,
-        mark: mark || null,
-        syncedAt: null
+        ...details, mark: mark || null, syncedAt: null
       }, movieId)
     })
   }
@@ -253,6 +248,24 @@ class StorageService {
     await this.storage.details.clear()
     await this.storage.metadata.clear()
     await this.storage.settings.clear()
+  }
+
+  /**
+   * Finds the last date when a movie added.
+   * @returns {Promise<string>}
+   */
+  async getLastCreatedAt () {
+    const movies = await this.storage.movies.toArray()
+    return movies.reduce((res, { createdAt }) => createdAt > res ? createdAt : res, '')
+  }
+
+  /**
+   * Finds the last date when we've got updates.
+   * @returns {Promise<string>}
+   */
+  async getLastUpdatedAt () {
+    const votes = await this.storage.votes.toArray()
+    return votes.reduce((res, { updatedAt }) => updatedAt > res ? updatedAt : res, '')
   }
 }
 
@@ -317,6 +330,7 @@ class StorageService {
  * @property {string=} email
  * @property {string=} name
  * @property {string=} picture
+ * @property {boolean=} isAdmin
  */
 
 /**
