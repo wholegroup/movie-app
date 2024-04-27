@@ -15,7 +15,7 @@ function MovieItem () {
     return null
   }
 
-  const { movie, images, metadata, details } = movieStore
+  const { movie, images, metadata, details, votes } = movieStore
 
   const openPhoto = () => {
     if (!images) {
@@ -90,7 +90,8 @@ function MovieItem () {
     <>
       <Head>
         <title>{`${movie.title} (${movie.year})`}</title>
-        <meta name='description' content={`${movie.title} (${movie.year}). ${movie.runtime}. ${movie.genres.join(', ')}.`} />
+        <meta name='description'
+              content={`${movie.title} (${movie.year}). ${movie.runtime}. ${movie.genres.join(', ')}.`} />
         <meta name='keywords' content={`${movie.title}, ${movie.year}, ${movie.genres.join(', ')}`} />
         <meta property='og:title' content={movie.title} />
         <meta property='og:description' content={movie.description} />
@@ -152,6 +153,7 @@ function MovieItem () {
             </div>
           )}
           <div>{movie.description}</div>
+          <div className={styles.approved}>Approved at {new Date(votes.updatedAt).toLocaleDateString()}</div>
         </div>
       </div>
       {metadata && (
