@@ -55,6 +55,9 @@ export const Simple = () => {
           }
         ],
         updatedAt: '2023-04-15T06:50:06.034Z'
+      },
+      votes: {
+        updatedAt: '2023-06-23T06:50:06.034Z'
       }
     })
   }
