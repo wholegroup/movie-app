@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
-import Head from 'next/head.js'
+import Head from 'next/head'
 import PhotoSwipe from 'photoswipe'
 import 'photoswipe/dist/photoswipe.css'
 import { mdiThumbDown, mdiThumbUp, mdiMagnifyPlus } from '@mdi/js'
@@ -153,7 +153,9 @@ function MovieItem () {
             </div>
           )}
           <div>{movie.description}</div>
-          <div className={styles.approved}>Approved at {new Date(votes.updatedAt).toLocaleDateString()}</div>
+          <div className={styles.approved}>
+            Approved at {new Date(votes.updatedAt).toLocaleDateString('en-US')}
+          </div>
         </div>
       </div>
       {metadata && (
