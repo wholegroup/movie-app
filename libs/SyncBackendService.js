@@ -444,11 +444,16 @@ class SyncBackendService {
    * @returns {Promise<number[]>}
    */
   async publicVisibleMovieIds () {
-    // find updated/fresh movies for last 4 weeks
-    const monthAgo = new Date()
-    monthAgo.setDate(monthAgo.getDate() - 31)
-    const votes = await this.votesUpdated(monthAgo.toISOString())
-    return votes.map(({ movieId }) => movieId)
+    // find updated/fresh movies for the previous 3 weeks since the last refresh occurred
+    // NB pls synchronize this period with purging movies on client
+    /** @type {{movieId: number, updatedAt: string}[]} */
+    const allVotes = await this.allData('votes')
+    const lastUpdatedAt = allVotes.reduce((res, { updatedAt }) => updatedAt > res ? updatedAt : res, '')
+    const lastUpdatedTs = new Date(lastUpdatedAt).getTime() || Date.now()
+    const minUpdatedTs = lastUpdatedTs - 1000 * 60 * 60 * 24 * 7 * 3
+    const visibleVotes = allVotes
+      .filter(({ updatedAt }) => (new Date(updatedAt).getTime() || 0) >= minUpdatedTs)
+    return visibleVotes.map(({ movieId }) => movieId)
   }
 
   /**
