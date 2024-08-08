@@ -520,6 +520,9 @@ class SyncStore {
   }
 }
 
+/**
+ * @typedef {string} WorkerStepEnum
+ */
 const WorkerStepEnum = Object.freeze({
   RESET_POINT: 'RESET_POINT',
   PURGE_MOVIES: 'PURGE_MOVIES',
