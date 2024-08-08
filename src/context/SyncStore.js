@@ -509,6 +509,9 @@ class SyncStore {
       const purgedNumber = await this.storageService.purgeMovies()
       this.setPurgedTs(Date.now())
       await this.storageService.setSettings(SETTINGS_NAMES.PURGED_TS, this.purgedTs)
+      if (purgedNumber > 0) {
+        console.log(purgedNumber + (purgedNumber > 1 ? ' movies are purged' : ' movie is purged'))
+      }
       return purgedNumber > 0
     } finally {
       console.timeEnd(tm)
