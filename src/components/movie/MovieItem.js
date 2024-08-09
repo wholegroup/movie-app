@@ -154,7 +154,7 @@ function MovieItem () {
           )}
           <div>{movie.description}</div>
           <div className={styles.approved}>
-            Approved at {new Date(votes.updatedAt).toLocaleDateString('en-US')}
+            Approved at {new Date(votes.updatedAt).toLocaleDateString('en-CA')}
           </div>
         </div>
       </div>

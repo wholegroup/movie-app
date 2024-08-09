@@ -32,8 +32,8 @@ function ProfileCardAdminInfo () {
 
   return (
     <div className={styles.panel}>
-      <div>Data refreshed at <b>{adminInfo.lastUpdatedAt ? new Date(adminInfo.lastUpdatedAt).toLocaleDateString() : '—'}</b></div>
-      <div>The last movie has been added at <b>{adminInfo.lastCreatedAt ? new Date(adminInfo.lastCreatedAt).toLocaleDateString() : '—'}</b></div>
+      <div>Data refreshed at <b>{adminInfo.lastUpdatedAt ? new Date(adminInfo.lastUpdatedAt).toLocaleDateString('en-CA') : '—'}</b></div>
+      <div>The last movie has been added at <b>{adminInfo.lastCreatedAt ? new Date(adminInfo.lastCreatedAt).toLocaleDateString('en-CA') : '—'}</b></div>
     </div>
   )
 }
