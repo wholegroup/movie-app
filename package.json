@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20.0.0 <21.0.0"
+  },
   "scripts": {
     "dev": "NEXT_PUBLIC_MOVIE_APP_VERSION=$(date -u +%y.%m.%d) next dev -p 3300",
     "test": "jest",
@@ -34,12 +38,12 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "14.2.12",
-    "@storybook/addon-essentials": "8.3.1",
-    "@storybook/addon-interactions": "8.3.1",
-    "@storybook/addon-links": "8.3.1",
-    "@storybook/blocks": "8.3.1",
-    "@storybook/nextjs": "8.3.1",
-    "@storybook/react": "8.3.1",
+    "@storybook/addon-essentials": "8.4.2",
+    "@storybook/addon-interactions": "8.4.2",
+    "@storybook/addon-links": "8.4.2",
+    "@storybook/blocks": "8.4.2",
+    "@storybook/nextjs": "8.4.2",
+    "@storybook/react": "8.4.2",
     "@storybook/testing-library": "^0.2.2",
     "@testing-library/jest-dom": "6.5.0",
     "@testing-library/react": "16.0.1",
@@ -49,6 +53,6 @@
     "eslint-plugin-n": "16.6.2",
     "eslint-plugin-promise": "6.6.0",
     "eslint-plugin-storybook": "0.8.0",
-    "storybook": "8.3.1"
+    "storybook": "8.4.2"
   }
 }
