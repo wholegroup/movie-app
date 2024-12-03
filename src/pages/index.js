@@ -74,7 +74,8 @@ export const getServerSideProps = async function () {
         genres: movie.genres,
         posterHash: mainImage?.hash || null,
         posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || ''),
-        isNew: movie.createdAt > freshDateISO
+        isNew: movie.createdAt > freshDateISO,
+        createdAt: movie.createdAt
       }
     })
 
