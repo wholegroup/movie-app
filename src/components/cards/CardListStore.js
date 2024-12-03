@@ -148,7 +148,13 @@ class CardListStore {
    */
   get sortedCards () {
     return [...this.filteredCards]
-      .sort((a, b) => (b.isNew - a.isNew) || (b.year - a.year) || a.title.localeCompare(b.title))
+      .sort((a, b) => {
+        // sort new cards by createdAt.DESC stamp (newest always on the top)
+        if (b.isNew && a.isNew) {
+          return b.createdAt.localeCompare(a.createdAt) || a.title.localeCompare(b.title)
+        }
+        return (b.isNew - a.isNew) || (b.year - a.year) || a.title.localeCompare(b.title)
+      })
   }
 
   /**

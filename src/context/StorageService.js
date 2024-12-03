@@ -181,7 +181,8 @@ class StorageService {
         genres: movie.genres,
         posterHash: mainImage?.hash || null,
         posterUrl: ApiService.generatePreviewUrl(mainImage?.hash || ''),
-        isNew: movie.createdAt > freshDateISO
+        isNew: movie.createdAt > freshDateISO,
+        createdAt: movie.createdAt
       }
     })
     return cards
@@ -322,6 +323,7 @@ class StorageService {
  * @property {string} posterHash
  * @property {string} posterUrl
  * @property {boolean} [isNew]
+ * @property {createdAt} [createdAt]
  */
 
 /**
