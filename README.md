@@ -10,8 +10,8 @@ The backend is made in the Next.js framework, which provides out-of-the-box supp
 
 The result is [https://annualmovies.com](https://annualmovies.com)
 
-<img src="https://annualmovies.com/noprecache/screenshot_02-landscape.png" width="800" title="Annual Movies application screenshot on iPad">
+<img src="https://annualmovies.com/noprecache/screenshot_02-landscape.png?ts=1734515509" width="800" title="Annual Movies application screenshot on iPad">
 
 
-<img src="https://annualmovies.com/noprecache/screenshot_01-portrait.png" width="360" title="Annual Movies application screenshot on iPhone">
+<img src="https://annualmovies.com/noprecache/screenshot_01-portrait.png?ts=1734515509" width="360" title="Annual Movies application screenshot on iPhone">
 
