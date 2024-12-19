@@ -33,7 +33,7 @@ export default function Application ({ Component, pageProps }) {
         <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
         <meta
           name='viewport'
-          content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no'
+          content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover'
         />
         <meta name='description' content='Annual Movies. The Best Movies.' />
         <meta name='keywords' content='the best movies' />
