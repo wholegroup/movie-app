@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import Head from 'next/head'
-import { useRouter } from 'next/router.js'
+import { useRouter } from 'next/router'
 import GlobalContextProvider from '../context/GlobalContextProvider'
 import PreserveScroll from '../components/app/PreserveScroll'
 import WorkboxReloadHook from '../components/app/WorkboxReloadHook'

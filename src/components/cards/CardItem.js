@@ -1,4 +1,4 @@
-import Link from 'next/link.js'
+import Link from 'next/link'
 import { Icon } from '@mdi/react'
 import { mdiThumbDown, mdiThumbUp } from '@mdi/js'
 import styles from './CardItem.module.css'

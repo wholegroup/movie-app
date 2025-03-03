@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import styles from './Toolbar.module.css'
-import Link from 'next/link.js'
+import Link from 'next/link'
 import { useContext } from 'react'
 import cardListContext from '../cards/cardListContext.js'
 

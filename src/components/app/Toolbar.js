@@ -1,5 +1,5 @@
-import Link from 'next/link.js'
-import { useRouter } from 'next/router.js'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Icon } from '@mdi/react'
 import { mdiHomeCircleOutline } from '@mdi/js'
 import ProfileLoader from '../profile/ProfileLoader.js'
