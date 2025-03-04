@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
-import { useRouter } from 'next/router.js'
-import Head from 'next/head.js'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
 import globalContext from '../../context/globalContext.js'
 import Toolbar from './Toolbar.js'
 import styles from './ErrorPage.module.css'

@@ -4,10 +4,10 @@ import Head from 'next/head'
 import PhotoSwipe from 'photoswipe'
 import 'photoswipe/dist/photoswipe.css'
 import { mdiThumbDown, mdiThumbUp, mdiMagnifyPlus } from '@mdi/js'
+import { Icon } from '@mdi/react'
 import movieContext from './movieContext.js'
 import ApiService from '../../context/ApiService.js'
 import styles from './MovieItem.module.css'
-import { Icon } from '@mdi/react'
 
 function MovieItem () {
   const { movieStore, commonStore, notificationStore, syncStore } = useContext(movieContext)
