@@ -18,6 +18,7 @@ import './_app.css'
 export default function Application ({ Component, pageProps }) {
   const router = useRouter()
 
+  // disable completely prefetch on hover on links
   useMemo(() => {
     router.prefetch = async () => {
     }
