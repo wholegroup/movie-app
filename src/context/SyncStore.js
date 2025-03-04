@@ -33,10 +33,13 @@ class SyncStore {
   /** @type {number} Timestamp to catch any data changes after synchronization. */
   changesHash = 0
 
-  /** @type {number} Movies sync timestamp. */
+  /** @type {number} Movies last synchronization timestamp during active session. */
   moviesSyncedTs = 0
 
-  /** @type {string} moviesUpdatedAt timestamp from storage */
+  /** @type {boolean} To force movie synchronization. */
+  forceSynchronization = false
+
+  /** @type {string} updatedAt when movies updated last time (keeping in storage) during app lifetime. */
   moviesUpdatedAt = ''
 
   /** @type {number} profileSyncedTs timestamp */
@@ -77,6 +80,8 @@ class SyncStore {
       setIsDelayed: action,
       moviesSyncedTs: observable,
       setMoviesSyncedTs: action,
+      forceSynchronization: observable,
+      setForceSynchronization: action,
       nextMoviesSyncedDate: computed,
       moviesUpdatedAt: observable,
       setMoviesUpdatedAt: action,
@@ -126,10 +131,22 @@ class SyncStore {
   }
 
   /**
+   * Sets forceSynchronization flag.
+   * @param {boolean} forceSynchronization
+   */
+  setForceSynchronization (forceSynchronization) {
+    this.forceSynchronization = forceSynchronization
+  }
+
+  /**
    * Calculates next syncDate.
    * @returns {number}
    */
   get nextMoviesSyncedDate () {
+    if (this.forceSynchronization) {
+      return this.moviesSyncedTs
+    }
+
     // every 30 minutes
     return this.nextCronDate(this.moviesSyncedTs, '0 */30 * * * *')
   }
@@ -316,7 +333,7 @@ class SyncStore {
    * Schedules synchronizing movies.
    */
   scheduleSynchronizingMovies () {
-    this.setMoviesSyncedTs(0)
+    this.setForceSynchronization(true)
   }
 
   /**
@@ -355,6 +372,7 @@ class SyncStore {
       }
 
       this.setMoviesSyncedTs(Date.now())
+      this.setForceSynchronization(false)
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
