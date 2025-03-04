@@ -86,6 +86,15 @@ class MovieStore {
   }
 
   /**
+   * Find movie by slug.
+   * @param {string} slug
+   * @returns {Promise<TMovieItem>}
+   */
+  async findMovieBySlug (slug) {
+    return await this.storageService.findMovieBySlug(slug)
+  }
+
+  /**
    * Loads movie by slug.
    * @param {string} slug
    */
