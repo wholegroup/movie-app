@@ -42,6 +42,8 @@ function MovieLoader () {
 
       await movieStore.setRefreshTs(0)
       await movieStore.loadMovieBySlug(slug)
+
+      setIsVisible(false)
     }
 
     load()
@@ -52,23 +54,22 @@ function MovieLoader () {
           statusCode: 404
         })
       })
+  }, [slug, movieStore, commonStore, notificationStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt,
+    syncStore?.isSWInstalled, syncStore?.isSessionBeginning])
 
+  // clean movie store
+  // it not necessary because MovieContextProvider creates movieStore from scratch for every single movie page.
+  // but it's good manners to clean up after yourself (maybe GC will be happy)
+  useEffect(() => {
     return () => {
-      // only when sync is done to avoid blinking during development
-      // when reactStrictMode is true component rendering called twice
-      // because backend returns page with movie and the page blinks if clear movie before having first data
-      if (syncStore?.moviesUpdatedAt) {
-        movieStore.setMovie(null)
-        movieStore.setVotes(null)
-        movieStore.setImages(null)
-      }
+      movieStore.setMovie(null)
+      movieStore.setVotes(null)
+      movieStore.setImages(null)
       movieStore.setMetadata(null)
       movieStore.setDetails(null)
       movieStore.setRefreshTs(0)
-      setIsVisible(false)
     }
-  }, [slug, movieStore, commonStore, notificationStore, commonStore.isInitialized, syncStore?.moviesUpdatedAt,
-    syncStore?.isSWInstalled, syncStore?.isSessionBeginning])
+  }, [movieStore])
 
   // Refresh movie by commonStore.refreshTs
   useEffect(() => {
