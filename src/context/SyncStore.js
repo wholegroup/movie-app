@@ -83,6 +83,7 @@ class SyncStore {
       forceSynchronization: observable,
       setForceSynchronization: action,
       nextMoviesSyncedDate: computed,
+      isSessionBeginning: computed,
       moviesUpdatedAt: observable,
       setMoviesUpdatedAt: action,
       profileSyncedTs: observable,
@@ -95,7 +96,8 @@ class SyncStore {
       nextPurgingTs: computed,
       resetTs: observable,
       setResetTs: action,
-      nextResetTs: computed
+      nextResetTs: computed,
+      isSWInstalled: computed
     })
   }
 
@@ -128,6 +130,14 @@ class SyncStore {
    */
   setMoviesSyncedTs (moviesSyncedTs) {
     this.moviesSyncedTs = moviesSyncedTs
+  }
+
+  /**
+   * Calculate is new session started. It means no any synchronization finished.
+   * @returns {boolean}
+   */
+  get isSessionBeginning () {
+    return this.moviesSyncedTs === 0
   }
 
   /**
@@ -462,6 +472,14 @@ class SyncStore {
   get nextResetTs () {
     // once a month
     return this.nextCronDate(this.resetTs, '0 0 0 1 * *')
+  }
+
+  /**
+   * Check if SW installed (resetTs is defined)
+   * @returns {boolean}
+   */
+  get isSWInstalled () {
+    return !!this.resetTs
   }
 
   /**
