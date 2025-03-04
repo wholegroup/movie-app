@@ -61,15 +61,22 @@ function MovieLoader () {
   // it not necessary because MovieContextProvider creates movieStore from scratch for every single movie page.
   // but it's good manners to clean up after yourself (maybe GC will be happy)
   useEffect(() => {
+    // keep value when enter into useEffect
+    const moviesUpdatedAt = syncStore?.moviesUpdatedAt
     return () => {
-      movieStore.setMovie(null)
-      movieStore.setVotes(null)
-      movieStore.setImages(null)
-      movieStore.setMetadata(null)
-      movieStore.setDetails(null)
-      movieStore.setRefreshTs(0)
+      // only when sync is done to avoid blinking during development
+      // when reactStrictMode is true component rendering called twice
+      // because backend returns page with movie and the page blinks if clear movie before having first data
+      if (moviesUpdatedAt) {
+        movieStore.setMovie(null)
+        movieStore.setVotes(null)
+        movieStore.setImages(null)
+        movieStore.setMetadata(null)
+        movieStore.setDetails(null)
+        movieStore.setRefreshTs(0)
+      }
     }
-  }, [movieStore])
+  }, [movieStore, syncStore?.moviesUpdatedAt])
 
   // Refresh movie by commonStore.refreshTs
   useEffect(() => {
