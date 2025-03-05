@@ -1,4 +1,4 @@
-import SyncBackendService from '../../libs/SyncBackendService.js'
+import SyncBackendService from '../../lib/SyncBackendService.js'
 import Toolbar from '../components/app/Toolbar.js'
 import MovieItem from '../components/movie/MovieItem.js'
 import MovieLoader from '../components/movie/MovieLoader.js'

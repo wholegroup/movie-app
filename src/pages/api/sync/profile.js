@@ -1,5 +1,5 @@
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
-import SyncBackendService from '../../../../libs/SyncBackendService.js'
+import SyncBackendService from '../../../../lib/SyncBackendService.js'
 
 export default function handlerWithCheck (req, res) {
   if (!process.env.AUTH0_SECRET) {

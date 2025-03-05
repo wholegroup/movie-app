@@ -1,4 +1,4 @@
-import SyncBackendService from '../../libs/SyncBackendService.js'
+import SyncBackendService from '../../lib/SyncBackendService.js'
 
 function Sitemap () {
   return null
