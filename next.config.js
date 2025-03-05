@@ -24,6 +24,7 @@ const withPWA = nextPWA({
   navigateFallback: '/',
   navigateFallbackDenylist: [
     /api\/.*/,
+    /auth\/.*/,
     /noprecache\/.*/
   ],
   dynamicStartUrl: false, // if enabled the app fetches index page every time
