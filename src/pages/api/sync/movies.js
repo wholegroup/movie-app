@@ -1,4 +1,4 @@
-import { getSession } from '@auth0/nextjs-auth0'
+import { auth0 } from '../../../../lib/auth0'
 import SyncBackendService from '../../../../lib/SyncBackendService.js'
 
 // noinspection JSUnusedGlobalSymbols
@@ -7,7 +7,7 @@ import SyncBackendService from '../../../../lib/SyncBackendService.js'
  * @param {import('next').NextApiResponse} res
  */
 export default async function handler (req, res) {
-  const session = process.env.AUTH0_SECRET ? await getSession(req, res) : null
+  const session = process.env.AUTH0_SECRET ? await auth0.getSession(req) : null
   const user = session?.user
   const isAdmin = process.env.AUTH0_ADMIN_SUB?.length > 0 && user?.sub === process.env.AUTH0_ADMIN_SUB
 

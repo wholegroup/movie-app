@@ -33,7 +33,7 @@ function ProfileCardAnonymous () {
       </div>
       <div>&nbsp;</div>
       <div>
-        <a href='/api/auth/login' title='login'>Login</a>
+        <a href='/auth/login' title='login'>Login</a>
       </div>
     </>
   )

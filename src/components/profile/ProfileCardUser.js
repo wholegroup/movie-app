@@ -18,7 +18,7 @@ function ProfileCardUser () {
     ev.preventDefault()
     storageService.clearAllUserData()
       .then(() => {
-        window.location.href = '/api/auth/logout'
+        window.location.href = '/auth/logout'
       })
       .catch(console.error)
   }
