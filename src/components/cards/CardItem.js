@@ -20,6 +20,7 @@ function CardItem ({ card, details, onClickThumb }) {
             alt={card.title}
             width='270'
             height='400'
+            fetchPriority='low'
           />
         </div>
         <h1 className={styles.title}>{card.title}</h1>
