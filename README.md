@@ -15,6 +15,10 @@ The result is [https://annualmovies.com](https://annualmovies.com)
 
 <img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/screenshot_01-portrait.png?ts=1734604738" width="360" title="Annual Movies application screenshot on iPhone">
 
+## How to install PWA application
+
+<img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/screenshot_03-install.png?ts=1734604738" width="360" title="Open our site and then press Share button">&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/screenshot_04-install.png?ts=1734604738" width="360" title="Add AnnualMovies.com to Home Screen">
+
 ## Keep up to date
 
 <a href="https://t.me/annualmovies" title="AnnualMovies | telegram.org" target="_blank"><img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/social/telegram64.png" alt="AnnualMovies | telegram.org" width="64px" ></a>&nbsp;&nbsp;
