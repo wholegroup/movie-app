@@ -14,3 +14,10 @@ The result is [https://annualmovies.com](https://annualmovies.com)
 
 
 <img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/screenshot_01-portrait.png?ts=1734604738" width="360" title="Annual Movies application screenshot on iPhone">
+
+## Keep up to date
+
+<a href="https://t.me/annualmovies" title="AnnualMovies | telegram.org" target="_blank"><img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/social/telegram64.png" alt="AnnualMovies | telegram.org" width="64px" ></a>&nbsp;&nbsp;
+<a href="https://x.com/annualmovies" title="AnnualMovies | X.com" target="_blank"><img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/social/x64.png" alt="AnnualMovies | X.com" width="64px" ></a>&nbsp;&nbsp;
+<a href="https://fb.com/annualmovies" title="AnnualMovies | facebook.com" target="_blank"><img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/social/facebook64.png" alt="AnnualMovies | facebook.com" width="64px" ></a>&nbsp;&nbsp;
+<a href="https://www.instagram.com/annualmovies" title="AnnualMovies | instagram.com" target="_blank"><img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/social/instagram64.png" alt="AnnualMovies | instagram.com" width="64px" ></a>&nbsp;&nbsp;
