@@ -43,7 +43,8 @@ export default function Application ({ Component, pageProps }) {
         <link rel='sitemap' type='application/xml' title='Sitemap' href='/sitemap.xml' />
         <link rel='manifest' href='/manifest.json' />
         <link href='/icons/icon-32x32.png' rel='icon' type='image/png' sizes='32x32' />
-        <link rel='apple-touch-icon' href='/icons/apple-icon-180x180.png'></link>
+        <link rel='apple-touch-icon' href='/icons/apple-icon-180x180.png' media="(prefers-color-scheme: light)"/>
+        <link rel='apple-touch-icon' href='/icons/apple-icon-180x180.dark.png' media="(prefers-color-scheme: dark)"/>
         <meta name='theme-color' content='#00BFFF' />
         <meta property="og:site_name" content="Annual Movies" />
       </Head>
