@@ -40,15 +40,15 @@ function CardListContextProvider ({ children, ...pageProps }) {
     /**
      * Restore from cache
      */
-    if (commonStore.cache[`${CardListContextProvider.name}`]) {
+    if (commonStore.cache.CardListContextProvider) {
       contextValueRef.current.cardListStore = Object.assign(
-        contextValueRef.current.cardListStore, commonStore.cache[`${CardListContextProvider.name}`])
+        contextValueRef.current.cardListStore, commonStore.cache.CardListContextProvider)
     }
   }
 
   useEffect(() => {
     return () => {
-      commonStore.cache[`${CardListContextProvider.name}`] = {
+      commonStore.cache.CardListContextProvider = {
         filters: contextValueRef.current.cardListStore.filters,
         cards: contextValueRef.current.cardListStore.cards,
         allDetails: contextValueRef.current.cardListStore.allDetails

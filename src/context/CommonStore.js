@@ -17,7 +17,7 @@ class CommonStore {
   /** @type {Object} Confirmation dialog parameters. */
   confirmation = {}
 
-  /** @type {Object} Global cache object */
+  /** @type {{CardListContextProvider: Object}} Global cache object */
   cache = {}
 
   /** @type {Object} Response error. */
