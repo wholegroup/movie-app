@@ -5,7 +5,7 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=20.0.0 <21.0.0"
+    "node": ">=22.0.0 <23.0.0"
   },
   "scripts": {
     "dev": "NEXT_PUBLIC_MOVIE_APP_VERSION=$(date -u +%y.%m.%d) next dev -p 3300",

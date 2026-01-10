@@ -1,5 +1,5 @@
 # example is https://github.com/vercel/next.js/blob/canary/examples/with-docker
-FROM node:20.18.0-bullseye-slim AS base
+FROM node:22.21.1-bullseye-slim AS base
 
 # Install dependencies based on the preferred package manager
 FROM base AS deps
