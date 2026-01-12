@@ -15,7 +15,7 @@
     "analyze": "ANALYZE=true next build",
     "build": "NEXT_PUBLIC_MOVIE_APP_VERSION=$(date -u +%y.%m.%d) next build",
     "start": "next start -p 3400",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "4.14.0",
@@ -37,6 +37,7 @@
     "uuid": "13.0.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
     "@next/bundle-analyzer": "15.5.9",
     "@storybook/addon-links": "10.1.11",
     "@storybook/nextjs": "10.1.11",
@@ -44,12 +45,10 @@
     "@storybook/testing-library": "0.2.2",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.1",
-    "eslint": "8.57.1",
+    "eslint": "9.39.2",
     "eslint-config-next": "15.3.5",
-    "eslint-config-standard": "17.1.0",
-    "eslint-plugin-n": "16.6.2",
-    "eslint-plugin-promise": "6.6.0",
     "eslint-plugin-storybook": "10.1.11",
+    "neostandard": "^0.12.2",
     "storybook": "10.1.11"
   }
 }

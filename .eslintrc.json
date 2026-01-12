@@ -4,7 +4,7 @@
   },
   "extends": [
     "next/core-web-vitals",
-    "standard",
+    "neostandard",
     "plugin:storybook/recommended"
   ],
   "rules": {
