@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable } from 'mobx'
-import * as cronParser from 'cron-parser'
+import { CronExpressionParser } from 'cron-parser'
 import { SETTINGS_NAMES } from './StorageService.js'
 
 class SyncStore {
@@ -171,7 +171,7 @@ class SyncStore {
       return Date.now()
     }
 
-    const interval = cronParser.parseExpression(schedule, {
+    const interval = CronExpressionParser.parse(schedule, {
       currentDate: from
     })
     return interval.next().getTime()
