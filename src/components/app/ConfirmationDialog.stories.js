@@ -16,6 +16,10 @@ export const CancelYesDefault = (args) => {
   return (
     <>
       <globalContext.Provider value={contextValue}>
+        <div>
+          <button>press me</button>
+        </div>
+        <div>select me select me select me select me select me select me select me</div>
         <ConfirmationDialog />
       </globalContext.Provider>
     </>

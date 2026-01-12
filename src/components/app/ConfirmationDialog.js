@@ -1,36 +1,37 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
-import FocusTrap from 'focus-trap-react'
 import globalContext from '../../context/globalContext.js'
 import styles from './ConfirmationDialog.module.css'
 
 function ConfirmationDialog () {
   const { commonStore } = useContext(globalContext)
+  const dialogRef = useRef(null)
 
-  // set ESC listener to close dialog by ESC
+  // open/close dialog
   useEffect(() => {
-    if (!commonStore.confirmation.isOpen) {
-      return
-    }
+    const dialog = dialogRef.current
+    if (!dialog) return
 
-    const escListener = (event) => {
-      if (event.key === 'Escape') {
-        commonStore.closeConfirmation()
+    if (commonStore.confirmation.isOpen) {
+      if (!dialog.open) {
+        dialog.showModal()
       }
+    } else {
+      dialog.close()
     }
+  }, [commonStore.confirmation.isOpen])
 
-    // use keydown bc keypress doesn't catch Escape
-    document.addEventListener('keydown', escListener)
-    return () => {
-      removeEventListener('keydown', escListener)
-    }
-  }, [commonStore, commonStore.confirmation.isOpen])
+  // close by the cancel button
+  const handleCancel = (e) => {
+    e.preventDefault()
+    commonStore.closeConfirmation()
+  }
 
-  // nothing render when hide
   if (!commonStore.confirmation?.isOpen) {
     return null
   }
 
+  // default dialog values
   const header = commonStore.confirmation.header || 'Please confirm'
   const message = commonStore.confirmation.message || 'Are you sure?'
   const buttons = commonStore.confirmation.buttons || [
@@ -41,6 +42,7 @@ function ConfirmationDialog () {
     }
   ]
 
+  // handle autoCloseable
   const clickHandler = (button) => {
     if (commonStore.confirmation.autoCloseable ?? true) {
       commonStore.closeConfirmation()
@@ -49,21 +51,21 @@ function ConfirmationDialog () {
   }
 
   return (
-    <div className={styles.overlay}>
-      <FocusTrap>
-        <div className={styles.modal}>
-          <div className={styles.header}>
-            {header}
-          </div>
-          <div className={styles.body}>
-            {message}
-          </div>
-          <div className={styles.buttons}>
-            {buttons.map((btn, i) => <button key={i} onClick={() => clickHandler(btn)}>{btn.value}</button>)}
-          </div>
-        </div>
-      </FocusTrap>
-    </div>
+    <dialog ref={dialogRef} className={styles.modal} onCancel={handleCancel}>
+      <div className={styles.header}>
+        {header}
+      </div>
+      <div className={styles.body}>
+        {message}
+      </div>
+      <div className={styles.buttons}>
+        {buttons.map((btn, i) => (
+          <button key={i} onClick={() => clickHandler(btn)}>
+            {btn.value}
+          </button>
+        ))}
+      </div>
+    </dialog>
   )
 }
 
