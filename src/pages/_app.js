@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import GlobalContextProvider from '../context/GlobalContextProvider'
 import PreserveScroll from '../components/app/PreserveScroll'
-import WorkboxReloadHook from '../components/app/WorkboxReloadHook'
+import SerwistReloadHook from '../components/app/SerwistReloadHook.js'
 import ToastsContainer from '../components/app/ToastsContainer'
 import ConfirmationDialog from '../components/app/ConfirmationDialog'
 import ErrorPageWrapper from '../components/app/ErrorPageWrapper'
@@ -48,7 +48,7 @@ export default function Application ({ Component, pageProps }) {
         <meta name='theme-color' content='#00BFFF' />
         <meta property="og:site_name" content="Annual Movies" />
       </Head>
-      <WorkboxReloadHook />
+      <SerwistReloadHook />
       <PreserveScroll />
       <GlobalContextProvider {...pageProps}>
         <ErrorPageWrapper>
