@@ -15,12 +15,14 @@
     "analyze": "ANALYZE=true next build",
     "build": "NEXT_PUBLIC_MOVIE_APP_VERSION=$(date -u +%y.%m.%d) next build",
     "start": "next start -p 3400",
+    "standalone": "next start -p 3400",
     "lint": "eslint ."
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "4.14.0",
     "@mdi/js": "7.4.47",
     "@mdi/react": "1.6.1",
+    "@serwist/next": "9.5.0",
     "cron-parser": "5.4.0",
     "dexie": "4.2.1",
     "jest": "30.2.0",
@@ -28,10 +30,10 @@
     "mobx": "6.15.0",
     "mobx-react-lite": "4.1.1",
     "next": "15.5.9",
-    "next-pwa": "5.6.0",
     "photoswipe": "5.4.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "serwist": "^9.5.0",
     "sqlite3": "5.1.7",
     "uuid": "13.0.0"
   },
