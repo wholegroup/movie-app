@@ -111,6 +111,7 @@ function MovieItem () {
               alt={movie.title}
               width='270'
               height='400'
+              crossOrigin='anonymous'
             />
             <div className={styles.zoom}><Icon path={mdiMagnifyPlus} /></div>
           </div>

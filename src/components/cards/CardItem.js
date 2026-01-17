@@ -21,6 +21,7 @@ function CardItem ({ card, details, onClickThumb }) {
             width='270'
             height='400'
             fetchPriority='low'
+            crossOrigin='anonymous'
           />
         </div>
         <h1 className={styles.title}>{card.title}</h1>
