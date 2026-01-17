@@ -17,6 +17,9 @@ const runtimeCaching = [
       }
     }),
     options: {
+      cacheableResponse: {
+        statuses: [200]
+      },
       expiration: {
         maxEntries: 512,
         maxAgeSeconds: 365 * 24 * 60 * 60 // 365 days
@@ -34,6 +37,9 @@ const runtimeCaching = [
       }
     }),
     options: {
+      cacheableResponse: {
+        statuses: [200]
+      },
       expiration: {
         maxEntries: 64,
         maxAgeSeconds: 14 * 24 * 60 * 60 // 14 days
