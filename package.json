@@ -15,7 +15,6 @@
     "analyze": "ANALYZE=true next build",
     "build": "NEXT_PUBLIC_MOVIE_APP_VERSION=$(date -u +%y.%m.%d) next build",
     "start": "next start -p 3400",
-    "standalone": "next start -p 3400",
     "lint": "eslint ."
   },
   "dependencies": {
