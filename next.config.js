@@ -25,7 +25,25 @@ const withSerwist = withSerwistInit({
   // as a default value is `**/*` we have to redefine this array to exclude `noprecache` (next-pwa legacy)
   globPublicPatterns: [
     '!(noprecache)',
-    '!(noprecache)/**',
+    '!(noprecache)/**'
+  ],
+  // precache index page (react app) inserted to self.__SW_MANIFEST
+  manifestTransforms: [
+    async (manifestEntries) => {
+      const mainEntry = manifestEntries.find(e => e.url.includes('/main-'))
+      const mainRevision = mainEntry?.url.match(/main-([a-f0-9]+)\.js/)?.[1]
+      if (!mainEntry || !mainRevision) {
+        throw new Error('No main entry/revision.')
+      }
+
+      manifestEntries.push({
+        url: '/',
+        revision: mainRevision,
+        size: mainEntry.size // any value only for validation
+      })
+
+      return { manifest: manifestEntries, warnings: [] }
+    }
   ]
 })
 
