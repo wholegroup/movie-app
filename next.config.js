@@ -1,6 +1,5 @@
-import nextPWA from 'next-pwa'
+import withSerwistInit from '@serwist/next'
 import nextBundleAnalyzer from '@next/bundle-analyzer'
-import runtimeCaching from './cache.js'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -18,47 +17,20 @@ const nextConfig = {
   output: 'standalone'
 }
 
-const withPWA = nextPWA({
-  dest: 'public',
-  runtimeCaching,
-  navigateFallback: '/',
-  navigateFallbackDenylist: [
-    /api\/.*/,
-    /auth\/.*/,
-    /noprecache\/.*/
-  ],
-  dynamicStartUrl: false, // if enabled the app fetches index page every time
-  reloadOnOnline: false,
-  disableDevLogs: true,
+const withSerwist = withSerwistInit({
+  swSrc: 'src/sw.js',
+  swDest: 'public/sw.js',
   disable: process.env.NODE_ENV === 'development', // temporary disable to suppress logs
-
-  // I have bad-precaching-response of dynamic-css-manifest.json in next.js v15
-  // Probably because of next-pwa is outdated I have to exclude additional file in building precached file list
-  // https://github.com/serwist/serwist/discussions/228#discussioncomment-11864263
-  exclude: [
-    // https://github.com/shadowwalker/next-pwa/issues/424#issuecomment-1332258575
-    ({ asset }) => {
-      // Add here any file that fails pre-caching
-      const excludeList = [
-        // Default Serwist https://serwist.pages.dev/docs/next/configuring/exclude
-        /\.map$/,
-        /^manifest.*\.js$/,
-        /^server\//,
-        /^(((app-)?build-manifest|react-loadable-manifest|dynamic-css-manifest)\.json)$/
-      ]
-      return excludeList.some(r => r.test(asset.name))
-    }
-  ],
-
-  // mode: 'development', // don't minified SW
-  // https://github.com/shadowwalker/next-pwa/tree/master/examples/custom-worker
-  // https://www.proximity.blog/post/building-a-next-js-pwa-using-nextpwa-and-service-worker-2022330
-  // swSrc: 'service-worker.js',
-  ...{}
+  reloadOnOnline: false,
+  // as a default value is `**/*` we have to redefine this array to exclude `noprecache` (next-pwa legacy)
+  globPublicPatterns: [
+    '!(noprecache)',
+    '!(noprecache)/**',
+  ]
 })
 
 const withBundleAnalyzer = nextBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
 })
 
-export default withBundleAnalyzer(withPWA(nextConfig))
+export default withBundleAnalyzer(withSerwist(nextConfig))
