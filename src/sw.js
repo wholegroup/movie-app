@@ -4,34 +4,21 @@ import runtimeCaching from './sw_cache.js'
 
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
+  precacheOptions: {
+    navigateFallback: '/',
+    navigateFallbackDenylist: [
+      /api\/.*/,
+      /auth\/.*/,
+      /noprecache\/.*/
+    ],
+  },
   skipWaiting: true,
   clientsClaim: true,
-  navigationPreload: true,
+  navigationPreload: false, // disable parallels network requests and fallback to index
   runtimeCaching: [
     ...runtimeCaching,
     ...defaultCache
   ],
-  fallbacks: {
-    entries: [
-      {
-        url: '/',
-        matcher ({ request, url }) {
-          if (request.mode !== 'navigate') {
-            return false
-          }
-          const pathname = url.pathname
-          if (
-            pathname.startsWith('/api/') ||
-            pathname.startsWith('/auth/') ||
-            pathname.startsWith('/noprecache/')
-          ) {
-            return false
-          }
-          return true
-        }
-      }
-    ]
-  }
 })
 
 serwist.addEventListeners()
