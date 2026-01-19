@@ -61,27 +61,6 @@ const runtimeCaching = [
     }
   },
 
-  // // to support Single Page Application (loading index page for all urls)
-  // // commented in favor of navigateFallback in next.config.js (when used next-pwa)
-  // {
-  //   urlPattern: ({ url }) => {
-  //     if (self.origin !== url.origin) {
-  //       return false
-  //     }
-  //     if (url.pathname.startsWith('/api/')) {
-  //       return false
-  //     }
-  //     return true
-  //   },
-  //   handler: 'CacheOnly',
-  //   options: {
-  //     cacheName: 'spa-redirector',
-  //     precacheFallback: {
-  //       fallbackURL: '/'
-  //     }
-  //   }
-  // },
-
   ...[]
 ]
 
