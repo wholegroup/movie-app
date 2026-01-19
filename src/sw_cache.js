@@ -1,4 +1,4 @@
-import { CacheFirst, NetworkOnly } from 'serwist'
+import { CacheFirst, ExpirationPlugin, NetworkOnly } from 'serwist'
 
 const runtimeCaching = [
   // do not handle
@@ -12,6 +12,12 @@ const runtimeCaching = [
     matcher: /https:\/\/img\.annualmovies\.com\/.+_400\.jpeg$/i,
     handler: new CacheFirst({
       cacheName: 'posters-preview-v1',
+      plugins: [
+        new ExpirationPlugin({
+          maxEntries: 512,
+          maxAgeSeconds: 365 * 24 * 60 * 60 // 365 days
+        }),
+      ],
       fetchOptions: {
         mode: 'cors'
       }
@@ -19,10 +25,6 @@ const runtimeCaching = [
     options: {
       cacheableResponse: {
         statuses: [200]
-      },
-      expiration: {
-        maxEntries: 512,
-        maxAgeSeconds: 365 * 24 * 60 * 60 // 365 days
       }
     }
   },
@@ -32,6 +34,12 @@ const runtimeCaching = [
     matcher: /https:\/\/img\.annualmovies\.com\/.+_1185\.jpeg$/i,
     handler: new CacheFirst({
       cacheName: 'posters-full-v1',
+      plugins: [
+        new ExpirationPlugin({
+          maxEntries: 64,
+          maxAgeSeconds: 14 * 24 * 60 * 60 // 14 days
+        }),
+      ],
       fetchOptions: {
         mode: 'cors'
       }
@@ -39,10 +47,6 @@ const runtimeCaching = [
     options: {
       cacheableResponse: {
         statuses: [200]
-      },
-      expiration: {
-        maxEntries: 64,
-        maxAgeSeconds: 14 * 24 * 60 * 60 // 14 days
       }
     }
   },
@@ -59,6 +63,11 @@ const runtimeCaching = [
       }
       return new Response(emptyBlob, emptyOptions)
     }
+  },
+
+  {
+    matcher: ({ sameOrigin }) => !sameOrigin,
+    handler: new NetworkOnly(),
   },
 
   ...[]
