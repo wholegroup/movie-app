@@ -12,13 +12,13 @@ function SerwistReloadHook () {
     }
 
     const listener = () => {
-      console.log('New Serwist SW detected! Reloading the application.')
+      console.log('New Serwist SW activated! Reloading the application.')
       window.location.reload()
     }
-    serwist.addEventListener('installed', listener)
+    serwist.addEventListener('activated', listener)
 
     return () => {
-      serwist.removeEventListener('installed', listener)
+      serwist.removeEventListener('activated', listener)
     }
   }, [])
 
