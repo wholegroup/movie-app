@@ -1,12 +1,6 @@
-import { CacheFirst, ExpirationPlugin, NetworkOnly } from 'serwist'
+import { CacheFirst, ExpirationPlugin } from 'serwist'
 
 const runtimeCaching = [
-  // do not handle
-  {
-    matcher: /\/noprecache\/.*/,
-    handler: new NetworkOnly()
-  },
-
   // previews
   {
     matcher: /https:\/\/img\.annualmovies\.com\/.+_400\.jpeg$/i,
@@ -16,7 +10,7 @@ const runtimeCaching = [
         new ExpirationPlugin({
           maxEntries: 512,
           maxAgeSeconds: 365 * 24 * 60 * 60 // 365 days
-        }),
+        })
       ],
       fetchOptions: {
         mode: 'cors'
@@ -38,7 +32,7 @@ const runtimeCaching = [
         new ExpirationPlugin({
           maxEntries: 64,
           maxAgeSeconds: 14 * 24 * 60 * 60 // 14 days
-        }),
+        })
       ],
       fetchOptions: {
         mode: 'cors'
@@ -63,11 +57,6 @@ const runtimeCaching = [
       }
       return new Response(emptyBlob, emptyOptions)
     }
-  },
-
-  {
-    matcher: ({ sameOrigin }) => !sameOrigin,
-    handler: new NetworkOnly(),
   },
 
   ...[]
