@@ -8,9 +8,10 @@ const serwist = new Serwist({
   precacheOptions: {
     navigateFallback: '/',
     navigateFallbackDenylist: [
-      /api\/.*/,
-      /auth\/.*/,
-      /noprecache\/.*/
+      /api\/.*/i,
+      /auth\/.*/i,
+      /noprecache\/.*/i,
+      /sitemap\.xml$/i,
     ],
     plugins: [
       {
@@ -22,7 +23,6 @@ const serwist = new Serwist({
             return response
           }
 
-          console.log('Cleaning up the index/app page...')
           const body = await response.text()
           return new Response(convertToEmpty(body), {
             headers: response.headers,
