@@ -1,6 +1,12 @@
-import { CacheFirst, ExpirationPlugin } from 'serwist'
+import { CacheFirst, ExpirationPlugin, NetworkOnly } from 'serwist'
 
 const runtimeCaching = [
+  // do not handle/cache `noprecache` requests
+  {
+    matcher: /\/noprecache\/.*/,
+    handler: new NetworkOnly()
+  },
+
   // previews
   {
     matcher: /https:\/\/img\.annualmovies\.com\/.+_400\.jpeg$/i,
