@@ -82,10 +82,7 @@ self.addEventListener('activate', (event) => {
       const request = indexedDB.deleteDatabase('workbox-expiration')
       request.onerror = resolve
       request.onblocked = resolve
-      request.onsuccess = () => {
-        console.log('Old IndexedDB workbox-expiration deleted')
-        resolve()
-      }
+      request.onsuccess = resolve
     })
   ]))
 })
