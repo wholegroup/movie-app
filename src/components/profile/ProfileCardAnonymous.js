@@ -4,7 +4,6 @@ import { Icon } from '@mdi/react'
 import { mdiAccountOutline } from '@mdi/js'
 import globalContext from '../../context/globalContext.js'
 
-/* eslint-disable @next/next/no-html-link-for-pages */
 function ProfileCardAnonymous () {
   const { commonStore, storageService } = useContext(globalContext)
   if (commonStore.profile != null) {

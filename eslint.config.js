@@ -1,23 +1,22 @@
 import neostandard from 'neostandard'
-import { FlatCompat } from '@eslint/eslintrc'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname
-})
+import js from '@eslint/js'
 
 const config = [
+  js.configs.recommended,
   ...neostandard({
     env: ['jest', 'node', 'browser']
   }),
-  ...compat.extends('next/core-web-vitals', 'plugin:storybook/recommended'),
   {
+    files: ['**/*.js', '**/*.jsx'],
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
     rules: {
-      '@next/next/no-img-element': 'off'
+      'no-unused-vars': 'off', // Отключаем, так как neostandard и так проверяет, но часто ложно для JSX импортов
     }
   },
   {
