@@ -4,16 +4,6 @@ import nextBundleAnalyzer from '@next/bundle-analyzer'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  webpack (webpackConfig) {
-    return {
-      ...webpackConfig,
-      // // disable minification
-      // optimization: {
-      //   minimize: false
-      // },
-      ...{}
-    }
-  },
   output: 'standalone'
 }
 
