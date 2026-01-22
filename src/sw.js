@@ -11,7 +11,7 @@ const serwist = new Serwist({
       /api\/.*/i,
       /auth\/.*/i,
       /noprecache\/.*/i,
-      /sitemap\.xml$/i,
+      /sitemap\.xml$/i
     ],
     plugins: [
       {
@@ -38,8 +38,21 @@ const serwist = new Serwist({
   navigationPreload: false, // disable parallels network requests and fallback to index
   runtimeCaching: [
     ...runtimeCaching,
-    ...defaultCache
+    ...defaultCache,
+    ...[]
   ]
 })
 
+// Some matchers (!sameOrigin and `.*`) of serwist/next's defaultCache handle all requests
+// to sse.annualmovies.com via the SW. Since an SSE connection is persistent, a new or updated SW
+// cannot become active until the existing SSE connection is closed.
+// We have to exclude sse.annualmovies.com to allow the new SW to activate immediately!
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url)
+  if (url.hostname === 'sse.annualmovies.com') {
+    event.stopImmediatePropagation()
+  }
+})
+
+// add serwist listeners
 serwist.addEventListeners()
