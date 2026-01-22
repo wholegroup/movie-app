@@ -4,7 +4,7 @@ import { auth0 } from '../lib/auth0'
  *
  * @param {import('next/server').NextRequest} request
  */
-export async function middleware (request) {
+export async function proxy (request) {
   const response = await auth0.middleware(request)
 
   const clientIp = request.headers?.get('x-real-ip') || request.headers?.get('x-forwarded-for')
