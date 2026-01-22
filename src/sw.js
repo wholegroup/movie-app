@@ -47,6 +47,7 @@ const serwist = new Serwist({
 // to sse.annualmovies.com via the SW. Since an SSE connection is persistent, a new or updated SW
 // cannot become active until the existing SSE connection is closed.
 // We have to exclude sse.annualmovies.com to allow the new SW to activate immediately!
+// This must be placed before calling serwist.addEventListeners()
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url)
   if (url.hostname === 'sse.annualmovies.com') {
@@ -56,3 +57,35 @@ self.addEventListener('fetch', (event) => {
 
 // add serwist listeners
 serwist.addEventListeners()
+
+// remove obsolete workbox caches (next-pwa legacy)
+self.addEventListener('activate', (event) => {
+  event.waitUntil(Promise.all([
+    // clean Cache Storage
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((cacheName) =>
+            cacheName.includes('workbox-precache') ||
+            cacheName.includes('next-data') ||
+            cacheName.includes('next-pwa')
+          )
+          .map((cacheName) => {
+            console.log(`Deleting old cache: ${cacheName}`)
+            return caches.delete(cacheName)
+          })
+      )
+    }),
+
+    // clean IndexedDB
+    new Promise((resolve) => {
+      const request = indexedDB.deleteDatabase('workbox-expiration')
+      request.onerror = resolve
+      request.onblocked = resolve
+      request.onsuccess = () => {
+        console.log('Old IndexedDB workbox-expiration deleted')
+        resolve()
+      }
+    })
+  ]))
+})

@@ -4,8 +4,8 @@ import { useEffect } from 'react'
  * When a new Serwist service worker is activated, the application reloads immediately
  * to ensure the client is in sync with the latest assets and logic.
  *
- * This listener is required in the window scope because Service Workers cannot 
- * directly trigger a page reload. While this could be implemented using 
+ * This listener is required in the window scope because Service Workers cannot
+ * directly trigger a page reload. While this could be implemented using
  * postMessage from the SW, this client-side event listener is a simpler approach.
  */
 function SerwistReloadHook () {
