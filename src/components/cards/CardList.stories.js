@@ -37,7 +37,9 @@ export const LongTitle = () => {
 }
 
 // noinspection JSUnusedGlobalSymbols
-export default {
+const meta = {
   component: CardList,
   decorators: [story => <>{story()}</>]
 }
+
+export default meta

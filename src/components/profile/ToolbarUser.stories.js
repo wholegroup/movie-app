@@ -51,7 +51,9 @@ export const Images = () => {
   )
 }
 
-export default {
+const meta = {
   component: ToolbarUser,
   decorators: [story => <>{story()}</>]
 }
+
+export default meta

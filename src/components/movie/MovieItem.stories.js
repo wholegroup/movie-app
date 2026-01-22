@@ -72,7 +72,9 @@ export const Simple = () => {
 }
 
 // noinspection JSUnusedGlobalSymbols
-export default {
+const meta = {
   component: MovieItem,
   decorators: [story => <>{story()}</>]
 }
+
+export default meta

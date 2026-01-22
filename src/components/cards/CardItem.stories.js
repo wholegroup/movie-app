@@ -20,7 +20,9 @@ export const Single = () => {
 }
 
 // noinspection JSUnusedGlobalSymbols
-export default {
+const meta = {
   component: CardItem,
   decorators: [story => <>{story()}</>]
 }
+
+export default meta

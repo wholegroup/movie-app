@@ -27,10 +27,12 @@ export const CancelYesDefault = (args) => {
 }
 
 // noinspection JSUnusedGlobalSymbols
-export default {
+const meta = {
   component: ConfirmationDialog,
   decorators: [story => <>{story()}</>],
   argTypes: {
     onYes: { action: 'Yes! Yes!' }
   }
 }
+
+export default meta
