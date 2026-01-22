@@ -18,13 +18,16 @@ import './_app.css'
 export default function Application ({ Component, pageProps }) {
   const router = useRouter()
 
-  // disable completely prefetch on hover on links
+  // Completely disable link prefetching on hover.
+  // Alternatively, we can create a custom link component (using only an <a> tag)
+  // and call router.push() instead of using the Next.js <Link> component.
+  // https://github.com/vercel/next.js/discussions/24437#discussioncomment-3752350
   useMemo(() => {
-    router.prefetch = async () => {
+    const originalPrefetch = router.prefetch
+    router.prefetch = () => Promise.resolve()
+    return () => {
+      router.prefetch = originalPrefetch
     }
-    // or we can create a custom link (with a tag only),
-    // and call router.push() instead of using the next link component.
-    // https://github.com/vercel/next.js/discussions/24437#discussioncomment-3752350
   }, [router])
 
   return (
