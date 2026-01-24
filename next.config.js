@@ -20,16 +20,13 @@ const withSerwist = withSerwistInit({
   // precache index page (react app) inserted to self.__SW_MANIFEST
   manifestTransforms: [
     async (manifestEntries) => {
-      const mainEntry = manifestEntries.find(e => e.url.includes('/main-'))
-      const mainRevision = mainEntry?.url.match(/main-([a-f0-9]+)\.js/)?.[1]
-      if (!mainEntry || !mainRevision) {
-        throw new Error('No main entry/revision.')
-      }
-
       manifestEntries.push({
         url: '/',
-        revision: mainRevision,
-        size: mainEntry.size // any value only for validation
+        // Update the index page (randomized revision) on every build
+        // because linked resources (CSS, pages) may change, and
+        // an old precached index page may load obsolete versions.
+        revision: crypto.randomUUID(),
+        size: 1024 // any value only for validation
       })
 
       return { manifest: manifestEntries, warnings: [] }
