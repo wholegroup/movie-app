@@ -59,6 +59,7 @@ self.addEventListener('fetch', (event) => {
 serwist.addEventListeners()
 
 // remove obsolete workbox caches (next-pwa legacy)
+// leave this code until 01.01.2027
 self.addEventListener('activate', (event) => {
   event.waitUntil(Promise.all([
     // clean Cache Storage
