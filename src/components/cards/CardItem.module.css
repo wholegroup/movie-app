@@ -30,6 +30,10 @@
 
 .title {
     flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    mask-image: linear-gradient(to right, #000 0%, #000 85%, transparent 100%);
 }
 
 .down {
