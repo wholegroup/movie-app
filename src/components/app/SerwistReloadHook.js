@@ -12,7 +12,8 @@ function SerwistReloadHook () {
   useEffect(() => {
     const serwist = window.serwist
     if (!serwist) {
-      console.error('Serwist is not installed!')
+      console.error('Serwist is not installed!' +
+        (process.env.NODE_ENV === 'development' ? ' DEV mode.' : ''))
       return
     }
 
