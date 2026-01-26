@@ -25,8 +25,7 @@ function ProfileCardAdminInfo () {
     fillAdminInfo().catch(console.error)
   }, [storageService, commonStore.isInitialized])
 
-  const profile = commonStore.profile
-  if (!profile?.isAdmin) {
+  if (!commonStore.profile?.isAdmin) {
     return null
   }
 

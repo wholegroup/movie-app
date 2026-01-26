@@ -8,14 +8,18 @@ import styles from './ToolbarUser.module.css'
 
 function ToolbarUser () {
   const { commonStore, syncStore } = useContext(globalContext)
-  const isAuthenticated = commonStore.profile != null
-  const { picture = null } = commonStore.profile || {}
   const { isOnline = false, isSynchronizing = false } = syncStore || {}
   const isSpinning = !isOnline || isSynchronizing
 
+  // don't show the picture until the profile is initialized
+  if (!commonStore.profile) {
+    return null
+  }
+  const { picture = null } = commonStore.profile
+
   return (
     <>
-      <Link href='/profile' className={isSpinning ? styles.spinner : ''}>
+      <Link href="/profile" className={isSpinning ? styles.spinner : ''}>
         {picture && (
           <img
             src={picture}
@@ -26,7 +30,7 @@ function ToolbarUser () {
         {!picture && (
           <Icon
             id={'account'}
-            path={isAuthenticated ? mdiAccount : mdiAccountOutline}
+            path={commonStore.isAuthenticated ? mdiAccount : mdiAccountOutline}
             size={'36px'}
             title={'Anonymous'}
           />

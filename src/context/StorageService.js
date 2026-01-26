@@ -51,7 +51,7 @@ class StorageService {
   /**
    * Returns settings by name.
    * @param {string} name
-   * @returns {Promise<string>}
+   * @returns {Promise<string|object>}
    */
   async getSettings (name) {
     return this.storage.settings.get(name)
@@ -329,10 +329,10 @@ class StorageService {
 /**
  * @typedef TUserProfile
  * @property {string} id
- * @property {string=} email
- * @property {string=} name
- * @property {string=} picture
- * @property {boolean=} isAdmin
+ * @property {string} [email]
+ * @property {string} [name]
+ * @property {string} [picture]
+ * @property {boolean} [isAdmin]
  */
 
 /**

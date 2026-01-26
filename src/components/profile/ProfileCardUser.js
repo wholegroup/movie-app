@@ -8,10 +8,10 @@ import styles from './ProfileCardUser.module.css'
 function ProfileCardUser () {
   const { commonStore, storageService } = useContext(globalContext)
 
-  const profile = commonStore.profile
-  if (!profile) {
+  if (!commonStore.isAuthenticated) {
     return null
   }
+  const profile = commonStore.profile
 
   // handle logout
   const handleLogout = (ev) => {

@@ -6,7 +6,7 @@ import globalContext from '../../context/globalContext.js'
 
 function ProfileCardAnonymous () {
   const { commonStore, storageService } = useContext(globalContext)
-  if (commonStore.profile != null) {
+  if (commonStore.isAuthenticated) {
     return null
   }
 

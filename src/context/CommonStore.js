@@ -1,4 +1,4 @@
-import { makeObservable, observable, action } from 'mobx'
+import { makeObservable, observable, action, computed } from 'mobx'
 import { SETTINGS_NAMES } from './StorageService.js'
 
 class CommonStore {
@@ -34,6 +34,7 @@ class CommonStore {
       setIsInitialized: action,
       profile: observable,
       setProfile: action,
+      isAuthenticated: computed,
       confirmation: observable,
       setConfirmation: action,
       responseError: observable,
@@ -86,6 +87,7 @@ class CommonStore {
    * @returns {Promise<void>}
    */
   async initializeStoreData () {
+    await this.updateProfile()
   }
 
   /**
@@ -107,17 +109,26 @@ class CommonStore {
 
   /**
    * Sets user profile.
-   * @param {?TUserProfile} profile
+   * @param {Partial<TUserProfile>} profile
    */
   setProfile (profile) {
-    this.profile = profile
+    // Set an empty object to indicate that the current user is anonymous,
+    // while a null profile means we haven't checked the current user yet.
+    this.profile = profile || { id: null }
   }
 
   /**
    * Updates user profile.
    */
   async updateProfile () {
-    this.setProfile(await this.storageService.getSettings(SETTINGS_NAMES.USER_PROFILE) || null)
+    this.setProfile(await this.storageService.getSettings(SETTINGS_NAMES.USER_PROFILE))
+  }
+
+  /**
+   * @returns {boolean} Returns true if user is authenticated.
+   */
+  get isAuthenticated () {
+    return !!this.profile?.id
   }
 
   /**
