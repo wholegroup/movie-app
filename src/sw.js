@@ -6,7 +6,7 @@ import { convertToEmpty } from './convertToEmpty.js'
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
   precacheOptions: {
-    navigateFallback: '/',
+    navigateFallback: process.env.NODE_ENV !== 'development' ? '/' : undefined,
     navigateFallbackDenylist: [
       /api\/.*/i,
       /auth\/.*/i,
@@ -57,6 +57,54 @@ self.addEventListener('fetch', (event) => {
 
 // add serwist listeners
 serwist.addEventListeners()
+
+// push handler
+self.addEventListener('push', /** @param {PushEvent} event */ (event) => {
+  const data = (() => {
+    const dataText = event.data ? event.data.text() : ''
+    if (!dataText) {
+      return {}
+    }
+
+    try {
+      const dataJson = JSON.parse(dataText)
+      if (dataJson && typeof dataJson === 'object' && !Array.isArray(dataJson)) {
+        return dataJson
+      }
+      // noinspection ExceptionCaughtLocallyJS
+      throw new Error('JSON is not object: ' + dataText + '')
+    } catch (ex) {
+      console.error(ex)
+    }
+
+    return {
+      body: dataText
+    }
+  })()
+
+  const title = data.title || 'Annual Movies'
+  const options = {
+    body: data.body || 'New movies are available!',
+    icon: '/icons/icon-32x32.png',
+    data: data.data || {}
+  }
+
+  event.waitUntil((async () => {
+    try {
+      await self.registration.showNotification(title, options)
+      console.log(`Notification ${title} sent.`)
+    } catch (ex) {
+      console.error(ex)
+    }
+  })())
+})
+
+// notification click handler
+self.addEventListener('notificationclick', /** @param {NotificationEvent} event */ (event) => {
+  event.notification.close()
+  const url = event.notification?.data?.url || '/'
+  event.waitUntil(self.clients.openWindow(url))
+})
 
 // remove obsolete workbox caches (next-pwa legacy)
 // leave this code until 01.01.2027
