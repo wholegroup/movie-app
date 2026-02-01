@@ -1,22 +1,7 @@
 import { auth0 } from '../../../../lib/auth0'
 import SyncBackendService from '../../../../lib/SyncBackendService.js'
 
-export default async function handlerWithCheck (req, res) {
-  if (!process.env.AUTH0_SECRET) {
-    res.status(401).end('AUTH0 environment not initialized.')
-    return
-  }
-
-  const session = await auth0.getSession(req)
-  if (!session) {
-    res.status(401).end('Unauthorized.')
-    return
-  }
-
-  await handler(req, res)
-}
-
-async function handler (req, res) {
+export default auth0.withApiAuthRequired(async function handler (req, res) {
   const { user } = await auth0.getSession(req)
 
   const syncService = new SyncBackendService(process.env.MOVIE_APP_USERS_DB)
@@ -65,4 +50,4 @@ async function handler (req, res) {
       await syncService.close()
     }
   }
-}
+})
