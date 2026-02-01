@@ -1,5 +1,5 @@
-import { auth0 } from '../../../../lib/auth0'
-import SyncBackendService from '../../../../lib/SyncBackendService.js'
+import { auth0 } from '@/lib/auth0'
+import SyncBackendService from '@/lib/SyncBackendService.js'
 
 export default auth0.withApiAuthRequired(async function handler (req, res) {
   const { user } = await auth0.getSession(req)

@@ -1,5 +1,5 @@
-import { auth0 } from '../../../../lib/auth0'
-import SyncBackendService from '../../../../lib/SyncBackendService.js'
+import { auth0 } from '@/lib/auth0.js'
+import SyncBackendService from '@/lib/SyncBackendService.js'
 
 // noinspection JSUnusedGlobalSymbols
 /**
