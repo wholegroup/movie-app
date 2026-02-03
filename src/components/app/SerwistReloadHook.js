@@ -10,6 +10,7 @@ import { useEffect } from 'react'
  */
 function SerwistReloadHook () {
   useEffect(() => {
+    /** @type {import('@serwist/window').Serwist} */
     const serwist = window.serwist
     if (!serwist) {
       console.error('Serwist is not installed!' +
