@@ -4,10 +4,10 @@ import { SETTINGS_NAMES } from './StorageService.js'
 
 class SyncStore {
   /** @type {StorageService} */
-  storageService
+  #storageService
 
   /** @type {ApiService} */
-  apiService
+  #apiService
 
   /** @type {number} worker intervalId */
   workerIntervalId
@@ -27,32 +27,32 @@ class SyncStore {
   /** @type {boolean} Worker is in delayed mode. */
   isDelayed = false
 
-  /** @type {number} Timestamp when idDelayed set */
-  delayedDate = 0
+  /** @type {number|null} Timestamp when idDelayed set */
+  delayedDate = null
 
-  /** @type {number} Timestamp to catch any data changes after synchronization. */
-  changesHash = 0
+  /** @type {number|null} Timestamp to catch any data changes after synchronization. */
+  changesHash = null
 
-  /** @type {number} Movies last synchronization timestamp during active session. */
-  moviesSyncedTs = 0
+  /** @type {number|null} Movies last synchronization timestamp during active session. */
+  moviesSyncedTs = null
 
   /** @type {boolean} To force movie synchronization. */
   forceSynchronization = false
 
-  /** @type {string} updatedAt when movies updated last time (keeping in storage) during app lifetime. */
-  moviesUpdatedAt = ''
+  /** @type {string|null} updatedAt when movies updated last time (keeping in storage) during app lifetime. */
+  moviesUpdatedAt = null
 
-  /** @type {number} profileSyncedTs timestamp */
-  profileSyncedTs = 0
+  /** @type {number|null} profileSyncedTs timestamp */
+  profileSyncedTs = null
 
-  /** @type {string} profileUpdatedAt timestamp from storage */
-  profileUpdatedAt = ''
+  /** @type {string|null} profileUpdatedAt timestamp from storage */
+  profileUpdatedAt = null
 
-  /** @type {number} reset timestamp */
-  resetTs = 0
+  /** @type {number|null} reset timestamp */
+  resetTs = null
 
-  /** @type {number} purged timestamp */
-  purgedTs = 0
+  /** @type {number|null} purged timestamp */
+  purgedTs = null
 
   /**
    * Default constructor.
@@ -60,8 +60,8 @@ class SyncStore {
    * @param {ApiService} apiService
    */
   constructor (storageService, apiService) {
-    this.storageService = storageService
-    this.apiService = apiService
+    this.#storageService = storageService
+    this.#apiService = apiService
     makeObservable(this, {
       isInitialized: observable,
       setIsInitialized: action,
@@ -133,11 +133,11 @@ class SyncStore {
   }
 
   /**
-   * Calculate is new session started. It means no any synchronization finished.
+   * Calculate is a new session started. It means no any synchronization finished.
    * @returns {boolean}
    */
   get isSessionBeginning () {
-    return this.moviesSyncedTs === 0
+    return this.moviesSyncedTs === null
   }
 
   /**
@@ -153,6 +153,8 @@ class SyncStore {
    * @returns {number}
    */
   get nextMoviesSyncedDate () {
+    console.log('!!!!!!!', this.moviesSyncedTs, this.forceSynchronization)
+    console.log(this.nextCronDate(this.moviesSyncedTs, '0 */30 * * * *'))
     if (this.forceSynchronization) {
       return this.moviesSyncedTs
     }
@@ -239,10 +241,10 @@ class SyncStore {
    * @returns {Promise<void>}
    */
   async initializeStoreData () {
-    this.setMoviesUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT) || '')
-    this.setProfileUpdatedAt(await this.storageService.getSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT) || '')
-    this.setResetTs(await this.storageService.getSettings(SETTINGS_NAMES.RESET_TS) || 0)
-    this.setPurgedTs(await this.storageService.getSettings(SETTINGS_NAMES.PURGED_TS) || 0)
+    this.setMoviesUpdatedAt(await this.#storageService.getSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT) || '')
+    this.setProfileUpdatedAt(await this.#storageService.getSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT) || '')
+    this.setResetTs(await this.#storageService.getSettings(SETTINGS_NAMES.RESET_TS) || 0)
+    this.setPurgedTs(await this.#storageService.getSettings(SETTINGS_NAMES.PURGED_TS) || 0)
 
     // normalize resetTs, it has to be less than Date.now()
     if (this.resetTs && !(this.resetTs < Date.now())) {
@@ -364,21 +366,21 @@ class SyncStore {
         images,
         metadata,
         lastUpdatedAt
-      } = await this.apiService.loadMovies(this.moviesUpdatedAt)
+      } = await this.#apiService.loadMovies(this.moviesUpdatedAt)
       console.log('Got', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images,',
         metadata.length, 'metadata items')
       console.log('Movies updated at', lastUpdatedAt)
 
       // save in storage
-      await this.storageService.upsertMovies(movies)
-      await this.storageService.upsertVotes(votes)
-      await this.storageService.upsertImages(images)
-      await this.storageService.upsertMetadata(metadata)
+      await this.#storageService.upsertMovies(movies)
+      await this.#storageService.upsertVotes(votes)
+      await this.#storageService.upsertImages(images)
+      await this.#storageService.upsertMetadata(metadata)
 
       // update lastUpdatedAt if it's necessary
       if (this.moviesUpdatedAt !== lastUpdatedAt) {
         this.setMoviesUpdatedAt(lastUpdatedAt)
-        await this.storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, lastUpdatedAt)
+        await this.#storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, lastUpdatedAt)
       }
 
       this.setMoviesSyncedTs(Date.now())
@@ -425,10 +427,10 @@ class SyncStore {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)
 
       // calculate details to synchronize
-      const allDetails = await this.storageService.loadAllDetails()
+      const allDetails = await this.#storageService.loadAllDetails()
       const notSyncedDetails = allDetails.filter(({ syncedAt }) => !syncedAt)
 
-      const profileResponse = await this.apiService.loadProfile(notSyncedDetails, this.profileUpdatedAt)
+      const profileResponse = await this.#apiService.loadProfile(notSyncedDetails, this.profileUpdatedAt)
       if (profileResponse) {
         const { info } = profileResponse
         const userProfile = {
@@ -445,17 +447,17 @@ class SyncStore {
         console.log('Profile updated at', lastUpdatedAt)
 
         // save in storage
-        await this.storageService.upsertDetails(details)
+        await this.#storageService.upsertDetails(details)
 
         // update lastUpdatedAt if it's necessary
         if (this.profileUpdatedAt !== lastUpdatedAt) {
           this.setProfileUpdatedAt(lastUpdatedAt)
-          await this.storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, lastUpdatedAt)
+          await this.#storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, lastUpdatedAt)
         }
 
-        await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
+        await this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
       } else {
-        await this.storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
+        await this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
       }
 
       this.setProfileSyncedTs(Date.now())
@@ -502,13 +504,13 @@ class SyncStore {
       this.startWorkerStepExecution(WorkerStepEnum.RESET_POINT)
 
       this.setMoviesUpdatedAt('')
-      await this.storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, '')
+      await this.#storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, '')
 
       this.setProfileUpdatedAt('')
-      await this.storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, '')
+      await this.#storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, '')
 
       this.setResetTs(Date.now())
-      await this.storageService.setSettings(SETTINGS_NAMES.RESET_TS, this.resetTs)
+      await this.#storageService.setSettings(SETTINGS_NAMES.RESET_TS, this.resetTs)
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.RESET_POINT)
@@ -542,9 +544,9 @@ class SyncStore {
 
     try {
       this.startWorkerStepExecution(WorkerStepEnum.PURGE_MOVIES)
-      const purgedNumber = await this.storageService.purgeMovies()
+      const purgedNumber = await this.#storageService.purgeMovies()
       this.setPurgedTs(Date.now())
-      await this.storageService.setSettings(SETTINGS_NAMES.PURGED_TS, this.purgedTs)
+      await this.#storageService.setSettings(SETTINGS_NAMES.PURGED_TS, this.purgedTs)
       if (purgedNumber > 0) {
         console.log(purgedNumber + (purgedNumber > 1 ? ' movies are purged' : ' movie is purged'))
       }
