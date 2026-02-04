@@ -40,7 +40,7 @@ function MovieLoader () {
         }
       }
 
-      await movieStore.setRefreshTs(0)
+      movieStore.setRefreshTs(0)
       await movieStore.loadMovieBySlug(slug)
 
       setIsVisible(false)

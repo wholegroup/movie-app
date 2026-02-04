@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { CronExpressionParser } from 'cron-parser'
 import { SETTINGS_NAMES } from './StorageService.js'
 
@@ -9,25 +9,25 @@ class SyncStore {
   /** @type {ApiService} */
   #apiService
 
-  /** @type {number} worker intervalId */
+  /** @type {number} Worker interval ID. */
   workerIntervalId
 
   /** @type {WorkerStepEnum[]} */
   workerStepsExecuting = []
 
-  /** @type {boolean} isInitialized flag. */
+  /** @type {boolean} Initialized flag. */
   isInitialized = false
 
-  /** @type {boolean} isOnline flag.  */
+  /** @type {boolean} Online status flag.  */
   isOnline = false
 
-  /** @type {boolean} isBusy flag. */
+  /** @type {boolean} Busy flag. */
   isBusy = false
 
-  /** @type {boolean} Worker is in delayed mode. */
+  /** @type {boolean} Indicates whether the worker is in delayed mode. */
   isDelayed = false
 
-  /** @type {number|null} Timestamp when idDelayed set */
+  /** @type {number|null} Timestamp when isDelayed was set. */
   delayedDate = null
 
   /** @type {number|null} Timestamp to catch any data changes after synchronization. */
@@ -36,22 +36,22 @@ class SyncStore {
   /** @type {number|null} Movies last synchronization timestamp during active session. */
   moviesSyncedTs = null
 
-  /** @type {boolean} To force movie synchronization. */
+  /** @type {boolean} Forces movie synchronization. */
   forceSynchronization = false
 
-  /** @type {string|null} updatedAt when movies updated last time (keeping in storage) during app lifetime. */
+  /** @type {string|null} updatedAt when movies updated last time (kept during the app lifetime in storage). */
   moviesUpdatedAt = null
 
-  /** @type {number|null} profileSyncedTs timestamp */
+  /** @type {number|null} Profile synchronization timestamp. */
   profileSyncedTs = null
 
   /** @type {string|null} profileUpdatedAt timestamp from storage */
   profileUpdatedAt = null
 
-  /** @type {number|null} reset timestamp */
+  /** @type {number|null} Reset timestamp */
   resetTs = null
 
-  /** @type {number|null} purged timestamp */
+  /** @type {number|null} Purge timestamp. */
   purgedTs = null
 
   /**
@@ -62,54 +62,11 @@ class SyncStore {
   constructor (storageService, apiService) {
     this.#storageService = storageService
     this.#apiService = apiService
-    makeObservable(this, {
-      isInitialized: observable,
-      setIsInitialized: action,
-      isOnline: observable,
-      setIsOnline: action,
-      isBusy: observable,
-      setIsBusy: action,
-      changesHash: observable,
-      setChangesHash: action,
-      workerStepsExecuting: observable,
-      startWorkerStepExecution: action,
-      stopWorkerStepExecution: action,
-      isSynchronizing: computed,
-      isDelayed: observable,
-      delayedDate: observable,
-      setIsDelayed: action,
-      moviesSyncedTs: observable,
-      setMoviesSyncedTs: action,
-      forceSynchronization: observable,
-      setForceSynchronization: action,
-      nextMoviesSyncedDate: computed,
-      isSessionBeginning: computed,
-      moviesUpdatedAt: observable,
-      setMoviesUpdatedAt: action,
-      profileSyncedTs: observable,
-      setProfileSyncedTs: action,
-      profileUpdatedAt: observable,
-      setProfileUpdatedAt: action,
-      nextProfileUpdatingTs: computed,
-      purgedTs: observable,
-      setPurgedTs: action,
-      nextPurgingTs: computed,
-      resetTs: observable,
-      setResetTs: action,
-      nextResetTs: computed,
-      isSWInstalled: computed
-    })
+    makeAutoObservable(this)
   }
 
   /**
-   * Sets isInitialized flag.
-   */
-  setIsInitialized () {
-    this.isInitialized = true
-  }
-
-  /**
-   * Sets isOnline.
+   * Sets the isOnline flag.
    * @param {boolean} isOnline
    */
   setIsOnline (isOnline) {
@@ -117,23 +74,7 @@ class SyncStore {
   }
 
   /**
-   * Sets changesHash
-   * @param {number} changesHash
-   */
-  setChangesHash (changesHash) {
-    this.changesHash = changesHash
-  }
-
-  /**
-   * Sets syncDate
-   * @param {number} moviesSyncedTs
-   */
-  setMoviesSyncedTs (moviesSyncedTs) {
-    this.moviesSyncedTs = moviesSyncedTs
-  }
-
-  /**
-   * Calculate is a new session started. It means no any synchronization finished.
+   * Checks whether a new session has started (i.e., no synchronization has completed yet).
    * @returns {boolean}
    */
   get isSessionBeginning () {
@@ -141,34 +82,24 @@ class SyncStore {
   }
 
   /**
-   * Sets forceSynchronization flag.
-   * @param {boolean} forceSynchronization
-   */
-  setForceSynchronization (forceSynchronization) {
-    this.forceSynchronization = forceSynchronization
-  }
-
-  /**
-   * Calculates next syncDate.
+   * Calculates the next movies sync time.
    * @returns {number}
    */
   get nextMoviesSyncedDate () {
-    console.log('!!!!!!!', this.moviesSyncedTs, this.forceSynchronization)
-    console.log(this.nextCronDate(this.moviesSyncedTs, '0 */30 * * * *'))
     if (this.forceSynchronization) {
       return this.moviesSyncedTs
     }
 
     // every 30 minutes
-    return this.nextCronDate(this.moviesSyncedTs, '0 */30 * * * *')
+    return this.#nextCronDate(this.moviesSyncedTs, '0 */30 * * * *')
   }
 
   /**
-   * Calculates next cron date using schedule
+   * Calculates the next cron date using the provided schedule.
    * @param {number|null} from
    * @param {string} schedule
    */
-  nextCronDate (from, schedule) {
+  #nextCronDate (from, schedule) {
     if (!from) {
       return Date.now()
     }
@@ -180,15 +111,7 @@ class SyncStore {
   }
 
   /**
-   * Sets isBusy flag.
-   * @param {boolean} isBusy
-   */
-  setIsBusy (isBusy) {
-    this.isBusy = isBusy
-  }
-
-  /**
-   * Starts worker step execution flag.
+   * Marks a worker step as executing.
    * @param {WorkerStepEnum} step
    */
   startWorkerStepExecution (step) {
@@ -196,7 +119,7 @@ class SyncStore {
   }
 
   /**
-   * Stops worker step execution flag.
+   * Marks a worker step as no longer executing.
    * @param {WorkerStepEnum} step
    */
   stopWorkerStepExecution (step) {
@@ -204,58 +127,42 @@ class SyncStore {
   }
 
   /**
-   * Checks if synchronization is going on.
+   * Checks whether synchronization is currently in progress or has never been started yet.
    * @returns {boolean}
    */
   get isSynchronizing () {
-    return this.workerStepsExecuting.length > 0 || !this.moviesSyncedTs
+    return this.workerStepsExecuting.length > 0 || this.moviesSyncedTs === null
   }
 
   /**
-   * Sets isDelayed status.
+   * Enables/disables the worker delay flag.
    * @param {boolean} isDelayed
    */
-  setIsDelayed (isDelayed) {
+  delayWorker (isDelayed) {
     this.isDelayed = isDelayed
     this.delayedDate = isDelayed ? Date.now() : 0
   }
 
   /**
-   * Sets moviesUpdatedAt.
-   * @param {string} moviesUpdatedAt
-   */
-  setMoviesUpdatedAt (moviesUpdatedAt) {
-    this.moviesUpdatedAt = moviesUpdatedAt
-  }
-
-  /**
-   * Sets profileUpdatedAt.
-   * @param {string} profileUpdatedAt
-   */
-  setProfileUpdatedAt (profileUpdatedAt) {
-    this.profileUpdatedAt = profileUpdatedAt
-  }
-
-  /**
-   * Initializes store data from storage.
+   * Initializes the store state from storage.
    * @returns {Promise<void>}
    */
-  async initializeStoreData () {
-    this.setMoviesUpdatedAt(await this.#storageService.getSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT) || '')
-    this.setProfileUpdatedAt(await this.#storageService.getSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT) || '')
-    this.setResetTs(await this.#storageService.getSettings(SETTINGS_NAMES.RESET_TS) || 0)
-    this.setPurgedTs(await this.#storageService.getSettings(SETTINGS_NAMES.PURGED_TS) || 0)
+  * initializeStoreData () {
+    this.moviesUpdatedAt = yield this.#storageService.getSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT) || null
+    this.profileUpdatedAt = yield this.#storageService.getSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT) || null
+    this.resetTs = yield this.#storageService.getSettings(SETTINGS_NAMES.RESET_TS) || null
+    this.purgedTs = yield this.#storageService.getSettings(SETTINGS_NAMES.PURGED_TS) || null
 
-    // normalize resetTs, it has to be less than Date.now()
+    // to normalize resetTs, it has to be less than Date.now()
     if (this.resetTs && !(this.resetTs < Date.now())) {
       console.log('Normalizing reset timestamp!')
-      this.setResetTs(0)
+      this.resetTs = null
     }
 
-    // normalize purgedTs, it has to be less than Date.now()
+    // to normalize purgedTs, it has to be less than Date.now()
     if (this.purgedTs && !(this.purgedTs < Date.now())) {
       console.log('Normalizing purged timestamp!')
-      this.setPurgedTs(0)
+      this.purgedTs = null
     }
   }
 
@@ -263,128 +170,130 @@ class SyncStore {
    * Async makeReady
    * @returns {Promise<void>}
    */
-  async makeReadyAsync () {
+  * makeReadyAsync () {
     if (this.isInitialized) {
       throw new Error('Already initialized')
     }
 
-    await this.initializeStoreData()
-    this.setIsInitialized()
+    yield this.initializeStoreData()
+    this.isInitialized = true
 
+    // run the worker every second (1_000 ms).
     this.workerIntervalId = setInterval(() => {
       this.runWorker()
         .catch(console.error)
-    }, 1000)
+    }, 1_000)
   }
 
   /**
-   * Disposes store.
+   * Disposes the store.
    * @returns {Promise<void>}
    */
-  async disposeAsync () {
+  * disposeAsync () {
     clearInterval(this.workerIntervalId)
+    yield
   }
 
   /**
-   * Worker.
+   * Runs the worker.
    * @returns {Promise<void>}
    */
-  async runWorker () {
+  * runWorker () {
     if (!this.isInitialized || !this.isOnline || this.isBusy) {
-      return
+      return yield
     }
 
-    // check if worker has delayed flag and reset the flag after sometime (60 sec)
+    // Check whether the worker is delayed and reset the delay after 60 seconds.
     if (this.isDelayed) {
       if (Date.now() < (this.delayedDate + 60 * 1000)) {
-        return
+        return yield
       }
-      this.setIsDelayed(false)
+      this.delayWorker(false)
     }
 
     try {
-      this.setIsBusy(true)
-      const dataChanged = await this.doWorkerStep()
+      this.isBusy = true
+      const dataChanged = yield this.doWorkerStep()
       if (dataChanged) {
-        this.setChangesHash(Date.now())
+        this.changesHash = Date.now()
       }
-    } catch ($ex) {
-      console.log($ex)
+    } catch (ex) {
+      console.log(ex)
       console.log('Worker has been delayed for 60 seconds because of an error.')
-      this.setIsDelayed(true)
+      this.delayWorker(true)
     } finally {
-      this.setIsBusy(false)
+      this.isBusy = false
     }
   }
 
   /**
-   * Does sync step.
+   * Executes a single sync step.
    * @returns {Promise<boolean>}
    */
-  async doWorkerStep () {
+  * doWorkerStep () {
     if (Date.now() >= this.nextResetTs) {
-      return await this.resetPoint()
+      return yield this.resetPoint()
     }
 
     if (Date.now() >= this.nextProfileUpdatingTs) {
-      return await this.synchronizeProfile()
+      return yield this.synchronizeProfile()
     }
 
     if (Date.now() >= this.nextMoviesSyncedDate) {
-      return await this.synchronizeMovies()
+      return yield this.synchronizeMovies()
     }
 
     if (Date.now() >= this.nextPurgingTs) {
-      return await this.purgeMovies()
+      return yield this.purgeMovies()
     }
 
-    return false
+    return yield false
   }
 
   /**
-   * Schedules synchronizing movies.
+   * Schedules movie synchronization.
    */
   scheduleSynchronizingMovies () {
-    this.setForceSynchronization(true)
+    this.forceSynchronization = true
   }
 
   /**
    * Synchronizes movies.
    * @returns {Promise<boolean>}
    */
-  async synchronizeMovies () {
+  * synchronizeMovies () {
     const tm = 'Synchronizing movies...'
     console.time(tm)
 
     try {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
 
-      // load movies
+      // Load movies
       const {
         movies,
         votes,
         images,
         metadata,
         lastUpdatedAt
-      } = await this.#apiService.loadMovies(this.moviesUpdatedAt)
+      } = yield this.#apiService.loadMovies(this.moviesUpdatedAt)
       console.log('Got', movies.length, 'movies,', votes.length, 'votes,', images.length, 'images,',
         metadata.length, 'metadata items')
       console.log('Movies updated at', lastUpdatedAt)
 
-      // save in storage
-      await this.#storageService.upsertMovies(movies)
-      await this.#storageService.upsertVotes(votes)
-      await this.#storageService.upsertImages(images)
-      await this.#storageService.upsertMetadata(metadata)
+      // Save to storage
+      yield this.#storageService.upsertMovies(movies)
+      yield this.#storageService.upsertVotes(votes)
+      yield this.#storageService.upsertImages(images)
+      yield this.#storageService.upsertMetadata(metadata)
 
-      // update lastUpdatedAt if it's necessary
+      // Update lastUpdatedAt if necessary
       if (this.moviesUpdatedAt !== lastUpdatedAt) {
-        this.setMoviesUpdatedAt(lastUpdatedAt)
-        await this.#storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, lastUpdatedAt)
+        this.moviesUpdatedAt = lastUpdatedAt
+        yield this.#storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, lastUpdatedAt)
       }
 
-      this.setMoviesSyncedTs(Date.now())
-      this.setForceSynchronization(false)
+      this.moviesSyncedTs = Date.now()
+      this.forceSynchronization = false // reset the force synchronization flag (just in case).
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_MOVIES)
@@ -392,45 +301,37 @@ class SyncStore {
   }
 
   /**
-   * Calculates next syncDate.
+   * Calculates the next profile sync time.
    * @returns {number}
    */
   get nextProfileUpdatingTs () {
-    // every hour at 15m:00s
-    return this.nextCronDate(this.profileSyncedTs, '0 15 * * * *')
+    // Every hour at 15m:00s
+    return this.#nextCronDate(this.profileSyncedTs, '0 15 * * * *')
   }
 
   /**
-   * Sets profileSyncedTs.
-   * @param {number} profileSyncedTs
-   */
-  setProfileSyncedTs (profileSyncedTs) {
-    this.profileSyncedTs = profileSyncedTs
-  }
-
-  /**
-   * Schedules updating profile.
+   * Schedules profile synchronization.
    */
   scheduleSynchronizingProfile () {
-    this.setProfileSyncedTs(0)
+    this.profileSyncedTs = 0
   }
 
   /**
-   * Synchronizes user profile.
+   * Synchronizes the user profile.
    * @returns {Promise<boolean>}
    */
-  async synchronizeProfile () {
+  * synchronizeProfile () {
     const tm = 'Synchronizing profile...'
     console.time(tm)
 
     try {
       this.startWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)
 
-      // calculate details to synchronize
-      const allDetails = await this.#storageService.loadAllDetails()
+      // Calculate details to synchronize
+      const allDetails = yield this.#storageService.loadAllDetails()
       const notSyncedDetails = allDetails.filter(({ syncedAt }) => !syncedAt)
 
-      const profileResponse = await this.#apiService.loadProfile(notSyncedDetails, this.profileUpdatedAt)
+      const profileResponse = yield this.#apiService.loadProfile(notSyncedDetails, this.profileUpdatedAt)
       if (profileResponse) {
         const { info } = profileResponse
         const userProfile = {
@@ -441,26 +342,26 @@ class SyncStore {
           picture: info.user.picture
         }
 
-        // load details
+        // Load details
         const { details, lastUpdatedAt } = profileResponse
         console.log('Got', details.length, 'details')
         console.log('Profile updated at', lastUpdatedAt)
 
-        // save in storage
-        await this.#storageService.upsertDetails(details)
+        // Save in storage
+        yield this.#storageService.upsertDetails(details)
 
-        // update lastUpdatedAt if it's necessary
+        // Update lastUpdatedAt if necessary
         if (this.profileUpdatedAt !== lastUpdatedAt) {
-          this.setProfileUpdatedAt(lastUpdatedAt)
-          await this.#storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, lastUpdatedAt)
+          this.profileUpdatedAt = lastUpdatedAt
+          yield this.#storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, lastUpdatedAt)
         }
 
-        await this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
+        yield this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
       } else {
-        await this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
+        yield this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
       }
 
-      this.setProfileSyncedTs(Date.now())
+      this.profileSyncedTs = Date.now()
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)
@@ -468,16 +369,16 @@ class SyncStore {
   }
 
   /**
-   * Calculates next resetTs.
+   * Calculates the next reset time.
    * @returns {number}
    */
   get nextResetTs () {
-    // once a month
-    return this.nextCronDate(this.resetTs, '0 0 0 1 * *')
+    // Once a month
+    return this.#nextCronDate(this.resetTs, '0 0 0 1 * *')
   }
 
   /**
-   * Check if SW installed (resetTs is defined)
+   * Check whether the SW is installed (resetTs is defined)
    * @returns {boolean}
    */
   get isSWInstalled () {
@@ -485,32 +386,24 @@ class SyncStore {
   }
 
   /**
-   * Sets resetTs.
-   * @param {number} resetTs
-   */
-  setResetTs (resetTs) {
-    this.resetTs = resetTs
-  }
-
-  /**
-   * Reset starting point.
+   * Reset the starting point.
    * @returns {Promise<boolean>}
    */
-  async resetPoint () {
-    const tm = 'Reset starting point...'
+  * resetPoint () {
+    const tm = 'Reset the starting point...'
     console.time(tm)
 
     try {
       this.startWorkerStepExecution(WorkerStepEnum.RESET_POINT)
 
-      this.setMoviesUpdatedAt('')
-      await this.#storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, '')
+      this.moviesUpdatedAt = null
+      yield this.#storageService.setSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT, '')
 
-      this.setProfileUpdatedAt('')
-      await this.#storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, '')
+      this.profileUpdatedAt = null
+      yield this.#storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, '')
 
-      this.setResetTs(Date.now())
-      await this.#storageService.setSettings(SETTINGS_NAMES.RESET_TS, this.resetTs)
+      this.resetTs = Date.now()
+      yield this.#storageService.setSettings(SETTINGS_NAMES.RESET_TS, this.resetTs)
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.RESET_POINT)
@@ -518,39 +411,31 @@ class SyncStore {
   }
 
   /**
-   * Calculates next purgingTs.
+   * Calculates the next purge time.
    * @returns {number}
    */
   get nextPurgingTs () {
-    // once a week
-    return this.nextCronDate(this.purgedTs, '0 0 0 */7 * *')
+    // Once a week
+    return this.#nextCronDate(this.purgedTs, '0 0 0 */7 * *')
   }
 
   /**
-   * Sets purgedTs.
-   * @param {number} purgedTs
-   */
-  setPurgedTs (purgedTs) {
-    this.purgedTs = purgedTs
-  }
-
-  /**
-   * Purging movies.
+   * Purges movies.
    * @returns {Promise<boolean>}
    */
-  async purgeMovies () {
+  * purgeMovies () {
     const tm = 'Purging movies...'
     console.time(tm)
 
     try {
       this.startWorkerStepExecution(WorkerStepEnum.PURGE_MOVIES)
-      const purgedNumber = await this.#storageService.purgeMovies()
-      this.setPurgedTs(Date.now())
-      await this.#storageService.setSettings(SETTINGS_NAMES.PURGED_TS, this.purgedTs)
+      const purgedNumber = yield this.#storageService.purgeMovies()
+      this.purgedTs = Date.now()
+      yield this.#storageService.setSettings(SETTINGS_NAMES.PURGED_TS, this.purgedTs)
       if (purgedNumber > 0) {
         console.log(purgedNumber + (purgedNumber > 1 ? ' movies are purged' : ' movie is purged'))
       }
-      return purgedNumber > 0
+      return yield purgedNumber > 0
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.PURGE_MOVIES)
