@@ -22,6 +22,9 @@ class MovieStore {
   /** @type {number} TS/trigger to refresh data after some changes. */
   refreshTs = 0
 
+  /** @type {boolean} Indicates whether the data was populated on the server (backend). */
+  byBackend = false
+
   /**
    * Default constructor.
    * @param {StorageService} storageService

@@ -51,8 +51,9 @@ export const getServerSideProps = async function ({ query, res }) {
         movieStore: {
           movie,
           votes: await syncService.findVotesByMovieId(movie.movieId),
-          images: await syncService.findImagesByMovieId(movie.movieId)
-        }
+          images: await syncService.findImagesByMovieId(movie.movieId),
+          byBackend: true
+        },
       }
     }
   } finally {
