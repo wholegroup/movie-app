@@ -3,6 +3,9 @@ import { CronExpressionParser } from 'cron-parser'
 import { SETTINGS_NAMES } from './StorageService.js'
 
 class SyncStore {
+  /** @type {CommonService} */
+  #commonService
+
   /** @type {StorageService} */
   #storageService
 
@@ -56,10 +59,12 @@ class SyncStore {
 
   /**
    * Default constructor.
+   * @param {CommonService} commonService
    * @param {StorageService} storageService
    * @param {ApiService} apiService
    */
-  constructor (storageService, apiService) {
+  constructor (commonService, storageService, apiService) {
+    this.#commonService = commonService
     this.#storageService = storageService
     this.#apiService = apiService
     makeAutoObservable(this)
@@ -330,36 +335,38 @@ class SyncStore {
       // Calculate details to synchronize
       const allDetails = yield this.#storageService.loadAllDetails()
       const notSyncedDetails = allDetails.filter(({ syncedAt }) => !syncedAt)
+      const pushSubscription = yield this.#commonService.findPushSubscription()
 
-      const profileResponse = yield this.#apiService.loadProfile(notSyncedDetails, this.profileUpdatedAt)
-      if (profileResponse) {
-        const { info } = profileResponse
-        const userProfile = {
-          id: info.id,
-          isAdmin: info.isAdmin,
-          email: info.user.email,
-          name: info.user.name,
-          picture: info.user.picture
-        }
+      const profileResponse = yield this.#apiService.loadProfile(notSyncedDetails, pushSubscription?.endpoint, this.profileUpdatedAt)
 
-        // Load details
-        const { details, lastUpdatedAt } = profileResponse
+      // Process user details
+      const { details = null } = profileResponse
+      if (details) {
         console.log('Got', details.length, 'details')
-        console.log('Profile updated at', lastUpdatedAt)
-
-        // Save in storage
         yield this.#storageService.upsertDetails(details)
+      }
 
-        // Update lastUpdatedAt if necessary
+      // Update lastUpdatedAt if necessary
+      const { lastUpdatedAt = null } = profileResponse
+      if (lastUpdatedAt) {
+        console.log('Profile updated at', lastUpdatedAt)
         if (this.profileUpdatedAt !== lastUpdatedAt) {
           this.profileUpdatedAt = lastUpdatedAt
           yield this.#storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, lastUpdatedAt)
         }
-
-        yield this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
-      } else {
-        yield this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, null)
       }
+
+      // User info.
+      const { info } = profileResponse
+      const userProfile = Object.fromEntries(Object.entries({
+        id: info.id,
+        isAdmin: info.isAdmin,
+        email: info.user?.email,
+        name: info.user?.name,
+        picture: info.user?.picture,
+        notification: info.notification
+      }).filter(([, v]) => v !== undefined))
+      yield this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, userProfile)
 
       this.profileSyncedTs = Date.now()
     } finally {
