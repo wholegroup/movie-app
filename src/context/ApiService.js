@@ -70,10 +70,11 @@ class ApiService {
   /**
    * Loads user profile.
    * @param {TDetailsItem[]} notSyncedDetails
+   * @param {string|null} pushEndpoint
    * @param {string} lastUpdatedAt
    * @returns {Promise<?TProfileResponse>}
    */
-  async loadProfile (notSyncedDetails, lastUpdatedAt = '') {
+  async loadProfile (notSyncedDetails, pushEndpoint, lastUpdatedAt = '') {
     try {
       const response = await this.apiFetch('/api/sync/profile', {
         method: 'POST',
@@ -82,6 +83,7 @@ class ApiService {
         },
         body: JSON.stringify({
           details: notSyncedDetails,
+          pushEndpoint,
           lastUpdatedAt
         })
       })
