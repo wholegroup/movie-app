@@ -378,14 +378,6 @@ class SyncStore {
   }
 
   /**
-   * Check whether the SW is installed (resetTs is defined)
-   * @returns {boolean}
-   */
-  get isSWInstalled () {
-    return !!this.resetTs
-  }
-
-  /**
    * Reset the starting point.
    * @returns {Promise<boolean>}
    */
