@@ -4,6 +4,7 @@ import SyncBackendService from '@/lib/SyncBackendService.js'
 export default async function handler (req, res) {
   const syncService = new SyncBackendService(process.env.MOVIE_APP_USERS_DB)
   try {
+    await syncService.open({ runMigration: true })
     await populateProfile(req, res, syncService)
   } finally {
     if (syncService.isOpen()) {
@@ -19,21 +20,26 @@ export default async function handler (req, res) {
  * @returns {Promise<void>}
  */
 async function populateProfile (req, res, syncService) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', ['POST'])
+    res.status(405).end(() => `Method ${req.method} Not Allowed`)
+    return
+  }
+
+  // Check whether the user is subscribed to push notifications.
+  const pushEndpoint = req.body?.pushEndpoint
+  const subscription = pushEndpoint ? await syncService.findPushSubscription(pushEndpoint) : null
+  const notification = !!subscription
+
+  // anonymous
   const { user } = await auth0.getSession(req) || { user: null }
   if (!user) {
     res.status(200).json({
       info: {
         id: null,
-        notification: false
+        notification
       },
     })
-    return
-  }
-
-  await syncService.open({ runMigration: true })
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST'])
-    res.status(405).end(`Method ${req.method} Not Allowed`)
     return
   }
 
@@ -64,7 +70,7 @@ async function populateProfile (req, res, syncService) {
     info: {
       id: user.sub,
       isAdmin: process.env.AUTH0_ADMIN_SUB?.length > 0 && user.sub === process.env.AUTH0_ADMIN_SUB,
-      notification: false,
+      notification,
       user,
     },
     details: details.map(nextDetails => ({ ...nextDetails, syncedAt: now })),
