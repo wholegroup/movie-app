@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import CommonService from './CommonService.js'
 import StorageService from './StorageService.js'
 import ApiService from './ApiService.js'
 import CommonStore from './CommonStore.js'
@@ -12,10 +13,11 @@ function GlobalContextProvider ({ children, ...pageProps }) {
   const commonContextRef = useRef(null)
   if (commonContextRef.current === null) {
     if (typeof window !== 'undefined') {
+      const commonService = new CommonService()
       const storageService = new StorageService()
       const apiService = new ApiService()
       const commonStore = new CommonStore(storageService)
-      const syncStore = new SyncStore(storageService, apiService)
+      const syncStore = new SyncStore(commonService, storageService, apiService)
       const notificationStore = new NotificationStore()
       const eventStore = new EventStore(syncStore)
       commonContextRef.current = {
