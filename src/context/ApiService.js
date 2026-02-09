@@ -97,6 +97,25 @@ class ApiService {
   }
 
   /**
+   * Posts new push subscription.
+   * @param {PushSubscriptionJSON} subscription
+   * @returns {Promise<void>}
+   */
+  async pushSubscribe (subscription) {
+    const response = await this.apiFetch('/api/push/subscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(subscription)
+    })
+
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+  }
+
+  /**
    * Generates preview url by hash.
    * @param {string} hash
    * @returns {string} url
