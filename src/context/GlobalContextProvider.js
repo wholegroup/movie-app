@@ -16,7 +16,7 @@ function GlobalContextProvider ({ children, ...pageProps }) {
       const commonService = new CommonService()
       const storageService = new StorageService()
       const apiService = new ApiService()
-      const commonStore = new CommonStore(storageService)
+      const commonStore = new CommonStore(storageService, apiService)
       const syncStore = new SyncStore(commonService, storageService, apiService)
       const notificationStore = new NotificationStore()
       const eventStore = new EventStore(syncStore)
@@ -31,7 +31,7 @@ function GlobalContextProvider ({ children, ...pageProps }) {
     } else {
       // server rendering
       commonContextRef.current = {
-        commonStore: Object.assign(new CommonStore(null), {
+        commonStore: Object.assign(new CommonStore(null, null), {
           isInitialized: true
         })
       }

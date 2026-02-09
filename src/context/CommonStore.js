@@ -1,9 +1,12 @@
-import { makeObservable, observable, action, computed } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { SETTINGS_NAMES } from './StorageService.js'
 
 class CommonStore {
   /** @type {StorageService} */
-  storageService
+  #storageService
+
+  /** @type {ApiService} */
+  #apiService
 
   /** @type {Promise<void>} */
   makeReadyIsCompleted = null
@@ -26,27 +29,12 @@ class CommonStore {
   /**
    * Default constructor.
    * @param {StorageService} storageService
+   * @param {ApiService} apiService
    */
-  constructor (storageService) {
-    this.storageService = storageService
-    makeObservable(this, {
-      isInitialized: observable,
-      setIsInitialized: action,
-      profile: observable,
-      setProfile: action,
-      isAuthenticated: computed,
-      confirmation: observable,
-      setConfirmation: action,
-      responseError: observable,
-      setResponseError: action
-    })
-  }
-
-  /**
-   * Sets isInitialized flag.
-   */
-  setIsInitialized () {
-    this.isInitialized = true
+  constructor (storageService, apiService) {
+    this.#storageService = storageService
+    this.#apiService = apiService
+    makeAutoObservable(this)
   }
 
   /**
@@ -75,19 +63,19 @@ class CommonStore {
    * @param {() => Promise<void>} additional
    * @returns {Promise<void>}
    */
-  async makeReadyAsync (additional) {
-    await additional()
-    await this.initializeStoreData()
+  * makeReadyAsync (additional) {
+    yield additional()
+    yield this.initializeStoreData()
 
-    this.setIsInitialized()
+    this.isInitialized = true
   }
 
   /**
    * Initializes store data from storage.
    * @returns {Promise<void>}
    */
-  async initializeStoreData () {
-    await this.updateProfile()
+  * initializeStoreData () {
+    yield this.updateProfile()
   }
 
   /**
@@ -95,33 +83,24 @@ class CommonStore {
    * @param {() => Promise<void>} additional
    * @returns {Promise<void>}
    */
-  async disposeAsync (additional) {
+  * disposeAsync (additional) {
     if (!this.makeReadyIsCompleted) {
       throw new Error('makeReady was not run')
     }
 
     // wait till makeReady is completed
     const timeoutPromise = new Promise((resolve, reject) => setTimeout(reject, 5000))
-    await Promise.race([this.makeReadyIsCompleted, timeoutPromise])
+    yield Promise.race([this.makeReadyIsCompleted, timeoutPromise])
 
-    await additional()
-  }
-
-  /**
-   * Sets user profile.
-   * @param {Partial<TUserProfile>} profile
-   */
-  setProfile (profile) {
-    // Set an empty object to indicate that the current user is anonymous,
-    // while a null profile means we haven't checked the current user yet.
-    this.profile = profile || { id: null }
+    yield additional()
   }
 
   /**
    * Updates user profile.
    */
-  async updateProfile () {
-    this.setProfile(await this.storageService.getSettings(SETTINGS_NAMES.USER_PROFILE))
+  * updateProfile () {
+    const profile = yield this.#storageService.getSettings(SETTINGS_NAMES.USER_PROFILE)
+    this.profile = profile || { id: null }
   }
 
   /**
@@ -129,14 +108,6 @@ class CommonStore {
    */
   get isAuthenticated () {
     return !!this.profile?.id
-  }
-
-  /**
-   * Sets confirmation.
-   * @param {object} confirmation
-   */
-  setConfirmation (confirmation) {
-    this.confirmation = confirmation
   }
 
   /**
@@ -149,7 +120,7 @@ class CommonStore {
       throw new Error('Already open')
     }
 
-    this.setConfirmation(Object.assign({
+    this.confirmation = Object.assign({
       isOpen: true,
       header: 'Please confirm',
       message: 'Are you sure?',
@@ -164,14 +135,14 @@ class CommonStore {
           onClick: onYes
         }
       ]
-    }, opts))
+    }, opts)
   }
 
   /**
    * Closes confirm dialog.
    */
   closeConfirmation () {
-    this.setConfirmation({})
+    this.confirmation = {}
   }
 
   /**
@@ -180,6 +151,15 @@ class CommonStore {
    */
   setResponseError (responseError = null) {
     this.responseError = responseError
+  }
+
+  /**
+   * Subscribes to news.
+   * @param {PushSubscriptionJSON} subscription
+   * @returns {Promise<void>}
+   */
+  * subscribeNews (subscription) {
+    yield this.#apiService.pushSubscribe(subscription)
   }
 }
 
