@@ -1,5 +1,4 @@
 import { action, computed, makeObservable, observable } from 'mobx'
-import { v4 as uuid } from 'uuid'
 
 /**
  * @typedef TNotificationDraft
@@ -62,7 +61,7 @@ class NotificationStore {
    * @param {TNotificationDraft} draft
    */
   enqueue (draft) {
-    const id = uuid()
+    const id = crypto.randomUUID()
     const timeoutId = setTimeout(() => this.dequeue(id), 4000)
     this.setNotifications([
       ...this.notifications,
