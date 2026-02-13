@@ -25,6 +25,9 @@ class ApiService {
     const response = await window.fetch(`${apiHost}${resource}`, {
       ...options,
       headers: {
+        ...{
+          'Content-Type': 'application/json'
+        },
         ...(options.headers || {}),
         ...(authToken ? { Authorization: `Bearer ${authToken}` } : {})
       },
@@ -56,9 +59,6 @@ class ApiService {
   async loadMovies (lastUpdatedAt = '') {
     const response = await this.apiFetch('/api/sync/movies', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify({
         lastUpdatedAt
       })
@@ -78,9 +78,6 @@ class ApiService {
     try {
       const response = await this.apiFetch('/api/sync/profile', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify({
           details: notSyncedDetails,
           pushEndpoint,
@@ -104,9 +101,6 @@ class ApiService {
   async pushSubscribe (subscription) {
     const response = await this.apiFetch('/api/push/subscribe', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(subscription)
     })
 
@@ -123,9 +117,6 @@ class ApiService {
   async pushUnsubscribe (endpoint) {
     const response = await this.apiFetch('/api/push/unsubscribe', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(endpoint)
     })
 
