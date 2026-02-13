@@ -3,6 +3,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
-    }
-  }
+    },
+    "types": ["vitest","vitest/globals"],
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["src/**/*.js"]
 }
