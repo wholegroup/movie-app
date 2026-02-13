@@ -116,6 +116,25 @@ class ApiService {
   }
 
   /**
+   * Unsubscribes from push notifications by endpoint.
+   * @param {string} endpoint
+   * @returns {Promise<void>}
+   */
+  async pushUnsubscribe (endpoint) {
+    const response = await this.apiFetch('/api/push/unsubscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(endpoint)
+    })
+
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+  }
+
+  /**
    * Generates preview url by hash.
    * @param {string} hash
    * @returns {string} url
