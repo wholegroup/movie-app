@@ -35,7 +35,7 @@ class CommonService {
       case 'bigint':
       case 'function':
       case 'symbol':
-        throw new TypeError(`stableStringify: unsupported type: ${t}`)
+        throw new TypeError(`stableStringify: unsupported type: ${typeof value}`)
     }
 
     // Array
