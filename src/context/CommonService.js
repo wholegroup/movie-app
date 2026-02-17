@@ -74,6 +74,18 @@ class CommonService {
 
     return '{' + parts.join(',') + '}'
   }
+
+  /**
+   *
+   * @param {PushSubscriptionJSON} subscription
+   * @returns {Promise<string>}
+   */
+  async pushHash (subscription) {
+    if (!subscription) {
+      throw new Error('Subscription is not defined.')
+    }
+    return await this.hash(this.stableStringify(subscription))
+  }
 }
 
 export default CommonService
