@@ -25,7 +25,11 @@ async function unsubscribe (req, res, syncService) {
     return
   }
 
-  await syncService.removePush(req.body)
+  try {
+    await syncService.removePush(req.body)
+  } catch (ex) {
+    console.error('Failed to unsubscribe: ' + ex.message + '.')
+  }
 
   res.status(200).send('Ok')
 }
