@@ -403,7 +403,7 @@ class SyncStore {
       }
 
       // Nothing to update.
-      const currentHush = this.#commonService.stableStringify(pushSubscription)
+      const currentHush = yield this.#commonService.pushHash(pushSubscription)
       if (pushSubscription.endpoint === pushEndpoint && currentHush === pushHash) {
         return yield
       }
