@@ -241,6 +241,7 @@ class SyncStore {
     }
 
     if (Date.now() >= this.nextProfileUpdatingTs) {
+      yield this.validateSubscription()
       return yield this.synchronizeProfile()
     }
 
@@ -335,9 +336,10 @@ class SyncStore {
       // Calculate details to synchronize
       const allDetails = yield this.#storageService.loadAllDetails()
       const notSyncedDetails = allDetails.filter(({ syncedAt }) => !syncedAt)
-      const pushSubscription = yield this.#commonService.findPushSubscription()
 
-      const profileResponse = yield this.#apiService.loadProfile(notSyncedDetails, pushSubscription?.endpoint, this.profileUpdatedAt)
+      // Load profile
+      const pushEndpoint = yield this.#storageService.getSettings(SETTINGS_NAMES.PUSH_ENDPOINT)
+      const profileResponse = yield this.#apiService.loadProfile(notSyncedDetails, pushEndpoint, this.profileUpdatedAt)
 
       // Process user details
       const { details = null } = profileResponse
@@ -372,6 +374,47 @@ class SyncStore {
     } finally {
       console.timeEnd(tm)
       this.stopWorkerStepExecution(WorkerStepEnum.SYNCHRONIZE_PROFILE)
+    }
+  }
+
+  /**
+   * Validates push subscription.
+   * @returns {Promise<void>}
+   */
+  * validateSubscription () {
+    const tm = 'Validating subscription...'
+    console.time(tm)
+
+    try {
+      this.startWorkerStepExecution(WorkerStepEnum.VALIDATE_PUSH)
+
+      const pushSubscription = yield this.#commonService.findPushSubscription()
+      const pushEndpoint = yield this.#storageService.getSettings(SETTINGS_NAMES.PUSH_ENDPOINT)
+      const pushHash = yield this.#storageService.getSettings(SETTINGS_NAMES.PUSH_HASH)
+
+      if (!pushSubscription) {
+        // Remove the push subscription on the server.
+        if (pushEndpoint || pushHash) {
+          yield this.#storageService.setSettings(SETTINGS_NAMES.PUSH_ENDPOINT, null)
+          yield this.#storageService.setSettings(SETTINGS_NAMES.PUSH_HASH, null)
+          yield this.#apiService.pushUnsubscribe(pushEndpoint)
+        }
+        return yield
+      }
+
+      // Nothing to update.
+      const currentHush = this.#commonService.stableStringify(pushSubscription)
+      if (pushSubscription.endpoint === pushEndpoint && currentHush === pushHash) {
+        return yield
+      }
+
+      // Subscribe or update current subscription.
+      yield this.#apiService.pushSubscribe(pushSubscription)
+      yield this.#storageService.setSettings(SETTINGS_NAMES.PUSH_ENDPOINT, pushSubscription.endpoint)
+      yield this.#storageService.setSettings(SETTINGS_NAMES.PUSH_HASH, currentHush)
+    } finally {
+      console.timeEnd(tm)
+      this.stopWorkerStepExecution(WorkerStepEnum.VALIDATE_PUSH)
     }
   }
 
@@ -449,7 +492,8 @@ const WorkerStepEnum = Object.freeze({
   RESET_POINT: 'RESET_POINT',
   PURGE_MOVIES: 'PURGE_MOVIES',
   SYNCHRONIZE_MOVIES: 'SYNCHRONIZE_MOVIES',
-  SYNCHRONIZE_PROFILE: 'SYNCHRONIZE_PROFILE'
+  SYNCHRONIZE_PROFILE: 'SYNCHRONIZE_PROFILE',
+  VALIDATE_PUSH: 'VALIDATE_PUSH'
 })
 
 export default SyncStore
