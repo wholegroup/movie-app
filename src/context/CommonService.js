@@ -13,6 +13,18 @@ class CommonService {
   }
 
   /**
+   * Calculate SHA-1 hash.
+   * @param {string} value
+   * @returns {Promise<string>}
+   */
+  async hash (value) {
+    const data = new TextEncoder().encode(value)
+    const buf = await crypto.subtle.digest('SHA-1', data)
+    const bytes = new Uint8Array(buf)
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
+  }
+
+  /**
    * Stable JSON stringify.
    * @param {*} value
    * @returns {string|undefined}
