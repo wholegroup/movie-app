@@ -333,6 +333,7 @@ class StorageService {
  * @property {string} [name]
  * @property {string} [picture]
  * @property {boolean} [isAdmin]
+ * @property {boolean} [notification]
  */
 
 /**
