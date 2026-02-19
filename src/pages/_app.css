@@ -5,3 +5,52 @@
 html, body {
     overscroll-behavior: none;
 }
+
+:root {
+    --btn-bg: var(--toolbar-bg-color);
+    --btn-bg-hover: #00a8e6;
+    --btn-text: #34487c;
+    --btn-border: transparent;
+    --btn-radius: 3px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--btn-border);
+    border-radius: var(--btn-radius);
+
+    background: var(--btn-bg);
+    color: var(--btn-text);
+
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+.btn:hover {
+    background: var(--btn-bg-hover);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:focus-visible {
+    outline: 2px solid rgba(0, 191, 255, 0.45);
+    outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
