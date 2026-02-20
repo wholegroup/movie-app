@@ -105,6 +105,16 @@ class CommonStore {
   }
 
   /**
+   * Updates the user profile and saves it to storage.
+   * @param {Partial<TUserProfile>} profile
+   * @returns {Promise<void>}
+   */
+  * updateProfile (profile) {
+    this.profile = { ...this.profile, ...profile }
+    yield this.#storageService.setSettings(SETTINGS_NAMES.USER_PROFILE, { ...this.profile })
+  }
+
+  /**
    * @returns {boolean} Returns true if user is authenticated.
    */
   get isAuthenticated () {
@@ -161,7 +171,7 @@ class CommonStore {
    */
   * subscribeNews (subscription) {
     yield this.#commonService.subscribeNews(subscription)
-    this.profile = { ...this.profile, notification: true }
+    yield this.updateProfile({ notification: true })
   }
 
   /**
@@ -171,7 +181,7 @@ class CommonStore {
    */
   * unsubscribeNews (endpoint) {
     yield this.#commonService.unsubscribeNews(endpoint)
-    this.profile = { ...this.profile, notification: false }
+    yield this.updateProfile({ notification: false })
   }
 }
 
