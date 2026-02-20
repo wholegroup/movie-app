@@ -86,6 +86,95 @@ class CommonService {
     }
     return await this.hash(this.stableStringify(subscription))
   }
+
+  /**
+   * Converts a URL-safe Base64 string into a Uint8Array.
+   * @param {string} base64url
+   * @return {Uint8Array}
+   */
+  urlBase64ToUint8Array (base64url) {
+    const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=')
+    const binary = atob(padded)
+    return Uint8Array.from(binary, c => c.charCodeAt(0))
+  }
+
+  /**
+   * Asserts that the current environment supports Web Push functionality.
+   * Throws an error if the required APIs or features are not available.
+   */
+  assertWebPushSupport () {
+    if (typeof window === 'undefined') {
+      throw new Error('Client only')
+    }
+
+    if (!('serviceWorker' in navigator)) {
+      throw new Error('Service Worker not supported')
+    }
+
+    if (!('PushManager' in window)) {
+      throw new Error('Push not supported')
+    }
+
+    if (!('Notification' in window)) {
+      throw new Error('Notifications not supported')
+    }
+  }
+
+  /**
+   * Subscribes the user to web push notifications or returns the existing subscription.
+   * @returns {Promise<PushSubscriptionJSON>}
+   */
+  async subscribeWebPush () {
+    this.assertWebPushSupport()
+
+    const permission = await Notification.requestPermission()
+    if (permission !== 'granted') {
+      throw new Error('Notification permission not granted')
+    }
+
+    const reg = await navigator.serviceWorker?.getRegistration()
+    if (!reg) {
+      throw new Error('Service Worker not registered')
+    }
+
+    const activeSubscription = await reg.pushManager.getSubscription()
+    if (activeSubscription) {
+      return activeSubscription.toJSON()
+    }
+
+    const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+    if (!publicKey) {
+      throw new Error('Missing NEXT_PUBLIC_VAPID_PUBLIC_KEY')
+    }
+
+    const newSubscription = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: this.urlBase64ToUint8Array(publicKey)
+    })
+
+    return newSubscription.toJSON()
+  }
+
+  /**
+   * Unsubscribes the user from web push notifications.
+   * @returns {Promise<boolean>}
+   */
+  async unsubscribeWebPush () {
+    this.assertWebPushSupport()
+
+    const reg = await navigator.serviceWorker?.getRegistration()
+    if (!reg) {
+      throw new Error('Service Worker not registered')
+    }
+
+    const activeSubscription = await reg.pushManager.getSubscription()
+    if (!activeSubscription) {
+      return false
+    }
+
+    return activeSubscription.unsubscribe()
+  }
 }
 
 export default CommonService
