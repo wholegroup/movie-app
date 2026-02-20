@@ -23,6 +23,7 @@ function GlobalContextProvider ({ children, ...pageProps }) {
       commonContextRef.current = {
         storageService,
         apiService,
+        commonService,
         syncStore,
         commonStore,
         notificationStore,

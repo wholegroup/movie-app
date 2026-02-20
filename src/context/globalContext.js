@@ -4,6 +4,7 @@ import React from 'react'
  * @typedef TGlobalContext
  * @property {StorageService=} storageService
  * @property {ApiService=} apiService
+ * @property {CommonService=} commonService
  * @property {CommonStore=} commonStore
  * @property {SyncStore=} syncStore
  * @property {NotificationStore=} notificationStore
