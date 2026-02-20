@@ -75,7 +75,7 @@ class CommonStore {
    * @returns {Promise<void>}
    */
   * initializeStoreData () {
-    yield this.updateProfile()
+    yield this.refreshProfile()
   }
 
   /**
@@ -96,9 +96,10 @@ class CommonStore {
   }
 
   /**
-   * Updates user profile.
+   * Refreshes the user profile from storage.
+   * @returns {Promise<void>}
    */
-  * updateProfile () {
+  * refreshProfile () {
     const profile = yield this.#storageService.getSettings(SETTINGS_NAMES.USER_PROFILE)
     this.profile = profile || { id: null }
   }

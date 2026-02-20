@@ -14,7 +14,7 @@ function ProfileLoader () {
     }
 
     async function load () {
-      await commonStore.updateProfile()
+      await commonStore.refreshProfile()
     }
 
     load().catch((e) => {
