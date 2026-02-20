@@ -1,6 +1,7 @@
 import ProfileCardUser from './ProfileCardUser.js'
 import ProfileCardAnonymous from './ProfileCardAnonymous.js'
 import ProfileCardAdminInfo from './ProfileCardAdminInfo.js'
+import ProfileSubscription from './ProfileSubscription.js'
 import styles from './ProfileCard.module.css'
 
 function ProfileCard () {
@@ -8,6 +9,7 @@ function ProfileCard () {
     <div style={{ textAlign: 'center' }}>
       <ProfileCardAnonymous />
       <ProfileCardUser />
+      <ProfileSubscription />
       <ProfileCardAdminInfo />
       <div className={styles.footer}>
         <div>
