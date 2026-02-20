@@ -176,7 +176,7 @@ class CommonService {
 
   /**
    * Unsubscribes the user from web push notifications.
-   * @returns {Promise<boolean>}
+   * @returns {Promise<string|null>}
    */
   async unsubscribeWebPush () {
     this.assertWebPushSupport()
@@ -188,10 +188,11 @@ class CommonService {
 
     const activeSubscription = await reg.pushManager.getSubscription()
     if (!activeSubscription) {
-      return false
+      return null
     }
+    await activeSubscription.unsubscribe()
 
-    return activeSubscription.unsubscribe()
+    return activeSubscription.endpoint
   }
 
   /**
