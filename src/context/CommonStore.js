@@ -166,20 +166,20 @@ class CommonStore {
 
   /**
    * Subscribes to news.
-   * @param {PushSubscriptionJSON} subscription
    * @returns {Promise<void>}
    */
-  * subscribeNews (subscription) {
+  * subscribeNews () {
+    const subscription = yield this.#commonService.subscribeWebPush()
     yield this.#commonService.subscribeNews(subscription)
     yield this.updateProfile({ notification: true })
   }
 
   /**
    * Unsubscribes from news.
-   * @param {string} endpoint
    * @returns {Promise<void>}
    */
-  * unsubscribeNews (endpoint) {
+  * unsubscribeNews () {
+    const endpoint = yield this.#commonService.unsubscribeWebPush()
     yield this.#commonService.unsubscribeNews(endpoint)
     yield this.updateProfile({ notification: false })
   }
