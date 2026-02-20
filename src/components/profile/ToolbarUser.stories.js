@@ -18,15 +18,15 @@ export const Images = () => {
       <div>anonymous</div>
       <div>
         <globalContext.Provider value={{
-          commonStore: Object.assign(new CommonStore(null), {}),
-          syncStore: Object.assign(new SyncStore(null, null), { isOnline: true, moviesSyncedTs: 1 })
+          commonStore: Object.assign(new CommonStore(null, null), {}),
+          syncStore: Object.assign(new SyncStore(null, null, null), { isOnline: true, moviesSyncedTs: 1 })
         }}>
           <ToolbarUser />
         </globalContext.Provider>
       </div>
       <div>loading while anonymous</div>
       <div>
-        <globalContext.Provider value={{ commonStore: Object.assign(new CommonStore(null), {}) }}>
+        <globalContext.Provider value={{ commonStore: Object.assign(new CommonStore(null, null), {}) }}>
           <ToolbarUser />
         </globalContext.Provider>
       </div>
@@ -34,8 +34,8 @@ export const Images = () => {
       <div>
         <globalContext.Provider
           value={{
-            commonStore: Object.assign(new CommonStore(null), { profile: { picture: '/man-avatar.png' } }),
-            syncStore: Object.assign(new SyncStore(null, null), { isOnline: true, moviesSyncedTs: 1 })
+            commonStore: Object.assign(new CommonStore(null, null), { profile: { picture: '/man-avatar.png' } }),
+            syncStore: Object.assign(new SyncStore(null, null, null), { isOnline: true, moviesSyncedTs: 1 })
           }}>
           <ToolbarUser />
         </globalContext.Provider>
@@ -43,7 +43,7 @@ export const Images = () => {
       <div>user while anonymous</div>
       <div>
         <globalContext.Provider
-          value={{ commonStore: Object.assign(new CommonStore(null), { profile: { picture: '/man-avatar.png' } }) }}>
+          value={{ commonStore: Object.assign(new CommonStore(null, null), { profile: { picture: '/man-avatar.png' } }) }}>
           <ToolbarUser />
         </globalContext.Provider>
       </div>

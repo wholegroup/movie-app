@@ -6,7 +6,7 @@ import CommonStore from '../../context/CommonStore.js'
 // noinspection JSUnusedGlobalSymbols
 export const CancelYesDefault = (args) => {
   const contextValue = {
-    commonStore: Object.assign(new CommonStore(null), {})
+    commonStore: Object.assign(new CommonStore(null, null), {})
   }
   contextValue.commonStore.openConfirmation(args.onYes, {
     message: 'Are you sure?',

@@ -2,11 +2,11 @@ import { makeAutoObservable } from 'mobx'
 import { SETTINGS_NAMES } from './StorageService.js'
 
 class CommonStore {
+  /** @type {CommonService} */
+  #commonService
+
   /** @type {StorageService} */
   #storageService
-
-  /** @type {ApiService} */
-  #apiService
 
   /** @type {Promise<void>} */
   makeReadyIsCompleted = null
@@ -14,7 +14,7 @@ class CommonStore {
   /** @type {boolean} isInitialized flag */
   isInitialized = false
 
-  /** @type {?TUserProfile} */
+  /** @type {?Partial<TUserProfile>} */
   profile = null
 
   /** @type {Object} Confirmation dialog parameters. */
@@ -28,12 +28,12 @@ class CommonStore {
 
   /**
    * Default constructor.
+   * @param {CommonService} commonService
    * @param {StorageService} storageService
-   * @param {ApiService} apiService
    */
-  constructor (storageService, apiService) {
+  constructor (commonService, storageService) {
+    this.#commonService = commonService
     this.#storageService = storageService
-    this.#apiService = apiService
     makeAutoObservable(this)
   }
 
@@ -159,7 +159,18 @@ class CommonStore {
    * @returns {Promise<void>}
    */
   * subscribeNews (subscription) {
-    yield this.#apiService.pushSubscribe(subscription)
+    yield this.#commonService.subscribeNews(subscription)
+    this.profile = { ...this.profile, notification: true }
+  }
+
+  /**
+   * Unsubscribes from news.
+   * @param {string} endpoint
+   * @returns {Promise<void>}
+   */
+  * unsubscribeNews (endpoint) {
+    yield this.#commonService.unsubscribeNews(endpoint)
+    this.profile = { ...this.profile, notification: false }
   }
 }
 

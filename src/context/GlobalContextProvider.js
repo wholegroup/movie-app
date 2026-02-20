@@ -16,7 +16,7 @@ function GlobalContextProvider ({ children, ...pageProps }) {
       const storageService = new StorageService()
       const apiService = new ApiService()
       const commonService = new CommonService(storageService, apiService)
-      const commonStore = new CommonStore(storageService, apiService)
+      const commonStore = new CommonStore(commonService, storageService)
       const syncStore = new SyncStore(commonService, storageService, apiService)
       const notificationStore = new NotificationStore()
       const eventStore = new EventStore(syncStore)
