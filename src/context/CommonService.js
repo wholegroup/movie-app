@@ -1,4 +1,22 @@
+import { SETTINGS_NAMES } from '@/src/context/StorageService.js'
+
 class CommonService {
+  /** @type {StorageService} */
+  #storageService
+
+  /** @type {ApiService} */
+  #apiService
+
+  /**
+   * Default constructor.
+   * @param {StorageService} storageService
+   * @param {ApiService} apiService
+   */
+  constructor (storageService, apiService) {
+    this.#storageService = storageService
+    this.#apiService = apiService
+  }
+
   /**
    * Find an active push subscription in JSON.
    * @returns {Promise<PushSubscriptionJSON|null>}
@@ -174,6 +192,56 @@ class CommonService {
     }
 
     return activeSubscription.unsubscribe()
+  }
+
+  /**
+   * Subscribes to news.
+   * @param {PushSubscriptionJSON} subscription
+   * @returns {Promise<void>}
+   */
+  async subscribeNews (subscription) {
+    await this.#apiService.pushSubscribe(subscription)
+    await this.#storageService.setSettings(SETTINGS_NAMES.PUSH_ENDPOINT, subscription.endpoint)
+    await this.#storageService.setSettings(SETTINGS_NAMES.PUSH_HASH, await this.pushHash(subscription))
+  }
+
+  /**
+   * Unsubscribes from news.
+   * @param {string} endpoint
+   * @returns {Promise<void>}
+   */
+  async unsubscribeNews (endpoint) {
+    await this.#storageService.setSettings(SETTINGS_NAMES.PUSH_ENDPOINT, null)
+    await this.#storageService.setSettings(SETTINGS_NAMES.PUSH_HASH, null)
+    await this.#apiService.pushUnsubscribe(endpoint)
+  }
+
+  /**
+   * Validates news subscription.
+   * If the subscription is not valid, it will be removed from the server.
+   * @returns {Promise<void>}
+   */
+  async validateSubscription () {
+    const pushSubscription = await this.findPushSubscription()
+    const pushEndpoint = await this.#storageService.getSettings(SETTINGS_NAMES.PUSH_ENDPOINT)
+    const pushHash = await this.#storageService.getSettings(SETTINGS_NAMES.PUSH_HASH)
+
+    if (!pushSubscription) {
+      // Remove the push subscription on the server.
+      if (pushEndpoint || pushHash) {
+        await this.unsubscribeNews(pushEndpoint)
+      }
+      return
+    }
+
+    // Nothing to update.
+    const currentHush = await this.pushHash(pushSubscription)
+    if (pushSubscription.endpoint === pushEndpoint && currentHush === pushHash) {
+      return
+    }
+
+    // Subscribe or update current subscription.
+    await this.subscribeNews(pushSubscription)
   }
 }
 
