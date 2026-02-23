@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import cardListContext from './cardListContext.js'
 import { movieDetailsStatusEnum } from './CardListStore.js'
+import FiltersPanelBell from './FiltersPanelBell.js'
 import styles from './FiltersPanel.module.css'
 
 /**
@@ -112,6 +113,7 @@ function FiltersPanel () {
               </a>
             </div>
           ))}
+          <FiltersPanelBell />
         </div>
         <div>
           <div className={styles.name}>Years:</div>

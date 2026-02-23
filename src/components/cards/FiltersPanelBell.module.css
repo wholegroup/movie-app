@@ -1,0 +1,5 @@
+.block {
+    height: 3rem;
+    display: flex;
+    align-items: flex-end;
+}
