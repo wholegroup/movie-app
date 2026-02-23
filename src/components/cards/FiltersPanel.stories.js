@@ -5,17 +5,19 @@ import StorageService from '@/src/context/StorageService.js'
 import NotificationStore from '@/src/context/NotificationStore.js'
 import FiltersPanel from './FiltersPanel.js'
 import cardListContext from './cardListContext.js'
+import CommonStore from '@/src/context/CommonStore.js'
 
 export default {
   component: FiltersPanel,
   decorators: [
     (Story) => {
+      const commonStore = Object.assign(new CommonStore(null, null), {})
       const notificationStore = Object.assign(new NotificationStore(), {
         error: action('notificationStore.error')
       })
       const storageService = Object.assign(new StorageService(), {
         getSettings: () => Promise.resolve(null),
-        setSettings: () => Promise.resolve(null),
+        setSettings: () => Promise.resolve(null)
       })
       const cardListStore = Object.assign(new CardListStore(storageService), {
         cards: [{
@@ -36,7 +38,7 @@ export default {
         }]
       })
       return (
-        <globalContext.Provider value={{ storageService }}>
+        <globalContext.Provider value={{ storageService, commonStore, notificationStore }}>
           <cardListContext.Provider value={{ cardListStore, notificationStore }}>
             <Story />
           </cardListContext.Provider>
