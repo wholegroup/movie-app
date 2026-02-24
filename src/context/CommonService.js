@@ -212,7 +212,8 @@ class CommonService {
    * @returns {Promise<void>}
    */
   async subscribeNews (subscription) {
-    await this.#apiService.pushSubscribe(subscription)
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    await this.#apiService.pushSubscribe({ ...subscription, timeZone })
     await this.#storageService.setSettings(SETTINGS_NAMES.PUSH_ENDPOINT, subscription.endpoint)
     await this.#storageService.setSettings(SETTINGS_NAMES.PUSH_HASH, await this.pushHash(subscription))
   }

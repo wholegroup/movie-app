@@ -95,7 +95,7 @@ class ApiService {
 
   /**
    * Posts new push subscription.
-   * @param {PushSubscriptionJSON} subscription
+   * @param {PushSubscriptionJSON & { timeZone: string }} subscription
    * @returns {Promise<void>}
    */
   async pushSubscribe (subscription) {
