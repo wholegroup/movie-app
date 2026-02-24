@@ -404,6 +404,7 @@ class SyncStore {
 
       this.profileUpdatedAt = null
       yield this.#storageService.setSettings(SETTINGS_NAMES.PROFILE_UPDATED_AT, '')
+      yield this.#storageService.setSettings(SETTINGS_NAMES.PUSH_HASH, null)
 
       this.resetTs = Date.now()
       yield this.#storageService.setSettings(SETTINGS_NAMES.RESET_TS, this.resetTs)
