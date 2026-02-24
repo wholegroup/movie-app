@@ -7,13 +7,14 @@ import globalContext from '@/src/context/globalContext.js'
 
 /**
  * Represents the subscription button/bell in the filters panel.
+ * @param {*} stories Additional arguments using in the storybook component.
  * @returns {React.JSX.Element}
  * @constructor
  */
-function FiltersPanelBell () {
+function FiltersPanelBell ({ stories }) {
   const { commonService } = useContext(globalContext)
   const { commonStore, notificationStore } = useContext(globalContext)
-  const [isWorking, setWorking] = useState(false)
+  const [isWorking, setWorking] = useState(stories?.isWorking ?? false)
   const [permission, setPermission] = useState('denied')
   const isDenied = permission === 'denied'
   const isSubscribed = !!commonStore.profile?.notification
