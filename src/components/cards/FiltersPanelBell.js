@@ -11,6 +11,7 @@ import globalContext from '@/src/context/globalContext.js'
  * @constructor
  */
 function FiltersPanelBell () {
+  const { commonService } = useContext(globalContext)
   const { commonStore, notificationStore } = useContext(globalContext)
   const [isWorking, setWorking] = useState(false)
   const [permission, setPermission] = useState('denied')
@@ -18,11 +19,11 @@ function FiltersPanelBell () {
   const isSubscribed = !!commonStore.profile?.notification
 
   /**
-   * Permission initialization.
+   * Permission initialization (only client mode).
    */
   useEffect(() => {
-    setPermission(window.Notification.permission)
-  }, [])
+    setPermission(commonService.currentPushPermission())
+  }, [commonService])
 
   /**
    * Handles `Subscribe` button click.
@@ -37,7 +38,7 @@ function FiltersPanelBell () {
       notificationStore.error({ message: e?.message || String(e) })
     } finally {
       setWorking(false)
-      setPermission(window.Notification.permission)
+      setPermission(commonService.currentPushPermission())
     }
   }
 

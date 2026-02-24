@@ -6,6 +6,7 @@ import globalContext from '@/src/context/globalContext.js'
 import styles from './ProfileSubscription.module.css'
 
 function ProfileSubscription () {
+  const { commonService } = useContext(globalContext)
   const { commonStore, notificationStore } = useContext(globalContext)
   const [isWorking, setWorking] = useState(false)
   const [permission, setPermission] = useState('denied')
@@ -16,7 +17,7 @@ function ProfileSubscription () {
    * Permission initialization.
    */
   useEffect(() => {
-    setPermission(window.Notification.permission)
+    setPermission(commonService.currentPushPermission())
   }, [])
 
   /**
@@ -32,7 +33,7 @@ function ProfileSubscription () {
       notificationStore.error({ message: e?.message || String(e) })
     } finally {
       setWorking(false)
-      setPermission(window.Notification.permission)
+      setPermission(commonService.currentPushPermission())
     }
   }
 

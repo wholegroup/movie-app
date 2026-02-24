@@ -18,6 +18,17 @@ class CommonService {
   }
 
   /**
+   * Returns the current push permission.
+   * @returns {string}
+   */
+  currentPushPermission () {
+    if (typeof window === 'undefined') {
+      return 'denied'
+    }
+    return window.Notification.permission
+  }
+
+  /**
    * Find an active push subscription in JSON.
    * @returns {Promise<PushSubscriptionJSON|null>}
    */
