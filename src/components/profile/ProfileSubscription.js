@@ -46,6 +46,8 @@ function ProfileSubscription () {
       setWorking(true)
       await commonStore.unsubscribeNews()
       notificationStore.info({ message: 'Unsubscribed successfully.' })
+    } catch (e) {
+      notificationStore.error({ message: e?.message || String(e) })
     } finally {
       setWorking(false)
     }
