@@ -27,5 +27,6 @@ async function subscribe (req, res, syncService) {
 
   await syncService.savePush(req.body)
 
-  res.status(200).send('Ok')
+  res.status(200)
+    .json({ status: 'ok' })
 }

@@ -31,5 +31,6 @@ async function unsubscribe (req, res, syncService) {
     console.error('Failed to unsubscribe: ' + ex.message + '.')
   }
 
-  res.status(200).send('Ok')
+  res.status(200)
+    .json({ status: 'ok' })
 }
