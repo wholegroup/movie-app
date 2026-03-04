@@ -2,11 +2,11 @@
 
 # Annual Movies
 
-This is a sample application to figure out how better to develop **PWA** (Progressive Web Apps) offline-first applications with **SSR** support (Server-Side Rendering) made as **SPA** (Single-page application). 
-Usually, for offline-first applications, you don't need to use SSR, but for things like public catalog-like apps it's necessary (SEO, external links to cards).
+This is a sample application to explore the best way to develop **PWA** (Progressive Web Apps) offline-first applications with **SSR** support (Server-Side Rendering) built as an **SPA** (Single-page application). 
+Usually, for offline-first applications, you don't need to use SSR, but for public catalog-style apps, it's necessary (SEO, external links to cards).
 
-Like many others, I use the React framework to build SPAs. I keep all data in client IndexedDB to work in offline mode and synchronize it when there is an internet connection.
-The backend is made in the Next.js framework, which provides out-of-the-box support for SSR and generates **SW** (Service worker) for PWA. 
+Like many others, I use the React framework to build SPAs. I keep all data in the client-side IndexedDB to work in offline mode and synchronize it when there is an internet connection.
+The backend is built with the Next.js framework, which provides out-of-the-box support for SSR and generates a **SW** (Service Worker) for PWA. 
 
 The result is [https://annualmovies.com](https://annualmovies.com)
 
@@ -15,7 +15,7 @@ The result is [https://annualmovies.com](https://annualmovies.com)
 
 <img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/screenshot_01-portrait.png?ts=1734604738" width="360" title="Annual Movies application screenshot on iPhone">
 
-## How to install PWA application
+## How to install the PWA application
 
 <img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/screenshot_03-install.png?ts=1734604738" width="360" title="Open our site and then press Share button">&nbsp;&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/wholegroup/movie-app/refs/heads/main/public/noprecache/screenshot_04-install.png?ts=1734604738" width="360" title="Add AnnualMovies.com to Home Screen">
 
