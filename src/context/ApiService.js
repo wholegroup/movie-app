@@ -126,6 +126,22 @@ class ApiService {
   }
 
   /**
+   * Refreshes push notifications by endpoint.
+   * @param {string} endpoint
+   * @returns {Promise<void>}
+   */
+  async pushRefresh (endpoint) {
+    const response = await this.apiFetch('/api/push/refresh', {
+      method: 'POST',
+      body: JSON.stringify(endpoint)
+    })
+
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+  }
+
+  /**
    * Generates preview url by hash.
    * @param {string} hash
    * @returns {string} url
