@@ -230,6 +230,15 @@ class CommonService {
   }
 
   /**
+   * Refreshes the subscription.
+   * @param {string} endpoint
+   * @returns {Promise<void>}
+   */
+  async refreshSubscription (endpoint) {
+    await this.#apiService.pushRefresh(endpoint)
+  }
+
+  /**
    * Validates news subscription.
    * If the subscription is not valid, it will be removed from the server.
    * @returns {Promise<void>}
@@ -247,9 +256,10 @@ class CommonService {
       return
     }
 
-    // Nothing to update.
-    const currentHush = await this.pushHash(pushSubscription)
-    if (pushSubscription.endpoint === pushEndpoint && currentHush === pushHash) {
+    // Nothing to update, just refresh
+    const currentHash = await this.pushHash(pushSubscription)
+    if (pushSubscription.endpoint === pushEndpoint && currentHash === pushHash) {
+      await this.refreshSubscription(pushEndpoint)
       return
     }
 
