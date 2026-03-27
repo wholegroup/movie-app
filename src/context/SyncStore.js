@@ -240,7 +240,11 @@ class SyncStore {
       return yield this.resetPoint()
     }
 
-    if (Date.now() >= this.nextProfileUpdatingTs) {
+    // Since profile synchronization validates the push subscription and updates
+    // the timestamp (updatedAt), we should only perform this when the application is active.
+    // This is because the app might be sitting in a hidden tab while the worker continues to run.
+    // We could potentially move the subscription validation into a separate condition
+    if (!document.hidden && Date.now() >= this.nextProfileUpdatingTs) {
       return yield this.synchronizeProfile()
     }
 
