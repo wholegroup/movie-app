@@ -34,7 +34,6 @@
     "sqlite3": "6.0.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3.3.5",
     "@next/bundle-analyzer": "16.2.2",
     "@storybook/addon-links": "10.3.4",
     "@storybook/nextjs": "10.3.4",
