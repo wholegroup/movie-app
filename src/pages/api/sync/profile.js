@@ -1,5 +1,5 @@
-import { auth0 } from '@/lib/auth0'
-import SyncBackendService from '@/lib/SyncBackendService.js'
+import { auth0 } from '@lib/auth0'
+import SyncBackendService from '@lib/SyncBackendService.js'
 
 export default async function handler (req, res) {
   const syncService = new SyncBackendService(process.env.MOVIE_APP_USERS_DB)

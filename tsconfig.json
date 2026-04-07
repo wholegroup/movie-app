@@ -3,11 +3,40 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ]
     },
-    "types": ["vitest", "vitest/globals"],
+    "types": [
+      "vitest",
+      "vitest/globals"
+    ],
     "allowJs": true,
-    "checkJs": true
+    "checkJs": true,
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx"
   },
-  "include": ["src/**/*.js", "*.ts"]
+  "include": [
+    "src/**/*.js",
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

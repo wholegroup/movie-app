@@ -1,8 +1,8 @@
 import FiltersPanelBell from './FiltersPanelBell.js'
-import globalContext from '@/src/context/globalContext.js'
-import CommonStore from '@/src/context/CommonStore.js'
-import CommonService from '@/src/context/CommonService.js'
-import NotificationStore from '@/src/context/NotificationStore.js'
+import globalContext from '@/context/globalContext.js'
+import CommonStore from '@/context/CommonStore.js'
+import CommonService from '@/context/CommonService.js'
+import NotificationStore from '@/context/NotificationStore.js'
 import { action } from 'storybook/actions'
 
 export default {

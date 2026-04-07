@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Icon } from '@mdi/react'
 import { mdiCogOutline, mdiBell } from '@mdi/js'
-import globalContext from '@/src/context/globalContext.js'
+import globalContext from '@/context/globalContext.js'
 import styles from './ProfileSubscription.module.css'
 
 function ProfileSubscription () {

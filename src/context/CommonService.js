@@ -1,4 +1,4 @@
-import { SETTINGS_NAMES } from '@/src/context/StorageService.js'
+import { SETTINGS_NAMES } from '@/context/StorageService.js'
 
 class CommonService {
   /** @type {StorageService} */

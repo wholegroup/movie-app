@@ -1,11 +1,11 @@
 import { action } from 'storybook/actions'
-import globalContext from '@/src/context/globalContext.js'
-import CardListStore from '@/src/components/cards/CardListStore.js'
-import StorageService from '@/src/context/StorageService.js'
-import NotificationStore from '@/src/context/NotificationStore.js'
+import globalContext from '@/context/globalContext.js'
+import CardListStore from '@/components/cards/CardListStore.js'
+import StorageService from '@/context/StorageService.js'
+import NotificationStore from '@/context/NotificationStore.js'
 import FiltersPanel from './FiltersPanel.js'
 import cardListContext from './cardListContext.js'
-import CommonStore from '@/src/context/CommonStore.js'
+import CommonStore from '@/context/CommonStore.js'
 
 export default {
   component: FiltersPanel,

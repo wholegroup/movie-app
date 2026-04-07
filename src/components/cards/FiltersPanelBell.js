@@ -3,7 +3,7 @@ import { Icon } from '@mdi/react'
 import { mdiBell, mdiBellOutline, mdiBellOffOutline, mdiCogOutline } from '@mdi/js'
 import styles from './FiltersPanelBell.module.css'
 import { useContext, useEffect, useState } from 'react'
-import globalContext from '@/src/context/globalContext.js'
+import globalContext from '@/context/globalContext.js'
 
 /**
  * Represents the subscription button/bell in the filters panel.

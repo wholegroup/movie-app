@@ -1,4 +1,4 @@
-import CommonService from '@/src/context/CommonService.js'
+import CommonService from '@/context/CommonService.js'
 
 describe('CommonService', () => {
   it('stableStringy', () => {
