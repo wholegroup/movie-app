@@ -3,8 +3,8 @@ const imageEndpoint = process.env.NEXT_PUBLIC_MOVIE_APP_IMG_HOST || 'https://img
 class ApiService {
   /**
    * Makes api fetch.
-   * @param resource
-   * @param options
+   * @param {string} resource
+   * @param {object} options
    * @returns {Promise<Response>}
    */
   async apiFetch (resource, options = {}) {

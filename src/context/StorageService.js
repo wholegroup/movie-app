@@ -1,18 +1,8 @@
 import Dexie from 'dexie'
 import ApiService from './ApiService.js'
 
-/**
- * @typedef TStorage
- * @property {Dexie.Table} settings
- * @property {Dexie.Table<TMovieItem>} movies
- * @property {Dexie.Table<TVotesItem>} votes
- * @property {Dexie.Table<TImagesItem>} images
- * @property {Dexie.Table<TMetadataItem>} metadata
- * @property {Dexie.Table<TDetailsItem>} details
- */
-
 class StorageService {
-  /** @type {Dexie|TStorage} */
+  /** @type {TStorage} */
   storage = null
 
   /**
@@ -115,10 +105,13 @@ class StorageService {
   /**
    * Finds movie by slug.
    * @param {string} slug
-   * @returns {Promise<TMovieItem>}
+   * @returns {Promise<TMovieItem|null>}
    */
   async findMovieBySlug (slug) {
-    return this.storage.movies.filter(m => m.slug === slug.toLowerCase()).first()
+    return this.storage
+      .movies
+      .filter(/** @param {TMovieItem} m */ m => m.slug === slug.toLowerCase())
+      .first() || null
   }
 
   /**
@@ -171,8 +164,10 @@ class StorageService {
     const freshDateISO = freshDate.toISOString()
 
     // noinspection UnnecessaryLocalVariableJS
-    const cards = movies.map(movie => {
-      const mainImage = images.find(nextImages => nextImages.movieId === movie.movieId)?.images?.[0] ?? null
+    const cards = movies.map(/** @param {TMovieItem} movie */ movie => {
+      const mainImage = images.find(
+        /** @param {TImagesItem} nextImage */
+        nextImage => nextImage.movieId === movie.movieId)?.images?.[0] ?? null
       return {
         movieId: movie.movieId,
         slug: movie.slug,
@@ -197,7 +192,7 @@ class StorageService {
   }
 
   /**
-   * Purges movies that wasn't updated 7 * 3/weeks days.
+   * Purges movies weren't updated 7 * 3/weeks days.
    * @returns {Promise<number>}
    */
   async purgeMovies () {
@@ -256,7 +251,8 @@ class StorageService {
    * @returns {Promise<string>}
    */
   async getLastCreatedAt () {
-    const movies = await this.storage.movies.toArray()
+    const tableMovies = this.storage.movies
+    const movies = await tableMovies.toArray()
     return movies.reduce((res, { createdAt }) => createdAt > res ? createdAt : res, '')
   }
 
@@ -269,79 +265,6 @@ class StorageService {
     return votes.reduce((res, { updatedAt }) => updatedAt > res ? updatedAt : res, '')
   }
 }
-
-/**
- * @typedef TMovieItem
- * @property {number} movieId
- * @property {string} slug
- * @property {string} title
- * @property {?number} year
- * @property {?string} runtime
- * @property {?string} description
- * @property {?string[]} genres
- * @property {?TMoviePerson} directors
- * @property {?TMoviePerson} stars
- * @property {?string} createdAt
- * @property {?string} updatedAt
- */
-
-/**
- * @typedef TMoviePerson
- * @property {number} personId
- * @property {string} slug
- * @property {string} fullName
- */
-
-/**
- * @typedef TVotesItem
- * @property {number} movieId
- * @property {number} votes
- * @property {string} updatedAt
- */
-
-/**
- * @typedef TImagesItem
- * @property {number} movieId
- * @property {{hash: string}[]} images
- * @property {string} updatedAt
- */
-
-/**
- * @typedef TMetadataItem
- * @property {number} movieId
- * @property {object} flags
- * @property {string} updatedAt
- */
-
-/**
- * @typedef TMovieCard
- * @property {number} movieId
- * @property {string} slug
- * @property {string} title
- * @property {number} year
- * @property {string} genres
- * @property {string} posterHash
- * @property {string} posterUrl
- * @property {boolean} [isNew]
- * @property {createdAt} [createdAt]
- */
-
-/**
- * @typedef TUserProfile
- * @property {string} id
- * @property {string} [email]
- * @property {string} [name]
- * @property {string} [picture]
- * @property {boolean} [isAdmin]
- * @property {boolean} [notification]
- */
-
-/**
- * @typedef TDetailsItem
- * @property {number} movieId
- * @property {?number=} mark
- * @property {?string=} syncedAt
- */
 
 export const SETTINGS_NAMES = Object.freeze({
   MOVIES_UPDATED_AT: 'MOVIES_UPDATED_AT',
