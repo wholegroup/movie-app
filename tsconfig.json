@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -27,6 +26,7 @@
     "noEmit": true,
     "incremental": true,
     "module": "esnext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
