@@ -20,7 +20,7 @@ class CommonStore {
   /** @type {Object} Confirmation dialog parameters. */
   confirmation = {}
 
-  /** @type {{CardListContextProvider: Object}} Global cache object */
+  /** @type {{CardListContextProvider?: Object}} Global cache object */
   cache = {}
 
   /** @type {Object} Response error. */
@@ -38,10 +38,10 @@ class CommonStore {
   }
 
   /**
-   * Makes ready.
-   * @param additional
-   * @returns {CommonStore}
-   */
+     * Makes ready.
+     * @param {() => Promise<void>} additional
+     * @returns {CommonStore}
+     */
   makeReady (additional) {
     if (this.isInitialized) {
       console.log('Already initialized')
@@ -49,7 +49,7 @@ class CommonStore {
     }
 
     this.makeReadyIsCompleted = new Promise(resolve => {
-      this.makeReadyAsync(additional)
+      Promise.resolve(this.makeReadyAsync(additional))
         .finally(() => {
           resolve()
         })
@@ -61,7 +61,7 @@ class CommonStore {
   /**
    * Async makeReady
    * @param {() => Promise<void>} additional
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * makeReadyAsync (additional) {
     yield additional()
@@ -72,7 +72,7 @@ class CommonStore {
 
   /**
    * Initializes store data from storage.
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * initializeStoreData () {
     yield this.refreshProfile()
@@ -81,7 +81,7 @@ class CommonStore {
   /**
    * Disposes store
    * @param {() => Promise<void>} additional
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * disposeAsync (additional) {
     if (!this.makeReadyIsCompleted) {
@@ -89,7 +89,7 @@ class CommonStore {
     }
 
     // wait till makeReady is completed
-    const timeoutPromise = new Promise((resolve, reject) => setTimeout(reject, 5000))
+    const timeoutPromise = new Promise((_resolve, reject) => setTimeout(reject, 5000))
     yield Promise.race([this.makeReadyIsCompleted, timeoutPromise])
 
     yield additional()
@@ -97,7 +97,7 @@ class CommonStore {
 
   /**
    * Refreshes the user profile from storage.
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * refreshProfile () {
     const profile = yield this.#storageService.getSettings(SETTINGS_NAMES.USER_PROFILE)
@@ -107,7 +107,7 @@ class CommonStore {
   /**
    * Updates the user profile and saves it to storage.
    * @param {Partial<TUserProfile>} profile
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * updateProfile (profile) {
     this.profile = { ...this.profile, ...profile }
@@ -166,7 +166,7 @@ class CommonStore {
 
   /**
    * Subscribes to news.
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * subscribeNews () {
     const subscription = yield this.#commonService.subscribeWebPush()
@@ -176,7 +176,7 @@ class CommonStore {
 
   /**
    * Unsubscribes from news.
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * unsubscribeNews () {
     const endpoint = yield this.#commonService.unsubscribeWebPush()

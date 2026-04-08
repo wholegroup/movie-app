@@ -59,7 +59,7 @@ function GlobalContextProvider ({ children, ...pageProps }) {
     })
 
     return () => {
-      // dispose resources after unmount
+      // dispose of resources after unmount
       commonStore.disposeAsync(async () => {
         await eventStore.unsubscribe()
         await syncStore.disposeAsync()

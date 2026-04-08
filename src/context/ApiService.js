@@ -44,7 +44,8 @@ class ApiService {
         errorMessage = response.statusText
       }
       const e = new Error(`[${response.status}] ${errorMessage}`)
-      e.code = response.status
+      const eWithCode = /** @type {any} */ (e)
+      eWithCode.code = response.status
       throw e
     }
 

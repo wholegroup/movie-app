@@ -79,8 +79,9 @@ class EventStore {
   }
 
   /**
-   * Handles onMessage events.
-   */
+     * Handles onMessage events.
+     * @param {MessageEvent<any>} e
+     */
   async onMessageHandler (e) {
     try {
       const message = JSON.parse(e.data)
@@ -163,7 +164,7 @@ class EventStore {
     switch (message.messageName) {
       case 'confirmation':
         console.log('SSE confirmation')
-        await this.processMessageConfirmation(message)
+        await this.processMessageConfirmation(/** @type {TEventMessageConfirmation} */(message))
         this.setActive(true)
         break
 
@@ -196,18 +197,5 @@ class EventStore {
     }
   }
 }
-
-/**
- * SSE message.
- * @typedef TEventMessage
- * @property {string} timestamp
- * @property {string} messageName
- */
-
-/**
- * Confirmation SSE message
- * @typedef {TEventMessage} TEventMessageConfirmation
- * @property {string} subscriberId
- */
 
 export default EventStore

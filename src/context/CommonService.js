@@ -179,7 +179,7 @@ class CommonService {
 
     const newSubscription = await reg.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: this.urlBase64ToUint8Array(publicKey)
+      applicationServerKey: /** @type {BufferSource} */ (this.urlBase64ToUint8Array(publicKey))
     })
 
     return newSubscription.toJSON()

@@ -5,6 +5,20 @@ declare global {
     type CommonService = import('@/context/CommonService.js').default
     type ApiService = import('@/context/ApiService.js').default
 
+    type SyncStore = import('@/context/SyncStore.js').default
+    type EventStore = import('@/context/EventStore.js').default
+    type NotificationStore = import('@/context/NotificationStore.js').default
+    type CommonStore = import('@/context/CommonStore.js').default
+
+    type TEventMessage = {
+        timestamp: string
+        messageName: string
+    }
+
+    type TEventMessageConfirmation = TEventMessage & {
+        subscriberId: string
+    }
+
     type TMoviePerson = {
         personId: number
         slug: string
