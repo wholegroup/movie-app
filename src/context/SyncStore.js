@@ -150,7 +150,7 @@ class SyncStore {
 
   /**
    * Initializes the store state from storage.
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * initializeStoreData () {
     this.moviesUpdatedAt = yield this.#storageService.getSettings(SETTINGS_NAMES.MOVIES_UPDATED_AT) || null
@@ -173,7 +173,7 @@ class SyncStore {
 
   /**
    * Async makeReady
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * makeReadyAsync () {
     if (this.isInitialized) {
@@ -184,24 +184,24 @@ class SyncStore {
     this.isInitialized = true
 
     // run the worker every second (1_000 ms).
-    this.workerIntervalId = setInterval(() => {
-      this.runWorker()
+    this.workerIntervalId = window.setInterval(() => {
+      Promise.resolve(this.runWorker())
         .catch(console.error)
     }, 1_000)
   }
 
   /**
    * Disposes the store.
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * disposeAsync () {
-    clearInterval(this.workerIntervalId)
+    window.clearInterval(this.workerIntervalId)
     yield
   }
 
   /**
    * Runs the worker.
-   * @returns {Promise<void>}
+   * @returns {Generator}
    */
   * runWorker () {
     if (!this.isInitialized || !this.isOnline || this.isBusy) {
@@ -233,7 +233,7 @@ class SyncStore {
 
   /**
    * Executes a single sync step.
-   * @returns {Promise<boolean>}
+   * @returns {Generator}
    */
   * doWorkerStep () {
     if (Date.now() >= this.nextResetTs) {
@@ -268,7 +268,7 @@ class SyncStore {
 
   /**
    * Synchronizes movies.
-   * @returns {Promise<boolean>}
+   * @returns {Generator}
    */
   * synchronizeMovies () {
     const tm = 'Synchronizing movies...'
@@ -327,7 +327,7 @@ class SyncStore {
 
   /**
    * Synchronizes the user profile.
-   * @returns {Promise<boolean>}
+   * @returns {Generator}
    */
   * synchronizeProfile () {
     const tm = 'Synchronizing profile...'
@@ -394,7 +394,7 @@ class SyncStore {
 
   /**
    * Reset the starting point.
-   * @returns {Promise<boolean>}
+   * @returns {Generator}
    */
   * resetPoint () {
     const tm = 'Reset the starting point...'
@@ -429,7 +429,7 @@ class SyncStore {
 
   /**
    * Purges movies.
-   * @returns {Promise<boolean>}
+   * @returns {Generator}
    */
   * purgeMovies () {
     const tm = 'Purging movies...'
