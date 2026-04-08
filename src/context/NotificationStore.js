@@ -1,20 +1,5 @@
 import { action, computed, makeObservable, observable } from 'mobx'
 
-/**
- * @typedef TNotificationDraft
- * @property {string} type
- * @property {string} icon
- * @property {?string} title
- * @property {string} message
- */
-
-/**
- * @typedef {TNotificationDraft} TNotification
- * @property {string} id
- * @property {number} timestamp
- * @property {number} timeoutId
- */
-
 class NotificationStore {
   /** @type {TNotification[]} */
   notifications = []
@@ -62,7 +47,7 @@ class NotificationStore {
    */
   enqueue (draft) {
     const id = crypto.randomUUID()
-    const timeoutId = setTimeout(() => this.dequeue(id), 4000)
+    const timeoutId = window.setTimeout(() => this.dequeue(id), 4000)
     this.setNotifications([
       ...this.notifications,
       {
@@ -85,9 +70,8 @@ class NotificationStore {
   }
 
   /**
-   * Adds info message
-   * @param {string} message
-   * @param {?string} title
+   * Adds an info message
+   * @param {{ message: string, title?: string | null }} params
    */
   info ({ message, title = null }) {
     this.enqueue({
@@ -99,9 +83,8 @@ class NotificationStore {
   }
 
   /**
-   * Adds success message
-   * @param {string} message
-   * @param {?string} title
+   * Adds a success message
+   * @param {{ message: string, title?: string | null }} params
    */
   success ({ message, title = null }) {
     this.enqueue({
@@ -113,9 +96,8 @@ class NotificationStore {
   }
 
   /**
-   * Adds warning message
-   * @param {string} message
-   * @param {?string} title
+   * Adds a warning message
+   * @param {{ message: string, title?: string | null }} params
    */
   warning ({ message, title = null }) {
     this.enqueue({
@@ -127,9 +109,8 @@ class NotificationStore {
   }
 
   /**
-   * Adds error message
-   * @param {string} message
-   * @param {?string} title
+   * Adds an error message
+   * @param {{ message: string, title?: string | null }} params
    */
   error ({ message, title = null }) {
     this.enqueue({

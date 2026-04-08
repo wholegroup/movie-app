@@ -78,4 +78,34 @@ declare global {
         metadata: Dexie.Table<TMetadataItem>
         details: Dexie.Table<TDetailsItem>
     }
+
+    // ... existing code ...
+
+    type TDetailsItem = {
+        movieId: number
+        mark?: number | null
+        syncedAt?: string | null
+    }
+
+    type TStorage = Dexie & {
+        settings: Dexie.Table
+        movies: Dexie.Table<TMovieItem>
+        votes: Dexie.Table<TVotesItem>
+        images: Dexie.Table<TImagesItem>
+        metadata: Dexie.Table<TMetadataItem>
+        details: Dexie.Table<TDetailsItem>
+    }
+
+    type TNotificationDraft = {
+        type: string
+        icon: string
+        title: string | null
+        message: string
+    }
+
+    type TNotification = TNotificationDraft & {
+        id: string
+        timestamp: number
+        timeoutId: number
+    }
 }
