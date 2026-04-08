@@ -15,7 +15,9 @@
     "analyze": "ANALYZE=true next build",
     "build": "NEXT_PUBLIC_MOVIE_APP_VERSION=$(date -u +%y.%m.%d) next build --webpack",
     "start": "next start -p 3400",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "4.16.1",
