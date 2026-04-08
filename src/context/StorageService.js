@@ -6,7 +6,7 @@ class StorageService {
   storage = null
 
   /**
-   * Makes the storage is ready.
+   * Makes the storage ready.
    * @returns {Promise<void>}
    */
   async makeReadyAsync () {
@@ -23,7 +23,7 @@ class StorageService {
       })
     await db.open()
 
-    this.storage = db
+    this.storage = /** @type {TStorage} */ (db)
   }
 
   /**
@@ -167,7 +167,8 @@ class StorageService {
     const cards = movies.map(/** @param {TMovieItem} movie */ movie => {
       const mainImage = images.find(
         /** @param {TImagesItem} nextImage */
-        nextImage => nextImage.movieId === movie.movieId)?.images?.[0] ?? null
+        nextImage => nextImage.movieId === movie.movieId
+      )?.images?.[0] ?? null
       return {
         movieId: movie.movieId,
         slug: movie.slug,

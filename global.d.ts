@@ -48,7 +48,7 @@ declare global {
         slug: string
         title: string
         year: number
-        genres: string
+        genres: string[]
         posterHash: string
         posterUrl: string
         isNew?: boolean
