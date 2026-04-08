@@ -122,4 +122,8 @@ declare global {
         timestamp: number
         timeoutId: number
     }
+
+    interface Window {
+        serwist?: import('@serwist/window').Serwist
+    }
 }
