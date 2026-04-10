@@ -5,11 +5,9 @@ import styles from './CardItem.module.css'
 
 /**
  * Shows a movie card.
- * @param {TMovieCard} card
- * @param {TDetailsItem} details
- * @param {function} onClickThumb
+ * @param {{card: TMovieCard, onClickThumb: function, details?: TDetailsItem}} params
  */
-function CardItem ({ card, details, onClickThumb }) {
+function CardItem ({ card, onClickThumb, details }) {
   return (
     <div className={`${styles.card} ${card.isNew ? styles.isNew : ''}`} data-movie-id={card.movieId}>
       <Link href={`/${card.slug}`}>
@@ -18,20 +16,20 @@ function CardItem ({ card, details, onClickThumb }) {
             src={card.posterUrl}
             title={card.title}
             alt={card.title}
-            width='270'
-            height='400'
-            fetchPriority='low'
-            crossOrigin='anonymous'
+            width="270"
+            height="400"
+            fetchPriority="low"
+            crossOrigin="anonymous"
           />
         </div>
         <h1 className={styles.title}>{card.title}</h1>
         <div className={styles.down}>{card.year}</div>
       </Link>
       <div className={styles.thumbs}>
-        <button type='button' onClick={() => onClickThumb(5)}>
+        <button type="button" onClick={() => onClickThumb(5)}>
           <Icon path={mdiThumbUp} size={1.5} className={details?.mark === 5 ? styles.positive : ''} />
         </button>
-        <button type='button' onClick={() => onClickThumb(1)}>
+        <button type="button" onClick={() => onClickThumb(1)}>
           <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
         </button>
       </div>

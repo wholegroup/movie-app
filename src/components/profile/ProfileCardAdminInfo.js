@@ -8,7 +8,10 @@ import styles from './ProfileCardAdminInfo.module.css'
  */
 function ProfileCardAdminInfo () {
   const { commonStore, storageService } = useContext(globalContext)
-  const [adminInfo, setAdminInfo] = useState({})
+  const [adminInfo, setAdminInfo] = useState({
+    lastCreatedAt: null,
+    lastUpdatedAt: null
+  })
 
   useEffect(() => {
     async function fillAdminInfo () {
@@ -31,8 +34,10 @@ function ProfileCardAdminInfo () {
 
   return (
     <div className={styles.panel}>
-      <div>Data refreshed at <b>{adminInfo.lastUpdatedAt ? new Date(adminInfo.lastUpdatedAt).toLocaleDateString('en-CA') : '—'}</b></div>
-      <div>The last movie has been added at <b>{adminInfo.lastCreatedAt ? new Date(adminInfo.lastCreatedAt).toLocaleDateString('en-CA') : '—'}</b></div>
+      <div>Data refreshed
+        at <b>{adminInfo.lastUpdatedAt ? new Date(adminInfo.lastUpdatedAt).toLocaleDateString('en-CA') : '—'}</b></div>
+      <div>The last movie has been added
+        at <b>{adminInfo.lastCreatedAt ? new Date(adminInfo.lastCreatedAt).toLocaleDateString('en-CA') : '—'}</b></div>
     </div>
   )
 }

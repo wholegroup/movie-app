@@ -9,7 +9,6 @@ import globalContext from '@/context/globalContext.js'
  * Represents the subscription button/bell in the filters panel.
  * @param {*} stories Additional arguments using in the storybook component.
  * @returns {React.JSX.Element}
- * @constructor
  */
 function FiltersPanelBell ({ stories }) {
   const { commonService } = useContext(globalContext)

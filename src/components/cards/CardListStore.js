@@ -1,5 +1,5 @@
 import { makeObservable, observable, action, computed } from 'mobx'
-import { SETTINGS_NAMES } from '../../context/StorageService.js'
+import { SETTINGS_NAMES } from '@/context/StorageService.js'
 
 export const movieDetailsStatusEnum = Object.freeze({
   ALL: 'All',
@@ -109,14 +109,14 @@ class CardListStore {
 
   /**
    * All details with keys.
-   * @returns {TDetailsItem[]}
+   * @returns {Record<number, TDetailsItem>}
    */
   get allDetailsKey () {
     return [...this.allDetails]
       .reduce((acc, details) => ({
         ...acc,
         [details.movieId]: details
-      }), {})
+      }), [])
   }
 
   /**
@@ -153,26 +153,29 @@ class CardListStore {
         if (b.isNew && a.isNew) {
           return b.createdAt.localeCompare(a.createdAt) || a.title.localeCompare(b.title)
         }
-        return (b.isNew - a.isNew) || (b.year - a.year) || a.title.localeCompare(b.title)
+        return (Number(b.isNew) - Number(a.isNew)) || (b.year - a.year) || a.title.localeCompare(b.title)
       })
   }
 
   /**
-   * Marks movie as seen,
+   * Marks movie as seen.
    * @param {number} movieId
    * @param {number} mark
    * @returns {Promise<void>}
    */
   async markAsSeen (movieId, mark) {
     await this.storageService.setMovieMark(movieId, mark)
-    this.setAllDetails(Object.values({
+    const b = {
       ...this.allDetailsKey,
       [movieId]: {
         ...this.allDetailsKey[movieId],
         movieId,
         mark
       }
-    }))
+    }
+    const c = Object.values(b)
+
+    this.setAllDetails(c)
   }
 
   /**

@@ -38,7 +38,7 @@ function MovieItem () {
   /**
    * Marks
    */
-  const markHandler = async (mark) => {
+  const markHandler = async (/** @type {number} */ mark) => {
     try {
       if (details?.mark !== mark) {
         await movieStore.markAsSeen(movie.movieId, mark)
@@ -54,7 +54,7 @@ function MovieItem () {
   /**
    * Thumb handler.
    */
-  const clickThumb = (mark) => {
+  const clickThumb = (/** @type {number} */ mark) => {
     if (!details?.mark) {
       markHandler(mark)
         .catch(console.error)
@@ -135,7 +135,7 @@ function MovieItem () {
               <>
                 {', '}
                 {movie.genres.map(genre => <span key={genre}><i>{genre}</i></span>)
-                  .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], null)}
+                  .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], [])}
               </>
             )}
           </div>
@@ -143,14 +143,14 @@ function MovieItem () {
             <div>
               <span>Directors:</span>{' '}
               {movie.directors.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
-                .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], null)}
+                .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], [])}
             </div>
           )}
           {movie.stars?.length > 0 && (
             <div>
               <span>Stars:</span>{' '}
               {movie.stars.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
-                .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], null)}
+                .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], [])}
             </div>
           )}
           <div>{movie.description}</div>

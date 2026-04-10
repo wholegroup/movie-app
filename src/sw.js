@@ -1,10 +1,15 @@
+/// <reference lib="webworker" />
+
 import { Serwist } from 'serwist'
 import { defaultCache } from '@serwist/next/worker'
 import runtimeCaching from './sw_cache.js'
 import { convertToEmpty } from './convertToEmpty.js'
 
+/** @type {ServiceWorkerGlobalScope} */
+const sw = /** @type {any} */ (self)
+
 const serwist = new Serwist({
-  precacheEntries: self.__SW_MANIFEST,
+  precacheEntries: sw.__SW_MANIFEST,
   precacheOptions: {
     navigateFallback: process.env.NODE_ENV !== 'development' ? '/' : undefined,
     navigateFallbackDenylist: [
@@ -48,7 +53,7 @@ const serwist = new Serwist({
 // cannot become active until the existing SSE connection is closed.
 // We have to exclude sse.annualmovies.com to allow the new SW to activate immediately!
 // This must be placed before calling serwist.addEventListeners()
-self.addEventListener('fetch', (event) => {
+sw.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url)
   if (url.hostname === 'sse.annualmovies.com') {
     event.stopImmediatePropagation()
@@ -59,7 +64,7 @@ self.addEventListener('fetch', (event) => {
 serwist.addEventListeners()
 
 // push handler
-self.addEventListener('push', /** @param {PushEvent} event */ (event) => {
+sw.addEventListener('push', /** @param {PushEvent} event */ (event) => {
   const data = (() => {
     const dataText = event.data ? event.data.text() : ''
     if (!dataText) {
@@ -91,7 +96,7 @@ self.addEventListener('push', /** @param {PushEvent} event */ (event) => {
 
   event.waitUntil((async () => {
     try {
-      await self.registration.showNotification(title, options)
+      await sw.registration.showNotification(title, options)
       console.log(`Notification ${title} sent.`)
     } catch (ex) {
       console.error(ex)
@@ -100,15 +105,15 @@ self.addEventListener('push', /** @param {PushEvent} event */ (event) => {
 })
 
 // notification click handler
-self.addEventListener('notificationclick', /** @param {NotificationEvent} event */ (event) => {
+sw.addEventListener('notificationclick', /** @param {NotificationEvent} event */ (event) => {
   event.notification.close()
   const url = event.notification?.data?.url || '/'
-  event.waitUntil(self.clients.openWindow(url))
+  event.waitUntil(sw.clients.openWindow(url))
 })
 
 // remove obsolete workbox caches (next-pwa legacy)
 // leave this code until 01.01.2027
-self.addEventListener('activate', (event) => {
+sw.addEventListener('activate', (event) => {
   event.waitUntil(Promise.all([
     // clean Cache Storage
     caches.keys().then((cacheNames) => {

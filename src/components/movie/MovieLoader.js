@@ -11,7 +11,8 @@ import styles from './MovieLoader.module.css'
  */
 function MovieLoader () {
   const { query } = useRouter()
-  const slug = query.slug.join('/')
+  const slug = (/** @type {string[]} */ (query.slug)).join('/')
+  console.log('===', JSON.stringify(query))
   const { movieStore, commonStore, syncStore, notificationStore } = useContext(movieContext)
   const [isVisible, setIsVisible] = useState(false)
 

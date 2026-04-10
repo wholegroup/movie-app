@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import FiltersPanelBell from './FiltersPanelBell.js'
 import globalContext from '@/context/globalContext.js'
 import CommonStore from '@/context/CommonStore.js'
@@ -31,6 +33,7 @@ export const Gallery = {
 
 /**
  * Represents a gallery test item.
+ * @param {{ title: string, permission?: string, notification?: boolean, isWorking?: boolean }} options
  */
 function GalleryItem ({ title, permission = 'denied', notification = false, isWorking }) {
   const commonService = Object.assign(new CommonService(null, null), {

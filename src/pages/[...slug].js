@@ -20,12 +20,11 @@ export default function MoviePage ({ ...pageProps }) {
 
 // noinspection JSUnusedGlobalSymbols
 /**
- * @param {ParsedUrlQuery} [query]
- * @param {ServerResponse} [res]
+ * @param {{query: import('querystring').ParsedUrlQuery, res: import('http').ServerResponse}} params
  * @returns {Promise<object>}
  */
 export const getServerSideProps = async function ({ query, res }) {
-  const slug = query.slug.join('/')
+  const slug = (/** @type {string[]} */ (query.slug)).join('/')
   const syncService = new SyncBackendService(process.env.MOVIE_APP_MOVIES_DB)
   try {
     await syncService.open()

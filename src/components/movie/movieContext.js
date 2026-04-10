@@ -2,7 +2,7 @@ import React from 'react'
 
 /**
  * @typedef TMovieContext
- * @property {MovieStore=} movieStore
+ * @property {import('./MovieStore.js').default=} movieStore
  * @property {CommonStore=} commonStore
  * @property {SyncStore=} syncStore
  * @property {NotificationStore=} notificationStore

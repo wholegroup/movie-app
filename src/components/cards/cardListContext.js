@@ -2,7 +2,7 @@ import React from 'react'
 
 /**
  * @typedef TCardListContext
- * @property {CardListStore=} cardListStore
+ * @property {import('./CardListStore.js').default=} cardListStore
  * @property {CommonStore=} commonStore
  * @property {SyncStore=} syncStore
  * @property {NotificationStore=} notificationStore

@@ -33,8 +33,8 @@ declare global {
         runtime: string | null
         description: string | null
         genres: string[] | null
-        directors: TMoviePerson | null
-        stars: TMoviePerson | null
+        directors: TMoviePerson[] | null
+        stars: TMoviePerson[] | null
         createdAt: string | null
         updatedAt: string | null
     }
@@ -93,23 +93,6 @@ declare global {
         details: Dexie.Table<TDetailsItem>
     }
 
-    // ... existing code ...
-
-    type TDetailsItem = {
-        movieId: number
-        mark?: number | null
-        syncedAt?: string | null
-    }
-
-    type TStorage = Dexie & {
-        settings: Dexie.Table
-        movies: Dexie.Table<TMovieItem>
-        votes: Dexie.Table<TVotesItem>
-        images: Dexie.Table<TImagesItem>
-        metadata: Dexie.Table<TMetadataItem>
-        details: Dexie.Table<TDetailsItem>
-    }
-
     type TNotificationDraft = {
         type: string
         icon: string
@@ -125,5 +108,9 @@ declare global {
 
     interface Window {
         serwist?: import('@serwist/window').Serwist
+    }
+
+    interface ServiceWorkerGlobalScope {
+        __SW_MANIFEST?: (string | import('serwist').PrecacheEntry)[]
     }
 }

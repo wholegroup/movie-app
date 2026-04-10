@@ -9,12 +9,13 @@ export const Single = () => {
     title: 'A Good Person',
     year: 2023,
     posterHash: 'ce10cc9814a567c6b2c10347311e25945f7e4324',
-    posterUrl: ApiService.generatePreviewUrl('ce10cc9814a567c6b2c10347311e25945f7e4324')
+    posterUrl: ApiService.generatePreviewUrl('ce10cc9814a567c6b2c10347311e25945f7e4324'),
+    genres: []
   }
 
   return (
     <>
-      <CardItem card={card} />
+      <CardItem card={card} onClickThumb={() => undefined} />
     </>
   )
 }
