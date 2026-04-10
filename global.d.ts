@@ -108,9 +108,6 @@ declare global {
 
     interface Window {
         serwist?: import('@serwist/window').Serwist
-    }
-
-    interface ServiceWorkerGlobalScope {
         __SW_MANIFEST?: (string | import('serwist').PrecacheEntry)[]
     }
 }

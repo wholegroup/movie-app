@@ -9,7 +9,7 @@ import { convertToEmpty } from './convertToEmpty.js'
 const sw = /** @type {any} */ (self)
 
 const serwist = new Serwist({
-  precacheEntries: sw.__SW_MANIFEST,
+  precacheEntries: self.__SW_MANIFEST, // important: keep self.__SW_MANIFEST for the Serwist builder
   precacheOptions: {
     navigateFallback: process.env.NODE_ENV !== 'development' ? '/' : undefined,
     navigateFallbackDenylist: [
