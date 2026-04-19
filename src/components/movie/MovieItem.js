@@ -135,7 +135,7 @@ function MovieItem () {
               <>
                 {', '}
                 {movie.genres.map(genre => <span key={genre}><i>{genre}</i></span>)
-                  .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], [])}
+                  .reduce((acc, item) => acc.length > 0 ? [...acc, ', ', item] : [item], [])}
               </>
             )}
           </div>
@@ -143,14 +143,14 @@ function MovieItem () {
             <div>
               <span>Directors:</span>{' '}
               {movie.directors.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
-                .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], [])}
+                .reduce((acc, item) => acc.length > 0 ? [...acc, ', ', item] : [item], [])}
             </div>
           )}
           {movie.stars?.length > 0 && (
             <div>
               <span>Stars:</span>{' '}
               {movie.stars.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
-                .reduce((acc, item) => acc ? [...acc, ', ', item] : [item], [])}
+                .reduce((acc, item) => acc.length > 0 ? [...acc, ', ', item] : [item], [])}
             </div>
           )}
           <div>{movie.description}</div>
