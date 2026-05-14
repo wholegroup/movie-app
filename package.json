@@ -23,7 +23,7 @@
     "@auth0/nextjs-auth0": "4.20.0",
     "@mdi/js": "7.4.47",
     "@mdi/react": "1.6.1",
-    "@serwist/next": "9.5.7",
+    "@serwist/next": "9.5.11",
     "cron-parser": "5.5.0",
     "dexie": "4.4.2",
     "mobx": "6.15.3",
