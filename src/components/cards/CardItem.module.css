@@ -68,6 +68,10 @@
     background-color: transparent;
 }
 
+.thumbs button.fade {
+    color: rgba(0, 0, 0, 0.08);
+}
+
 .thumbs button:hover {
     color: rgba(0, 0, 0, 0.5);
 }
@@ -77,9 +81,9 @@
 }
 
 .positive {
-    color: green;
+    color: #0e9d0e;
 }
 
 .negative {
-    color: red;
+    color: #f55252;
 }

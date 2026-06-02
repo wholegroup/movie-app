@@ -26,11 +26,11 @@ function CardItem ({ card, onClickThumb, details }) {
         <div className={styles.down}>{card.year}</div>
       </Link>
       <div className={styles.thumbs}>
+        <button type="button" onClick={() => onClickThumb(1)} className={styles.fade}>
+          <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
+        </button>
         <button type="button" onClick={() => onClickThumb(5)}>
           <Icon path={mdiThumbUp} size={1.5} className={details?.mark === 5 ? styles.positive : ''} />
-        </button>
-        <button type="button" onClick={() => onClickThumb(1)}>
-          <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
         </button>
       </div>
     </div>

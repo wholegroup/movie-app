@@ -116,11 +116,11 @@ function MovieItem () {
             <div className={styles.zoom}><Icon path={mdiMagnifyPlus} /></div>
           </div>
           <div className={styles.thumbs}>
+            <button type='button' onClick={() => clickThumb(1)} className={styles.fade}>
+              <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
+            </button>
             <button type='button' onClick={() => clickThumb(5)}>
               <Icon path={mdiThumbUp} size={1.5} className={details?.mark === 5 ? styles.positive : ''} />
-            </button>
-            <button type='button' onClick={() => clickThumb(1)}>
-              <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
             </button>
           </div>
         </div>
