@@ -87,9 +87,9 @@ sw.addEventListener('push', /** @param {PushEvent} event */ (event) => {
     }
   })()
 
-  const title = data.title || 'Annual Movies'
+  const title = data.title || 'New movies are available!'
   const options = {
-    body: data.body || 'New movies are available!',
+    body: data.body || 'See what\'s new!',
     icon: '/icons/icon-32x32.png',
     data: data.data || {}
   }
