@@ -1,4 +1,4 @@
-import { makeObservable, observable, action, computed } from 'mobx'
+import { makeObservable, observable, action, computed, observableRef } from 'mobx'
 import { SETTINGS_NAMES } from '@/context/StorageService.js'
 
 export const movieDetailsStatusEnum = Object.freeze({
@@ -38,14 +38,14 @@ class CardListStore {
   constructor (storageService) {
     this.storageService = storageService
     makeObservable(this, {
-      allDetails: observable.ref,
+      allDetails: observableRef,
       setAllDetails: action,
       allDetailsKey: computed,
-      cards: observable.ref,
+      cards: observableRef,
       setCards: action,
       filteredCards: computed,
       sortedCards: computed,
-      filters: observable.ref,
+      filters: observableRef,
       setFilters: action,
       isFiltersPanelOpen: observable,
       setIsFiltersPanelOpen: action,

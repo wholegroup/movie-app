@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx'
+import { action, makeObservable, observable, observableRef } from 'mobx'
 
 class MovieStore {
   /** @type {StorageService} */
@@ -32,15 +32,15 @@ class MovieStore {
   constructor (storageService) {
     this.storageService = storageService
     makeObservable(this, {
-      movie: observable.ref,
+      movie: observableRef,
       setMovie: action,
-      votes: observable.ref,
+      votes: observableRef,
       setVotes: action,
-      images: observable.ref,
+      images: observableRef,
       setImages: action,
-      metadata: observable.ref,
+      metadata: observableRef,
       setMetadata: action,
-      details: observable.ref,
+      details: observableRef,
       setDetails: action,
       refreshTs: observable,
       setRefreshTs: action
