@@ -8,7 +8,7 @@ function MovieCounter () {
     <>
       <span data-clear={0}>{cardListStore.filteredCards.length}</span>
       <span style={{ fontSize: '0.6rem' }}>
-      {' / '}
+        {' / '}
         <span data-clear={0}>{cardListStore.cards.length}</span>
       </span>
     </>

@@ -91,7 +91,7 @@ function MovieItem () {
       <Head>
         <title>{`${movie.title} (${movie.year})`}</title>
         <meta name='description'
-              content={`${movie.title} (${movie.year}). ${movie.runtime}. ${movie.genres.join(', ')}.`} />
+          content={`${movie.title} (${movie.year}). ${movie.runtime}. ${movie.genres.join(', ')}.`} />
         <meta name='keywords' content={`${movie.title}, ${movie.year}, ${movie.genres.join(', ')}`} />
         <meta property='og:title' content={movie.title} />
         <meta property='og:description' content={movie.description} />
