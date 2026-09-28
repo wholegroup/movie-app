@@ -15,7 +15,7 @@ export const Simple = () => {
           'Drama'
         ],
         runtime: '128 min',
-        description: 'Follows Allison, whose life falls apart following her involvement in a fatal accident.',
+        description: 'A young woman with a bright future survives a car accident that kills members of her fiancé\'s family, leaving her drowning in painkillers, grief, and shame. Struggling to rebuild her life, she crosses paths with her would-be father-in-law, a retired New Jersey cop raising his angry teenage granddaughter. Their uneasy connection at recovery meetings slowly pushes both of them to face their loss, addiction, and regrets. The story is intimate and emotional, mixing raw confrontations and dark humor with a quiet hope that damaged people can still find forgiveness.',
         directors: [
           {
             personId: 141591,
@@ -45,7 +45,7 @@ export const Simple = () => {
             fullName: 'Molly Shannon'
           }
         ],
-        updatedAt: '2023-04-15T06:50:02.752Z'
+        updatedAt: '2023-04-15T06:50:02.752Z',
       },
       images: {
         movieId: 141590,
