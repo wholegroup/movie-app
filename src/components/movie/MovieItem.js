@@ -107,19 +107,20 @@ function MovieItem () {
           <div onClick={() => openPhoto()} style={{ position: 'relative' }}>
             <img
               src={ApiService.generatePreviewUrl(images?.images[0]?.hash || '')}
-              title={movie.title}
-              alt={movie.title}
+              alt={movie.title + ' poster'}
               width='270'
               height='400'
               crossOrigin='anonymous'
             />
-            <button className={styles.zoom} aria-label="Enlarge poster"><Icon path={mdiMagnifyPlus} /></button>
+            <button className={styles.zoom} type='button' aria-label="Enlarge poster">
+              <Icon path={mdiMagnifyPlus} />
+            </button>
           </div>
           <div className={styles.thumbs}>
-            <button type='button' onClick={() => clickThumb(1)}>
+            <button type='button' onClick={() => clickThumb(1)} aria-label="Dislike">
               <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
             </button>
-            <button type='button' onClick={() => clickThumb(5)}>
+            <button type='button' onClick={() => clickThumb(5)} aria-label="Like">
               <Icon path={mdiThumbUp} size={1.5} className={details?.mark === 5 ? styles.positive : ''} />
             </button>
           </div>
