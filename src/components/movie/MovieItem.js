@@ -125,35 +125,34 @@ function MovieItem () {
           </div>
         </div>
         <div className={styles.info}>
-          <div>
-            <h1>{movie.title}</h1>
-          </div>
-          <div>
-            {movie.year}{', '}
-            {movie.runtime}
-            {movie.genres?.length > 0 && (
-              <>
-                {', '}
-                {movie.genres.map(genre => <span key={genre}><i>{genre}</i></span>)
-                  .reduce((acc, item) => acc.length > 0 ? [...acc, ', ', item] : [item], [])}
-              </>
-            )}
+          <h1>{movie.title}</h1>
+          <div className={styles.meta}>
+            <span>{movie.year}</span>
+            <span>{movie.runtime}</span>
+            <span className={styles.genres}>
+              {movie.genres?.length > 0 && (
+                <>
+                  {movie.genres.map(genre => <span key={genre} className={styles.genre}>{genre}</span>)
+                    .reduce((acc, item) => acc.length > 0 ? [...acc, item] : [item], [])}
+                </>
+              )}
+            </span>
           </div>
           {movie.directors?.length > 0 && (
-            <div>
-              <span>Directors:</span>{' '}
+            <div className={styles.credits}>
+              <span className={styles.label}>Directors:</span>{' '}
               {movie.directors.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
                 .reduce((acc, item) => acc.length > 0 ? [...acc, ', ', item] : [item], [])}
             </div>
           )}
           {movie.stars?.length > 0 && (
-            <div>
-              <span>Stars:</span>{' '}
+            <div className={styles.credits}>
+              <span className={styles.label}>Stars:</span>{' '}
               {movie.stars.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
                 .reduce((acc, item) => acc.length > 0 ? [...acc, ', ', item] : [item], [])}
             </div>
           )}
-          <div>{movie.description}</div>
+          <div className={styles.description}>{movie.description}</div>
           <div className={styles.approved}>
             Approved at {new Date(votes.updatedAt).toLocaleDateString('en-CA')}
           </div>
