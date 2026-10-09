@@ -55,8 +55,9 @@
 .description {
     font-family: "Iowan Old Style", "Apple Garamond", "Sitka Text", Palatino, "Book Antiqua", serif;
     padding: 14px 0;
-    line-height: 1.65;
+    line-height: 1.7;
     font-size: 1.05rem;
+    max-width: 62ch;
 }
 
 .thumbs {
