@@ -154,7 +154,12 @@ function MovieItem () {
           )}
           <div className={styles.description}>{movie.description}</div>
           <div className={styles.approved}>
-            Approved at {new Date(votes.updatedAt).toLocaleDateString('en-CA')}
+            Approved on{' '}
+            {new Intl.DateTimeFormat('en-US', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            }).format(new Date(votes.updatedAt))}
           </div>
         </div>
       </div>
