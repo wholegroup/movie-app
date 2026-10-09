@@ -116,7 +116,7 @@ function MovieItem () {
             <div className={styles.zoom}><Icon path={mdiMagnifyPlus} /></div>
           </div>
           <div className={styles.thumbs}>
-            <button type='button' onClick={() => clickThumb(1)} className={styles.fade}>
+            <button type='button' onClick={() => clickThumb(1)}>
               <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
             </button>
             <button type='button' onClick={() => clickThumb(5)}>
@@ -127,16 +127,16 @@ function MovieItem () {
         <div className={styles.info}>
           <h1>{movie.title}</h1>
           <div className={styles.meta}>
-            <span>{movie.year}</span>
-            <span>{movie.runtime}</span>
-            <span className={styles.genres}>
+            <div>{movie.year}</div>
+            <div>{movie.runtime}</div>
+            <div className={styles.genres}>
               {movie.genres?.length > 0 && (
                 <>
                   {movie.genres.map(genre => <span key={genre} className={styles.genre}>{genre}</span>)
                     .reduce((acc, item) => acc.length > 0 ? [...acc, item] : [item], [])}
                 </>
               )}
-            </span>
+            </div>
           </div>
           {movie.directors?.length > 0 && (
             <div className={styles.credits}>
