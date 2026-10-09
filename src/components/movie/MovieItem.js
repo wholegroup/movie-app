@@ -118,10 +118,10 @@ function MovieItem () {
           </div>
           <div className={styles.thumbs}>
             <button type='button' onClick={() => clickThumb(1)} aria-label="Dislike">
-              <Icon path={mdiThumbDown} size={1.5} className={details?.mark === 1 ? styles.negative : ''} />
+              <Icon path={mdiThumbDown} size={'32px'} className={details?.mark === 1 ? styles.negative : ''} />
             </button>
             <button type='button' onClick={() => clickThumb(5)} aria-label="Like">
-              <Icon path={mdiThumbUp} size={1.5} className={details?.mark === 5 ? styles.positive : ''} />
+              <Icon path={mdiThumbUp} size={'32px'} className={details?.mark === 5 ? styles.positive : ''} />
             </button>
           </div>
         </div>
