@@ -140,14 +140,18 @@ function MovieItem () {
           </div>
           {movie.directors?.length > 0 && (
             <div className={styles.credits}>
-              <span className={styles.label}>Directors:</span>{' '}
+              <span className={styles.label}>
+                {movie.directors.length === 1 ? 'Director:' : 'Directors:'}
+              </span>{' '}
               {movie.directors.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
                 .reduce((acc, item) => acc.length > 0 ? [...acc, ', ', item] : [item], [])}
             </div>
           )}
           {movie.stars?.length > 0 && (
             <div className={styles.credits}>
-              <span className={styles.label}>Stars:</span>{' '}
+              <span className={styles.label}>
+                {movie.stars.length === 1 ? 'Star:' : 'Stars:'}
+              </span>{' '}
               {movie.stars.map(({ personId, fullName }) => <span key={personId}>{fullName}</span>)
                 .reduce((acc, item) => acc.length > 0 ? [...acc, ', ', item] : [item], [])}
             </div>
