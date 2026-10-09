@@ -31,6 +31,7 @@ declare global {
         title: string
         year: number | null
         runtime: string | null
+        summary: string | null
         description: string | null
         genres: string[] | null
         directors: TMoviePerson[] | null

@@ -94,11 +94,11 @@ function MovieItem () {
           content={`${movie.title} (${movie.year}). ${movie.runtime}. ${movie.genres.join(', ')}.`} />
         <meta name='keywords' content={`${movie.title}, ${movie.year}, ${movie.genres.join(', ')}`} />
         <meta property='og:title' content={movie.title} />
-        <meta property='og:description' content={movie.description} />
+        <meta property='og:description' content={movie.summary} />
         <meta property='og:image' content={ApiService.generatePosterUrl(images?.images[0]?.hash || '')} />
         <meta name='twitter:card' content='summary_large_image' />
         <meta name='twitter:title' content={movie.title} />
-        <meta name='twitter:description' content={movie.description} />
+        <meta name='twitter:description' content={movie.summary} />
         <meta name='twitter:image' content={ApiService.generatePosterUrl(images?.images[0]?.hash || '')} />
         <script id='ld_json_data' type='application/ld+json' dangerouslySetInnerHTML={idJsonObject} />
       </Head>
@@ -113,7 +113,7 @@ function MovieItem () {
               height='400'
               crossOrigin='anonymous'
             />
-            <div className={styles.zoom}><Icon path={mdiMagnifyPlus} /></div>
+            <button className={styles.zoom} aria-label="Enlarge poster"><Icon path={mdiMagnifyPlus} /></button>
           </div>
           <div className={styles.thumbs}>
             <button type='button' onClick={() => clickThumb(1)}>
