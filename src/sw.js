@@ -90,7 +90,7 @@ sw.addEventListener('push', /** @param {PushEvent} event */ (event) => {
   const title = data.title || 'New movies are available!'
   const options = {
     body: data.body || 'See what\'s new!',
-    icon: '/icons/icon-32x32.png',
+    icon: new URL('/icons/icon-512x512.png', sw.registration.scope).href,
     data: data.data || {}
   }
 
@@ -99,7 +99,17 @@ sw.addEventListener('push', /** @param {PushEvent} event */ (event) => {
       await sw.registration.showNotification(title, options)
       console.log(`Notification ${title} sent.`)
     } catch (ex) {
-      console.error(ex)
+      console.error('Main notification failed, trying fallback:', ex)
+      try {
+        // Fallback clean output saves us from Chrome’s placeholder
+        await sw.registration.showNotification(title, {
+          body: options.body
+        })
+      } catch (fallbackEx) {
+        console.error('Critical error: even the fallback notification was not shown', fallbackEx)
+        throw fallbackEx
+        // Propagate the error upward so the browser knows about the failure
+      }
     }
   })())
 })
